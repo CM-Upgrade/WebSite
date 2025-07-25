@@ -14,9 +14,9 @@ export default function Header() {
         <nav className="flex items-center justify-between h-16">
           <Link href="/" className="flex items-center space-x-2">
             <Image 
-              src={getImagePath('/Logo01.png')}
+              src={getImagePath('/UpgradeMate.ico')}
               alt="UpgradeMate" 
-              width={210} 
+              width={56} 
               height={56}
               className="h-14 w-auto"
             />
