@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import { getImagePath } from '@/lib/config'
 
 export default function Hero() {
   return (
@@ -35,7 +36,7 @@ export default function Hero() {
           <div className="relative">
             <div className="bg-upgrade-cyan rounded-lg p-8 flex items-center justify-center">
               <Image 
-                src="/Logo_transparent.png" 
+                src={getImagePath('/Logo_transparent.png')}
                 alt="UpgradeMate" 
                 width={400} 
                 height={300}

@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useState } from 'react'
+import { getImagePath } from '@/lib/config'
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -13,7 +14,7 @@ export default function Header() {
         <nav className="flex items-center justify-between h-16">
           <Link href="/" className="flex items-center space-x-2">
             <Image 
-              src="/Logo01.png" 
+              src={getImagePath('/Logo01.png')}
               alt="UpgradeMate" 
               width={150} 
               height={40}
