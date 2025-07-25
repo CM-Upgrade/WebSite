@@ -16,9 +16,9 @@ export default function Header() {
             <Image 
               src={getImagePath('/Logo01.png')}
               alt="UpgradeMate" 
-              width={180} 
-              height={48}
-              className="h-12 w-auto"
+              width={210} 
+              height={56}
+              className="h-14 w-auto"
             />
           </Link>
           

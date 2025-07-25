@@ -34,7 +34,7 @@ export default function Hero() {
           </div>
           
           <div className="relative">
-            <div className="bg-white rounded-lg p-8 flex items-center justify-center shadow-sm">
+            <div className="bg-gray-100 rounded-lg p-8 flex items-center justify-center shadow-sm">
               <Image 
                 src={getImagePath('/Logo_transparent.png')}
                 alt="UpgradeMate" 
