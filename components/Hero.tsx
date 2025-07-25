@@ -24,12 +24,14 @@ export default function Hero() {
               >
                 Get Started
               </Link>
+              {/* Temporarily disabled - uncomment when demo is ready
               <Link 
                 href="#demo" 
                 className="border border-upgrade-blue text-upgrade-blue px-6 py-3 rounded-md hover:bg-blue-50 transition-colors text-center"
               >
                 Watch Demo
               </Link>
+              */}
             </div>
           </div>
           
