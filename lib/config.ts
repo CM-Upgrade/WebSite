@@ -1,5 +1,6 @@
 export const getBasePath = () => {
-  return process.env.NODE_ENV === 'production' ? '/WebSite' : ''
+  // No base path needed for custom domain
+  return ''
 }
 
 export const getImagePath = (src: string) => {
