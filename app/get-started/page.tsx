@@ -8,7 +8,10 @@ export default function GetStarted() {
     email: '',
     company: '',
     computers: '',
-    requestType: 'trial'
+    requestType: 'trial',
+    siteCode: '',
+    buildNumber: '',
+    supportID: ''
   })
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -19,14 +22,17 @@ export default function GetStarted() {
 Name: ${formData.name}
 Email: ${formData.email}
 Company: ${formData.company}
-Number of Computers: ${formData.computers || 'Not specified'}`
+Number of Computers: ${formData.computers || 'Not specified'}
+Site Code: ${formData.siteCode || 'Not specified'}
+Build Number: ${formData.buildNumber || 'Not specified'}
+Support ID: ${formData.supportID || 'Not specified'}`
     
     const mailtoLink = `mailto:sales@upgrademate.io?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
     window.location.href = mailtoLink
     
     // Reset form after mailto link is opened
     setTimeout(() => {
-      setFormData({ name: '', email: '', company: '', computers: '', requestType: 'trial' })
+      setFormData({ name: '', email: '', company: '', computers: '', requestType: 'trial', siteCode: '', buildNumber: '', supportID: '' })
     }, 1000)
   }
 
@@ -121,6 +127,51 @@ Number of Computers: ${formData.computers || 'Not specified'}`
                   placeholder="Approximate number"
                   className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-upgrade-blue focus:border-transparent"
                 />
+              </div>
+
+              <div className="grid md:grid-cols-3 gap-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Site Code
+                  </label>
+                  <input
+                    type="text"
+                    name="siteCode"
+                    value={formData.siteCode}
+                    onChange={handleChange}
+                    placeholder="3 digit SCCM Site Code"
+                    maxLength={3}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-upgrade-blue focus:border-transparent"
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Build Number
+                  </label>
+                  <input
+                    type="text"
+                    name="buildNumber"
+                    value={formData.buildNumber}
+                    onChange={handleChange}
+                    placeholder="Windows Build Number"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-upgrade-blue focus:border-transparent"
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Support ID
+                  </label>
+                  <input
+                    type="text"
+                    name="supportID"
+                    value={formData.supportID}
+                    onChange={handleChange}
+                    placeholder="SCCM Support ID"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-upgrade-blue focus:border-transparent"
+                  />
+                </div>
               </div>
               
               <button
