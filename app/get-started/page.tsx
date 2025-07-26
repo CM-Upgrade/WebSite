@@ -13,9 +13,21 @@ export default function GetStarted() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    console.log('Form submitted:', formData)
-    alert('Thank you for your interest! Our team will contact you within 24 hours.')
-    setFormData({ name: '', email: '', company: '', computers: '', requestType: 'trial' })
+    
+    const subject = `${formData.requestType === 'trial' ? 'Free Trial' : formData.requestType === 'demo' ? 'Demo' : 'Quote'} Request from ${formData.name}`
+    const body = `Request Type: ${formData.requestType === 'trial' ? 'Free Trial' : formData.requestType === 'demo' ? 'Demo Request' : 'Quote Request'}
+Name: ${formData.name}
+Email: ${formData.email}
+Company: ${formData.company}
+Number of Computers: ${formData.computers || 'Not specified'}`
+    
+    const mailtoLink = `mailto:sales@upgrademate.io?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+    window.location.href = mailtoLink
+    
+    // Reset form after mailto link is opened
+    setTimeout(() => {
+      setFormData({ name: '', email: '', company: '', computers: '', requestType: 'trial' })
+    }, 1000)
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
