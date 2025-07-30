@@ -28,7 +28,7 @@ export default function ForITAdmins() {
   return (
     <section className="py-20 bg-white" id="for-admins">
       <div className="container mx-auto px-4">
-        <div className="grid md:grid-cols-2 gap-15 items-center max-w-7xl mx-auto">
+        <div className="grid md:grid-cols-2 gap-12 items-start max-w-7xl mx-auto">
           <div className="bg-gray-50 p-10 rounded-xl shadow-lg">
             <div className="bg-gray-700 text-white px-5 py-4 rounded-t-lg font-semibold">
               PowerBI Analytics Dashboard

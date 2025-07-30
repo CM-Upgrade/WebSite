@@ -28,7 +28,7 @@ export default function ForEndUsers() {
   return (
     <section className="py-20 bg-white" id="for-users">
       <div className="container mx-auto px-4">
-        <div className="grid md:grid-cols-2 gap-15 items-center max-w-7xl mx-auto">
+        <div className="grid md:grid-cols-2 gap-12 items-start max-w-7xl mx-auto">
           <div>
             <h2 className="text-4xl font-bold text-gray-800 mb-8">
               For End Users: Upgrades That Respect Your Time

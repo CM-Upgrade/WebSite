@@ -23,16 +23,16 @@ export default function Header() {
           </Link>
           
           <div className="hidden md:flex items-center space-x-8">
-            <Link href="#features" className="text-gray-700 hover:text-blue-800 font-medium transition-colors">
+            <Link href="/#features" className="text-gray-700 hover:text-blue-800 font-medium transition-colors">
               Features
             </Link>
-            <Link href="#for-users" className="text-gray-700 hover:text-blue-800 font-medium transition-colors">
+            <Link href="/#for-users" className="text-gray-700 hover:text-blue-800 font-medium transition-colors">
               For Users
             </Link>
-            <Link href="#for-admins" className="text-gray-700 hover:text-blue-800 font-medium transition-colors">
+            <Link href="/#for-admins" className="text-gray-700 hover:text-blue-800 font-medium transition-colors">
               For IT Admins
             </Link>
-            <Link href="#pricing" className="text-gray-700 hover:text-blue-800 font-medium transition-colors">
+            <Link href="/#pricing" className="text-gray-700 hover:text-blue-800 font-medium transition-colors">
               Pricing
             </Link>
             <Link href="/contact" className="text-gray-700 hover:text-blue-800 font-medium transition-colors">
@@ -62,16 +62,16 @@ export default function Header() {
         
         {isMenuOpen && (
           <div className="md:hidden py-4 border-t border-gray-200">
-            <Link href="#features" className="block py-2 text-gray-700 hover:text-blue-800">
+            <Link href="/#features" className="block py-2 text-gray-700 hover:text-blue-800">
               Features
             </Link>
-            <Link href="#for-users" className="block py-2 text-gray-700 hover:text-blue-800">
+            <Link href="/#for-users" className="block py-2 text-gray-700 hover:text-blue-800">
               For Users
             </Link>
-            <Link href="#for-admins" className="block py-2 text-gray-700 hover:text-blue-800">
+            <Link href="/#for-admins" className="block py-2 text-gray-700 hover:text-blue-800">
               For IT Admins
             </Link>
-            <Link href="#pricing" className="block py-2 text-gray-700 hover:text-blue-800">
+            <Link href="/#pricing" className="block py-2 text-gray-700 hover:text-blue-800">
               Pricing
             </Link>
             <Link href="/contact" className="block py-2 text-gray-700 hover:text-blue-800">
