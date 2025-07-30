@@ -19,8 +19,8 @@ export default function PricingCalculator() {
   return (
     <section className="py-16 bg-white" id="pricing">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center mb-4">Pricing</h2>
-        <p className="text-gray-600 text-center mb-12 max-w-2xl mx-auto">
+        <h2 className="text-3xl font-bold text-center font-montserrat text-upgrade-black mb-4">Pricing</h2>
+        <p className="text-upgrade-dark-gray text-center font-open-sans mb-12 max-w-2xl mx-auto">
           Transparent pricing that scales with your organization. No hidden fees, no surprises.
         </p>
 
@@ -41,7 +41,7 @@ export default function PricingCalculator() {
 
           <button
             onClick={handleCalculate}
-            className="w-full bg-upgrade-blue text-white px-6 py-3 rounded-md hover:bg-blue-700 transition-colors"
+            className="w-full bg-upgrade-medium-blue text-white px-6 py-3 rounded-md hover:bg-upgrade-dark-blue transition-colors font-open-sans font-semibold"
           >
             Calculate Price
           </button>
@@ -53,7 +53,7 @@ export default function PricingCalculator() {
                   <p className="text-gray-600 mb-4">
                     For installations above 30,000 computers
                   </p>
-                  <p className="text-2xl font-bold text-upgrade-blue">
+                  <p className="text-2xl font-bold text-upgrade-medium-blue font-montserrat">
                     Custom Pricing
                   </p>
                   <p className="text-sm text-gray-500 mt-2">
@@ -64,7 +64,7 @@ export default function PricingCalculator() {
                 <>
                   <div className="text-center mb-4">
                     <p className="text-sm text-gray-600">Total Annual Price</p>
-                    <p className="text-3xl font-bold text-upgrade-blue">
+                    <p className="text-3xl font-bold text-upgrade-medium-blue font-montserrat">
                       {formatPrice(total)}
                     </p>
                   </div>

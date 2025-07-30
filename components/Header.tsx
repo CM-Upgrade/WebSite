@@ -23,24 +23,24 @@ export default function Header() {
           </Link>
           
           <div className="hidden md:flex items-center space-x-8">
-            <Link href="/#features" className="text-gray-700 hover:text-blue-800 font-medium transition-colors">
+            <Link href="/#features" className="text-upgrade-dark-gray hover:text-upgrade-medium-blue font-medium font-open-sans transition-colors">
               Features
             </Link>
-            <Link href="/#for-users" className="text-gray-700 hover:text-blue-800 font-medium transition-colors">
+            <Link href="/#for-users" className="text-upgrade-dark-gray hover:text-upgrade-medium-blue font-medium font-open-sans transition-colors">
               For Users
             </Link>
-            <Link href="/#for-admins" className="text-gray-700 hover:text-blue-800 font-medium transition-colors">
+            <Link href="/#for-admins" className="text-upgrade-dark-gray hover:text-upgrade-medium-blue font-medium font-open-sans transition-colors">
               For IT Admins
             </Link>
-            <Link href="/#pricing" className="text-gray-700 hover:text-blue-800 font-medium transition-colors">
+            <Link href="/#pricing" className="text-upgrade-dark-gray hover:text-upgrade-medium-blue font-medium font-open-sans transition-colors">
               Pricing
             </Link>
-            <Link href="/contact" className="text-gray-700 hover:text-blue-800 font-medium transition-colors">
+            <Link href="/contact" className="text-upgrade-dark-gray hover:text-upgrade-medium-blue font-medium font-open-sans transition-colors">
               Contact Sales
             </Link>
             <Link 
               href="/get-started" 
-              className="bg-blue-800 text-white px-6 py-2.5 rounded-md hover:bg-blue-900 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg font-semibold"
+              className="bg-upgrade-medium-blue text-white px-6 py-2.5 rounded-md hover:bg-upgrade-dark-blue transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg font-semibold font-open-sans"
             >
               Get Started
             </Link>
@@ -62,24 +62,24 @@ export default function Header() {
         
         {isMenuOpen && (
           <div className="md:hidden py-4 border-t border-gray-200">
-            <Link href="/#features" className="block py-2 text-gray-700 hover:text-blue-800">
+            <Link href="/#features" className="block py-2 text-upgrade-dark-gray hover:text-upgrade-medium-blue font-open-sans">
               Features
             </Link>
-            <Link href="/#for-users" className="block py-2 text-gray-700 hover:text-blue-800">
+            <Link href="/#for-users" className="block py-2 text-upgrade-dark-gray hover:text-upgrade-medium-blue font-open-sans">
               For Users
             </Link>
-            <Link href="/#for-admins" className="block py-2 text-gray-700 hover:text-blue-800">
+            <Link href="/#for-admins" className="block py-2 text-upgrade-dark-gray hover:text-upgrade-medium-blue font-open-sans">
               For IT Admins
             </Link>
-            <Link href="/#pricing" className="block py-2 text-gray-700 hover:text-blue-800">
+            <Link href="/#pricing" className="block py-2 text-upgrade-dark-gray hover:text-upgrade-medium-blue font-open-sans">
               Pricing
             </Link>
-            <Link href="/contact" className="block py-2 text-gray-700 hover:text-blue-800">
+            <Link href="/contact" className="block py-2 text-upgrade-dark-gray hover:text-upgrade-medium-blue font-open-sans">
               Contact Sales
             </Link>
             <Link 
               href="/get-started" 
-              className="block mt-4 bg-blue-800 text-white px-4 py-2 rounded-md hover:bg-blue-900 transition-colors text-center"
+              className="block mt-4 bg-upgrade-medium-blue text-white px-4 py-2 rounded-md hover:bg-upgrade-dark-blue transition-colors text-center font-open-sans"
             >
               Get Started
             </Link>

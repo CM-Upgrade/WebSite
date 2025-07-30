@@ -9,9 +9,22 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        'upgrade-blue': '#0066CC',
-        'upgrade-light-blue': '#00A6E0', 
-        'upgrade-cyan': '#4DC8E8',
+        'upgrade': {
+          'dark-blue': '#154F72',
+          'light-blue': '#73D4F5', 
+          'medium-blue': '#146BA2',
+          'bright-blue': '#007EAF',
+          'dark-gray': '#475359',
+          'black': '#1A1A1A',
+        },
+        // Keep old colors for backward compatibility
+        'upgrade-blue': '#146BA2',
+        'upgrade-light-blue': '#007EAF', 
+        'upgrade-cyan': '#73D4F5',
+      },
+      fontFamily: {
+        'montserrat': ['Montserrat', 'sans-serif'],
+        'open-sans': ['Open Sans', 'sans-serif'],
       },
     },
   },
