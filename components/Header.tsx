@@ -9,32 +9,38 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   return (
-    <header className="bg-white border-b border-gray-200">
-      <div className="container mx-auto px-4">
-        <nav className="flex items-center justify-between h-16">
-          <Link href="/" className="flex items-center space-x-2">
+    <header className="bg-white shadow-md sticky top-0 z-50">
+      <div className="container mx-auto px-5">
+        <nav className="flex items-center justify-between py-4">
+          <Link href="/" className="flex items-center gap-4">
             <Image 
-              src={getImagePath('/UpgradeMate.ico')}
+              src={getImagePath('/HeroLogo.png')}
               alt="UpgradeMate" 
-              width={56} 
-              height={56}
-              className="h-14 w-auto"
+              width={200} 
+              height={40}
+              className="h-10 w-auto"
             />
           </Link>
           
           <div className="hidden md:flex items-center space-x-8">
-            <Link href="/" className="text-gray-700 hover:text-upgrade-blue">
-              Home
+            <Link href="#features" className="text-gray-700 hover:text-blue-800 font-medium transition-colors">
+              Features
             </Link>
-            <Link href="/about" className="text-gray-700 hover:text-upgrade-blue">
-              About
+            <Link href="#for-users" className="text-gray-700 hover:text-blue-800 font-medium transition-colors">
+              For Users
             </Link>
-            <Link href="/contact" className="text-gray-700 hover:text-upgrade-blue">
-              Contact
+            <Link href="#for-admins" className="text-gray-700 hover:text-blue-800 font-medium transition-colors">
+              For IT Admins
+            </Link>
+            <Link href="#pricing" className="text-gray-700 hover:text-blue-800 font-medium transition-colors">
+              Pricing
+            </Link>
+            <Link href="/contact" className="text-gray-700 hover:text-blue-800 font-medium transition-colors">
+              Contact Sales
             </Link>
             <Link 
               href="/get-started" 
-              className="bg-upgrade-blue text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
+              className="bg-blue-800 text-white px-6 py-2.5 rounded-md hover:bg-blue-900 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg font-semibold"
             >
               Get Started
             </Link>
@@ -56,18 +62,24 @@ export default function Header() {
         
         {isMenuOpen && (
           <div className="md:hidden py-4 border-t border-gray-200">
-            <Link href="/" className="block py-2 text-gray-700 hover:text-upgrade-blue">
-              Home
+            <Link href="#features" className="block py-2 text-gray-700 hover:text-blue-800">
+              Features
             </Link>
-            <Link href="/about" className="block py-2 text-gray-700 hover:text-upgrade-blue">
-              About
+            <Link href="#for-users" className="block py-2 text-gray-700 hover:text-blue-800">
+              For Users
             </Link>
-            <Link href="/contact" className="block py-2 text-gray-700 hover:text-upgrade-blue">
-              Contact
+            <Link href="#for-admins" className="block py-2 text-gray-700 hover:text-blue-800">
+              For IT Admins
+            </Link>
+            <Link href="#pricing" className="block py-2 text-gray-700 hover:text-blue-800">
+              Pricing
+            </Link>
+            <Link href="/contact" className="block py-2 text-gray-700 hover:text-blue-800">
+              Contact Sales
             </Link>
             <Link 
               href="/get-started" 
-              className="block mt-4 bg-upgrade-blue text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors text-center"
+              className="block mt-4 bg-blue-800 text-white px-4 py-2 rounded-md hover:bg-blue-900 transition-colors text-center"
             >
               Get Started
             </Link>

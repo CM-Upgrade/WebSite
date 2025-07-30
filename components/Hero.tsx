@@ -1,51 +1,16 @@
-import Image from 'next/image'
 import Link from 'next/link'
-import { getImagePath } from '@/lib/config'
 
 export default function Hero() {
   return (
-    <section className="bg-gradient-to-b from-blue-50 to-white py-16 md:py-24">
+    <section className="py-20 bg-gradient-to-br from-gray-50 via-blue-50 to-gray-100">
       <div className="container mx-auto px-4">
-        <div className="grid md:grid-cols-2 gap-8 items-center">
-          <div>
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              Make Windows Upgrades<br />
-              Actually Work
-            </h1>
-            <p className="text-lg text-gray-600 mb-8">
-              The smart add-on for ConfigMgr (SCCM) that turns<br />
-              enterprise Windows OS upgrades from a nightmare<br />
-              into a smooth ride.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Link 
-                href="/get-started" 
-                className="bg-upgrade-blue text-white px-6 py-3 rounded-md hover:bg-blue-700 transition-colors text-center"
-              >
-                Get Started
-              </Link>
-              {/* Temporarily disabled - uncomment when demo is ready
-              <Link 
-                href="#demo" 
-                className="border border-upgrade-blue text-upgrade-blue px-6 py-3 rounded-md hover:bg-blue-50 transition-colors text-center"
-              >
-                Watch Demo
-              </Link>
-              */}
-            </div>
-          </div>
-          
-          <div className="relative">
-            <div className="bg-gray-100 rounded-lg p-8 flex items-center justify-center shadow-sm">
-              <Image 
-                src={getImagePath('/Logo_transparent.png')}
-                alt="UpgradeMate" 
-                width={400} 
-                height={300}
-                className="w-full h-auto"
-              />
-            </div>
-          </div>
+        <div className="text-center max-w-4xl mx-auto">
+          <h1 className="text-5xl md:text-6xl font-bold text-blue-800 mb-6 animate-fade-in-up">
+            Make Windows Upgrades Actually Work
+          </h1>
+          <p className="text-xl md:text-2xl text-gray-600 mb-12 animate-fade-in-up animation-delay-200">
+            The smart add-on for ConfigMgr (SCCM) that turns enterprise Windows OS upgrades from a nightmare into a smooth ride.
+          </p>
         </div>
       </div>
     </section>

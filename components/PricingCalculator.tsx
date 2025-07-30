@@ -17,7 +17,7 @@ export default function PricingCalculator() {
   }
 
   return (
-    <section className="py-16 bg-white">
+    <section className="py-16 bg-white" id="pricing">
       <div className="container mx-auto px-4">
         <h2 className="text-3xl font-bold text-center mb-4">Pricing</h2>
         <p className="text-gray-600 text-center mb-12 max-w-2xl mx-auto">
@@ -81,9 +81,7 @@ export default function PricingCalculator() {
 
           <div className="mt-8 space-y-2 text-sm text-gray-600">
             <p>• Up to 2,000 computers: $1,000 (fixed)</p>
-            <p>• 2,001 - 10,000: $0.375 per additional computer</p>
-            <p>• 10,001 - 30,000: $0.25 per additional computer</p>
-            <p>• 30,001+: Custom pricing</p>
+            <p>• For more than 2,000 please use calculator</p>
           </div>
         </div>
       </div>

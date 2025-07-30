@@ -10,7 +10,7 @@ export default function GetStarted() {
     computers: '',
     requestType: 'trial',
     siteCode: '',
-    buildNumber: '',
+    windowsVersion: '',
     supportID: ''
   })
 
@@ -22,17 +22,17 @@ export default function GetStarted() {
 Name: ${formData.name}
 Email: ${formData.email}
 Company: ${formData.company}
-Number of Computers: ${formData.computers || 'Not specified'}
-Site Code: ${formData.siteCode || 'Not specified'}
-Build Number: ${formData.buildNumber || 'Not specified'}
-Support ID: ${formData.supportID || 'Not specified'}`
+Number of Computers: ${formData.computers}
+Site Code: ${formData.siteCode}
+Windows Version: ${formData.windowsVersion}
+Support ID: ${formData.supportID}`
     
     const mailtoLink = `mailto:sales@upgrademate.io?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
     window.location.href = mailtoLink
     
     // Reset form after mailto link is opened
     setTimeout(() => {
-      setFormData({ name: '', email: '', company: '', computers: '', requestType: 'trial', siteCode: '', buildNumber: '', supportID: '' })
+      setFormData({ name: '', email: '', company: '', computers: '', requestType: 'trial', siteCode: '', windowsVersion: '', supportID: '' })
     }, 1000)
   }
 
@@ -117,13 +117,14 @@ Support ID: ${formData.supportID || 'Not specified'}`
               
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Number of Computers
+                  Number of Computers *
                 </label>
                 <input
                   type="number"
                   name="computers"
                   value={formData.computers}
                   onChange={handleChange}
+                  required
                   placeholder="Approximate number"
                   className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-upgrade-blue focus:border-transparent"
                 />
@@ -131,13 +132,14 @@ Support ID: ${formData.supportID || 'Not specified'}`
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Site Code
+                  Site Code *
                 </label>
                 <input
                   type="text"
                   name="siteCode"
                   value={formData.siteCode}
                   onChange={handleChange}
+                  required
                   placeholder="3 digit SCCM Site Code"
                   maxLength={3}
                   className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-upgrade-blue focus:border-transparent"
@@ -146,27 +148,31 @@ Support ID: ${formData.supportID || 'Not specified'}`
               
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Build Number
+                  Windows Version *
                 </label>
-                <input
-                  type="text"
-                  name="buildNumber"
-                  value={formData.buildNumber}
+                <select
+                  name="windowsVersion"
+                  value={formData.windowsVersion}
                   onChange={handleChange}
-                  placeholder="Windows Build Number"
+                  required
                   className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-upgrade-blue focus:border-transparent"
-                />
+                >
+                  <option value="">Select version</option>
+                  <option value="Windows 11 24H2">Windows 11 24H2</option>
+                  <option value="Windows 11 23H2">Windows 11 23H2</option>
+                </select>
               </div>
               
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Support ID
+                  Support ID *
                 </label>
                 <input
                   type="text"
                   name="supportID"
                   value={formData.supportID}
                   onChange={handleChange}
+                  required
                   placeholder="SCCM Support ID"
                   className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-upgrade-blue focus:border-transparent"
                 />

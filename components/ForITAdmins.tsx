@@ -1,47 +1,67 @@
+import Image from 'next/image'
+import { getImagePath } from '@/lib/config'
+
 export default function ForITAdmins() {
-  const features = [
+  const benefits = [
     {
-      icon: "🚀",
-      title: "Setup in Minutes",
-      description: "Our wizard handles everything - inventory, OS upgrade packages, collections. What used to take hours now takes minutes."
-    },
-    {
-      icon: "📊",
-      title: "PowerBI Dashboard That Actually Helps",
-      description: "Track every upgrade in real-time. Spot blockers instantly. Cut your test and pilot phases in half."
+      icon: "🎛️",
+      title: "Native SCCM Integration",
+      description: "Uses Collections, Task Sequences, and Deployments. You're always in control."
     },
     {
       icon: "🌐",
       title: "Works Offline Too",
-      description: "Two-stage process: download first, upgrade later. Perfect for remote workers and home offices."
+      description: "Two-stage process perfect for remote workers and home offices."
     },
     {
-      icon: "🎛️",
-      title: "You're Always in Control",
-      description: "Using native SCCM components - Collections, Task Sequences, Deployments. Speed up, slow down, pause, resume - it's all in your hands."
+      icon: "📈",
+      title: "Business Intelligence",
+      description: "Real-time PowerBI dashboards show exactly what's happening."
+    },
+    {
+      icon: "⚙️",
+      title: "Automated Setup",
+      description: "Complete environment configuration for your specific needs."
     }
   ]
 
   return (
-    <section className="py-16 bg-white">
+    <section className="py-20 bg-white" id="for-admins">
       <div className="container mx-auto px-4">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-4">
-            For IT Admins: Control Meets Simplicity
-          </h2>
+        <div className="grid md:grid-cols-2 gap-15 items-center max-w-7xl mx-auto">
+          <div className="bg-gray-50 p-10 rounded-xl shadow-lg">
+            <div className="bg-gray-700 text-white px-5 py-4 rounded-t-lg font-semibold">
+              PowerBI Analytics Dashboard
+            </div>
+            <div className="bg-white p-4 rounded-b-lg">
+              <Image 
+                src={getImagePath('/dashboard.png')}
+                alt="PowerBI Analytics Dashboard" 
+                width={600} 
+                height={400}
+                className="w-full h-auto rounded"
+              />
+            </div>
+          </div>
           
-          <div className="grid md:grid-cols-2 gap-8 mt-12">
-            {features.map((feature, index) => (
-              <div key={index} className="bg-gray-50 rounded-lg p-6 hover:bg-gray-100 transition-colors">
-                <div className="flex items-start">
-                  <div className="text-4xl mr-4 flex-shrink-0">{feature.icon}</div>
+          <div>
+            <h2 className="text-4xl font-bold text-gray-800 mb-8">
+              For IT Admins: Control Meets Simplicity
+            </h2>
+            <ul className="space-y-0">
+              {benefits.map((benefit, index) => (
+                <li 
+                  key={index} 
+                  className="py-4 border-b border-gray-200 last:border-b-0 flex items-start gap-4"
+                >
+                  <span className="text-2xl text-blue-800 flex-shrink-0">{benefit.icon}</span>
                   <div>
-                    <h3 className="text-xl font-semibold mb-2 text-gray-900">{feature.title}</h3>
-                    <p className="text-gray-600">{feature.description}</p>
+                    <h4 className="text-lg font-semibold text-gray-800 mb-2">{benefit.title}</h4>
+                    <p className="text-gray-600 text-sm">{benefit.description}</p>
                   </div>
-                </div>
-              </div>
-            ))}
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </div>

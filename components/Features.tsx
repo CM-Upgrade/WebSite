@@ -1,40 +1,38 @@
 export default function Features() {
   const features = [
     {
-      title: "Built for Enterprise",
-      description: "Designed specifically for complex corporate environments"
+      icon: "🚀",
+      title: "Setup in Minutes",
+      description: "Our wizard handles everything - inventory, OS upgrade packages, collections. What used to take hours now takes minutes."
     },
     {
-      title: "SCCM Native", 
-      description: "Works with your existing ConfigMgr investment"
+      icon: "📊",
+      title: "Real-Time Analytics", 
+      description: "PowerBI dashboard that actually helps. Track every upgrade, spot blockers instantly, cut test phases in half."
     },
     {
-      title: "Proven Results",
-      description: "Higher success rates, shorter deployment times"
-    },
-    {
-      title: "Happy Users",
-      description: "Finally, upgrades that don't disrupt productivity"
+      icon: "🎯",
+      title: "Higher Success Rates",
+      description: "Smart compatibility checks mean only ready machines get upgraded. Fewer failures, happier users."
     }
   ]
 
   return (
-    <section className="py-16 bg-white">
+    <section className="py-20 bg-white" id="features">
       <div className="container mx-auto px-4">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Why UpgradeMate?</h2>
-          
-          <div className="grid md:grid-cols-2 gap-8">
-            {features.map((feature, index) => (
-              <div key={index} className="flex items-start p-6 bg-gray-50 rounded-lg">
-                <div className="w-2 h-2 bg-upgrade-blue rounded-full mt-2 mr-4 flex-shrink-0"></div>
-                <div>
-                  <h3 className="text-xl font-semibold mb-2 text-gray-900">{feature.title}</h3>
-                  <p className="text-gray-600">{feature.description}</p>
-                </div>
-              </div>
-            ))}
-          </div>
+        <h2 className="text-4xl font-bold text-center text-gray-800 mb-12">Why UpgradeMate?</h2>
+        
+        <div className="grid md:grid-cols-3 gap-10 max-w-6xl mx-auto mb-20">
+          {features.map((feature, index) => (
+            <div 
+              key={index} 
+              className="bg-gray-50 p-10 rounded-xl hover:transform hover:-translate-y-1 hover:shadow-lg transition-all duration-300"
+            >
+              <div className="text-5xl mb-4">{feature.icon}</div>
+              <h3 className="text-2xl font-semibold mb-4 text-gray-800">{feature.title}</h3>
+              <p className="text-gray-600 leading-relaxed">{feature.description}</p>
+            </div>
+          ))}
         </div>
       </div>
     </section>

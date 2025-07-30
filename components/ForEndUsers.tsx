@@ -1,48 +1,67 @@
+import Image from 'next/image'
+import { getImagePath } from '@/lib/config'
+
 export default function ForEndUsers() {
-  const features = [
+  const benefits = [
     {
       icon: "⚡",
       title: "Lightning-Fast Updates",
-      description: "We pre-download upgrade packages in the background. When you're ready to upgrade, it's already there. No more waiting around."
-    },
-    {
-      icon: "🎯",
-      title: "Smart Compatibility Checks",
-      description: "We scan first, upgrade second. Only compatible machines get the green light, meaning fewer failures and less frustration."
+      description: "Pre-downloaded packages mean no waiting around when you're ready to upgrade."
     },
     {
       icon: "⏰",
       title: "You Choose When",
-      description: "Pick your upgrade time within IT's schedule. Work on your terms, upgrade when it suits you best."
+      description: "Pick your upgrade time within IT's schedule. Work on your terms."
     },
     {
       icon: "🛡️",
       title: "Zero Data Loss",
-      description: "Clear on-screen guidance throughout the process. We lock the screen during critical moments to prevent any accidents."
+      description: "Clear guidance and screen locks during critical moments prevent accidents."
     },
     {
       icon: "🎨",
       title: "Familiar Experience",
-      description: "See your company branding, messages in your language. It feels like your IT team is right there with you."
+      description: "See your company branding and messages in your language."
     }
   ]
 
   return (
-    <section className="py-16 bg-gray-50">
+    <section className="py-20 bg-white" id="for-users">
       <div className="container mx-auto px-4">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-4">
-            For End Users: Upgrades That Respect Your Time
-          </h2>
+        <div className="grid md:grid-cols-2 gap-15 items-center max-w-7xl mx-auto">
+          <div>
+            <h2 className="text-4xl font-bold text-gray-800 mb-8">
+              For End Users: Upgrades That Respect Your Time
+            </h2>
+            <ul className="space-y-0">
+              {benefits.map((benefit, index) => (
+                <li 
+                  key={index} 
+                  className="py-4 border-b border-gray-200 last:border-b-0 flex items-start gap-4"
+                >
+                  <span className="text-2xl text-blue-800 flex-shrink-0">{benefit.icon}</span>
+                  <div>
+                    <h4 className="text-lg font-semibold text-gray-800 mb-2">{benefit.title}</h4>
+                    <p className="text-gray-600 text-sm">{benefit.description}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
-            {features.map((feature, index) => (
-              <div key={index} className="bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow">
-                <div className="text-4xl mb-4">{feature.icon}</div>
-                <h3 className="text-xl font-semibold mb-3 text-gray-900">{feature.title}</h3>
-                <p className="text-gray-600">{feature.description}</p>
-              </div>
-            ))}
+          <div className="bg-gray-50 p-10 rounded-xl shadow-lg">
+            <div className="bg-gray-700 text-white px-5 py-4 rounded-t-lg font-semibold">
+              UpgradeMate User Interface
+            </div>
+            <div className="bg-white p-4 rounded-b-lg">
+              <Image 
+                src={getImagePath('/formv2.png')}
+                alt="UpgradeMate User Interface Form" 
+                width={600} 
+                height={400}
+                className="w-full h-auto rounded"
+              />
+            </div>
           </div>
         </div>
       </div>
