@@ -1,0 +1,13 @@
+With the Windows Servicing feature, users can perform an upgrade through the standard Windows Update experience. However, in enterprises, custom OS setups (security software, etc.) reduce the success rate when attempting an OS upgrade as if it were a standard update via the Windows Servicing feature. For this reason, enterprises tend to use a workflow managed with a task sequence infrastructure instead of this native feature.
+
+There is a ready-made OS upgrade template within the task sequence, but it’s only a template—you still need to create and add many actions/steps yourself.
+
+In the out-of-the-box experience, it’s not apparent to the user that the delivered package is an upgrade package; users perceive it like any other update, which is not what IT wants. In reality, this is a major upgrade. With this form, we provide user awareness as part of the experience. The user is also informed to prepare (e.g., “Close applications, a Windows upgrade will start, save your work,” etc.).
+
+Preventing Business Loss: One important point is that, in the preparation phase of the default task sequence experience, the user can continue working. This can take about an hour on a fast network (and if at home on a slow network, even 5–6 hours), and then the upgrade immediately begins. If the user is still working at that moment, interruptions and business loss occur. UpgradeMate blocks the user from using the computer during preparation.
+
+Offline Upgrade: Because the download time is moved earlier, we don’t wait for it during installation, and the upgrade can proceed even without an SCCM connection (offline upgrade support). (During the Scan & Precache task sequence, download and scanning take place—approximately 30–60 minutes. Execute takes about 30–45 minutes.)
+
+Live Monitoring of the Upgrade: Within the SCCM task sequence structure, there is no user-friendly tracking mechanism (you can only infer from the state of steps), and even then you typically check it daily. UpgradeMate reports events instantly. If the environment is healthy, all states in the report are updated within a few minutes. When the Scan & Precache task sequence finishes scanning and caching, it reports the status.
+
+A form is presented to the user and status is reported (e.g., when the user opened the form). The user is allowed to postpone for a certain period (configured by the admin during the setup wizard), but is ultimately enforced to install.
