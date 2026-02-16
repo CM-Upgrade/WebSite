@@ -7,7 +7,7 @@ import Footer from '@/components/Footer'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'UpgradeMate - Streamline Your Windows In-Place Upgrades',
+  title: 'UpgradeMate - Make Windows Upgrades Actually Work',
   description: 'Accelerate and simplify in-place upgrade scenarios for Windows operating systems with UpgradeMate.',
 }
 
