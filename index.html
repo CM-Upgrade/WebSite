@@ -171,6 +171,64 @@
       gap: 12px;
     }
 
+    /* ─── BURGER ────────────────────────────────────────────────── */
+    .burger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      width: 36px;
+      height: 36px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      z-index: 200;
+    }
+
+    .burger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--text-head);
+      border-radius: 2px;
+      transition: transform .3s ease, opacity .3s ease;
+      transform-origin: center;
+    }
+
+    .burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .burger.open span:nth-child(2) { opacity: 0; }
+    .burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* ─── MOBILE MENU ───────────────────────────────────────────── */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 72px; left: 0; right: 0;
+      background: rgba(15,32,51,.97);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 24px;
+      z-index: 99;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .mobile-menu.open { display: flex; }
+
+    .mobile-menu a {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--text-body);
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+      transition: color .2s;
+    }
+
+    .mobile-menu a:last-child { border-bottom: none; }
+    .mobile-menu a:hover { color: var(--text-head); }
+
     /* ─── HERO ─────────────────────────────────────────────────── */
     .hero {
       padding-top: 160px;
@@ -720,15 +778,20 @@
     /* ─── RESPONSIVE ───────────────────────────────────────────── */
     @media (max-width: 900px) {
       .hero-inner { grid-template-columns: 1fr; }
-      .hero-visual { display: none; }
+      .hero-visual { display: block; margin-top: 40px; }
       .why-grid { grid-template-columns: 1fr 1fr 1fr; }
       .split { grid-template-columns: 1fr; gap: 40px; }
       .split.reverse { direction: ltr; }
     }
 
+    @media (max-width: 1000px) {
+      .nav-links { display: none; }
+      .nav-actions { display: none; }
+      .burger { display: flex; }
+    }
+
     @media (max-width: 600px) {
       .why-grid { grid-template-columns: 1fr; }
-      .nav-links { display: none; }
       .hero-stats { flex-wrap: wrap; gap: 20px; }
       .cta-banner { padding: 48px 24px; }
       .pricing-card { padding: 32px 24px; }
@@ -760,8 +823,21 @@
       <div class="nav-actions">
         <a href="#try-now" class="btn btn-primary">Try Now</a>
       </div>
+      <button class="burger" id="burger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </nav>
+
+  <!-- ═══ MOBILE MENU ══════════════════════════════════════════ -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#features" onclick="closeMobileMenu()">Features</a>
+    <a href="#for-admins" onclick="closeMobileMenu()">For IT Admins</a>
+    <a href="#for-users" onclick="closeMobileMenu()">For Users</a>
+    <a href="#pricing" onclick="closeMobileMenu()">Pricing</a>
+    <a href="#pricing" onclick="closeMobileMenu()">Documents</a>
+    <a href="#contact" onclick="closeMobileMenu()">Contact Us</a>
+  </div>
 
   <!-- ═══ HERO ═════════════════════════════════════════════════ -->
   <section class="hero">
@@ -981,6 +1057,21 @@
     </div>
   </footer>
 
+
+  <script>
+    const burger = document.getElementById('burger');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    burger.addEventListener('click', () => {
+      burger.classList.toggle('open');
+      mobileMenu.classList.toggle('open');
+    });
+
+    function closeMobileMenu() {
+      burger.classList.remove('open');
+      mobileMenu.classList.remove('open');
+    }
+  </script>
 
 </body>
 </html>
