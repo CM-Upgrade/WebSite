@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UpgradeMate - Make Windows Upgrades Actually Work</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    /* ─── RESET & BASE ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:           #0F2033;
+      --bg-card:      #162D46;
+      --bg-card-2:    #1a3454;
+      --accent:       #0578D4;
+      --accent-hover: #0668bb;
+      --green:        #92C353;
+      --orange:       #EB8B23;
+      --text-head:    #FFFFFF;
+      --text-body:    #A0B1C5;
+      --text-muted:   #6b83a0;
+      --border:       rgba(255,255,255,0.07);
+      --radius-sm:    4px;
+      --radius:       8px;
+      --radius-lg:    16px;
+      --radius-xl:    24px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text-body);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    img { max-width: 100%; display: block; }
+    a { text-decoration: none; color: inherit; }
+
+    /* ─── UTILITY ──────────────────────────────────────────────── */
+    .container {
+      width: 100%;
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .section { padding: 96px 0; }
+    .section-sm { padding: 64px 0; }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: rgba(5,120,212,.12);
+      border: 1px solid rgba(5,120,212,.25);
+      border-radius: 100px;
+      padding: 4px 12px;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 700;
+      color: var(--text-head);
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+
+    .section-subtitle {
+      font-size: 17px;
+      color: var(--text-body);
+      max-width: 560px;
+      margin-bottom: 48px;
+    }
+
+    .text-accent { color: var(--accent); }
+    .text-green  { color: var(--green); }
+
+    /* ─── BUTTONS ──────────────────────────────────────────────── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 600;
+      border-radius: var(--radius);
+      padding: 12px 24px;
+      border: none;
+      cursor: pointer;
+      transition: all .2s ease;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+    .btn-primary:hover {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(5,120,212,.35);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text-head);
+      border: 1px solid var(--border);
+    }
+    .btn-outline:hover {
+      background: rgba(255,255,255,.06);
+      border-color: rgba(255,255,255,.2);
+    }
+
+    .btn-lg { padding: 14px 28px; font-size: 16px; }
+
+    /* ─── NAV ──────────────────────────────────────────────────── */
+    .nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(15,32,51,.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      transition: background .3s;
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 72px;
+    }
+
+    .nav-logo img {
+      height: 46px;
+      width: auto;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-body);
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--text-head); }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* ─── HERO ─────────────────────────────────────────────────── */
+    .hero {
+      padding-top: 160px;
+      padding-bottom: 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -200px; left: 50%;
+      transform: translateX(-50%);
+      width: 900px; height: 900px;
+      background: radial-gradient(ellipse at center,
+        rgba(5,120,212,.18) 0%,
+        transparent 65%);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--green);
+      background: rgba(146,195,83,.1);
+      border: 1px solid rgba(146,195,83,.25);
+      border-radius: 100px;
+      padding: 5px 14px;
+      margin-bottom: 24px;
+    }
+
+    .hero-eyebrow span { width: 7px; height: 7px; background: var(--green); border-radius: 50%; display: inline-block; }
+
+    .hero-title {
+      font-size: clamp(36px, 5vw, 56px);
+      font-weight: 800;
+      color: var(--text-head);
+      line-height: 1.1;
+      letter-spacing: -.02em;
+      margin-bottom: 20px;
+    }
+
+    .hero-title .highlight {
+      background: linear-gradient(135deg, #0578D4, #4db8ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      font-size: 18px;
+      color: var(--text-body);
+      line-height: 1.65;
+      margin-bottom: 36px;
+      max-width: 460px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 32px;
+      margin-top: 48px;
+      padding-top: 32px;
+      border-top: 1px solid var(--border);
+      justify-content: center;
+    }
+
+    .stat-num {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--text-head);
+    }
+    .stat-label {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .hero-visual {
+      position: relative;
+    }
+
+    .hero-visual-wrap {
+      position: relative;
+      border-radius: 0;
+      overflow: hidden;
+      box-shadow: 0 32px 80px rgba(0,0,0,.5), 0 0 0 1px var(--border);
+    }
+
+    .hero-visual-wrap img {
+      width: 100%;
+      border-radius: 0;
+    }
+
+    .hero-badge {
+      position: absolute;
+      bottom: -16px;
+      left: -20px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 16px 40px rgba(0,0,0,.4);
+    }
+
+    .hero-badge-icon {
+      width: 40px; height: 40px;
+      background: rgba(146,195,83,.15);
+      border-radius: var(--radius);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+    }
+
+    .hero-badge-text strong {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-head);
+    }
+    .hero-badge-text span {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* ─── WHY SECTION ──────────────────────────────────────────── */
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .why-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px 24px;
+      transition: transform .2s, border-color .2s, box-shadow .2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .why-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), #4db8ff);
+      opacity: 0;
+      transition: opacity .2s;
+    }
+
+    .why-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(5,120,212,.3);
+      box-shadow: 0 16px 40px rgba(0,0,0,.3);
+    }
+    .why-card:hover::before { opacity: 1; }
+
+    .why-icon {
+      width: 72px; height: 72px;
+      border-radius: var(--radius);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+      margin-bottom: 16px;
+    }
+
+    .why-icon.blue   { background: rgba(5,120,212,.15); }
+    .why-icon.green  { background: rgba(146,195,83,.15); }
+    .why-icon.orange { background: rgba(235,139,35,.15); }
+    .why-icon.teal   { background: rgba(74,192,203,.15); }
+
+    .why-card h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-head);
+      margin-bottom: 8px;
+    }
+
+    .why-card p {
+      font-size: 14px;
+      color: var(--text-body);
+      line-height: 1.6;
+    }
+
+    /* ─── SPLIT SECTIONS ───────────────────────────────────────── */
+    .split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .split.reverse { direction: rtl; }
+    .split.reverse > * { direction: ltr; }
+
+    .feature-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .feature-item {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .feature-icon {
+      flex-shrink: 0;
+      width: 40px; height: 40px;
+      border-radius: var(--radius);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+      background: rgba(5,120,212,.12);
+      border: 1px solid rgba(5,120,212,.2);
+      margin-top: 2px;
+    }
+
+    .feature-icon.green {
+      background: rgba(146,195,83,.12);
+      border-color: rgba(146,195,83,.2);
+    }
+
+    .feature-text h4 {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-head);
+      margin-bottom: 4px;
+    }
+
+    .feature-text p {
+      font-size: 14px;
+      color: var(--text-body);
+      line-height: 1.55;
+    }
+
+    .split-visual {
+      position: relative;
+    }
+
+    .visual-frame {
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      box-shadow: 0 24px 64px rgba(0,0,0,.5);
+      border: 1px solid var(--border);
+    }
+
+    .visual-frame img { width: 100%; }
+
+    .visual-glow {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80%; height: 80%;
+      background: radial-gradient(ellipse, rgba(5,120,212,.15) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    /* ─── DIVIDER ──────────────────────────────────────────────── */
+    .divider {
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ─── PRICING ──────────────────────────────────────────────── */
+    .pricing-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 48px;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    .pricing-card h3 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-head);
+      margin-bottom: 6px;
+    }
+
+    .pricing-card .pricing-desc {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 32px;
+    }
+
+    .pricing-input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .pricing-input-group label {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-body);
+    }
+
+    .pricing-input-group input {
+      background: var(--bg);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: var(--radius);
+      padding: 12px 16px;
+      font-size: 15px;
+      font-family: inherit;
+      color: var(--text-head);
+      outline: none;
+      width: 100%;
+      transition: border-color .2s;
+    }
+
+    .pricing-input-group input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(5,120,212,.15);
+    }
+
+    .pricing-input-group input::placeholder { color: var(--text-muted); }
+
+    .pricing-result {
+      background: rgba(5,120,212,.08);
+      border: 1px solid rgba(5,120,212,.2);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      margin: 20px 0;
+      display: none;
+    }
+
+    .pricing-result.visible { display: block; }
+
+    .pricing-result .price-label {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .pricing-result .price-value {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--text-head);
+    }
+
+    .pricing-result .price-suffix {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .pricing-notes {
+      list-style: none;
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .pricing-notes li {
+      font-size: 13px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .pricing-notes li::before {
+      content: '';
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+
+    /* ─── FOOTER ───────────────────────────────────────────────── */
+    .footer {
+      padding: 32px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .footer-logo img { height: 28px; }
+
+    .footer-copy {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+
+    .footer-links a {
+      font-size: 13px;
+      color: var(--text-muted);
+      transition: color .2s;
+    }
+    .footer-links a:hover { color: var(--text-head); }
+
+    /* ─── HERO LOGO ────────────────────────────────────────────── */
+    .hero-logo {
+      margin-bottom: 36px;
+    }
+    .hero-logo img {
+      height: 52px;
+      width: auto;
+    }
+
+    /* ─── PRICING TIERS ─────────────────────────────────────────── */
+    .pricing-tiers {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    .pricing-tier {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 36px 28px;
+      text-align: center;
+      position: relative;
+      transition: transform .2s, border-color .2s, box-shadow .2s;
+    }
+
+    .pricing-tier:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(0,0,0,.3);
+    }
+
+    .pricing-tier.featured {
+      border-color: rgba(5,120,212,.4);
+      background: linear-gradient(160deg, rgba(5,120,212,.1) 0%, var(--bg-card) 60%);
+    }
+
+    .tier-badge {
+      position: absolute;
+      top: -13px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--accent);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      padding: 3px 14px;
+      border-radius: 100px;
+      white-space: nowrap;
+    }
+
+    .tier-range {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      margin-bottom: 16px;
+    }
+
+    .tier-price-wrap {
+      margin-bottom: 8px;
+    }
+
+    .tier-price {
+      font-size: 48px;
+      font-weight: 600;
+      line-height: 1;
+      background: linear-gradient(135deg, #0578D4, #4db8ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .tier-price sup {
+      font-size: 22px;
+      font-weight: 600;
+      vertical-align: super;
+      line-height: 0;
+    }
+
+    .tier-period {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+    }
+
+    .tier-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 20px 0;
+    }
+
+    .tier-note {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    @media (max-width: 700px) {
+      .pricing-tiers { grid-template-columns: 1fr; }
+    }
+
+    /* ─── ANIMATIONS ───────────────────────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-up {
+      opacity: 0;
+      animation: fadeUp .6s ease forwards;
+    }
+
+    .fade-up-delay-1 { animation-delay: .1s; }
+    .fade-up-delay-2 { animation-delay: .2s; }
+    .fade-up-delay-3 { animation-delay: .3s; }
+    .fade-up-delay-4 { animation-delay: .4s; }
+
+    /* ─── RESPONSIVE ───────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .hero-inner { grid-template-columns: 1fr; }
+      .hero-visual { display: none; }
+      .why-grid { grid-template-columns: 1fr 1fr 1fr; }
+      .split { grid-template-columns: 1fr; gap: 40px; }
+      .split.reverse { direction: ltr; }
+    }
+
+    @media (max-width: 600px) {
+      .why-grid { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+      .hero-stats { flex-wrap: wrap; gap: 20px; }
+      .cta-banner { padding: 48px 24px; }
+      .pricing-card { padding: 32px 24px; }
+      .footer-inner { flex-direction: column; text-align: center; }
+    }
+
+    /* ─── SECTION BG ALTERNATION ───────────────────────────────── */
+    .bg-alt {
+      background: rgba(22,45,70,.4);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══ NAVIGATION ═══════════════════════════════════════════ -->
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a href="#" class="nav-logo">
+        <img src="Assets/LogoBig_Dark.png" alt="UpgradeMate" />
+      </a>
+      <ul class="nav-links">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#for-admins">For IT Admins</a></li>
+        <li><a href="#for-users">For Users</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#pricing">Documents</a></li>
+        <li><a href="#contact">Contact Us</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="#try-now" class="btn btn-primary">Try Now</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ═══ HERO ═════════════════════════════════════════════════ -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-inner">
+        <div class="hero-content">
+          <div class="hero-eyebrow fade-up fade-up-delay-1">
+            <span></span>
+            ConfigMgr Add-On for Windows Upgrades
+          </div>
+          <h1 class="hero-title fade-up fade-up-delay-2">
+            Make Windows Upgrades<br />
+            <span class="highlight">Actually Work</span>
+          </h1>
+          <p class="hero-sub fade-up fade-up-delay-3">
+            The smart add-on for ConfigMgr (SCCM) that turns enterprise Windows OS upgrades from a nightmare into a smooth ride.
+          </p>
+          <div class="hero-actions fade-up fade-up-delay-4">
+            <a href="#try-now" class="btn btn-primary btn-lg">Try Now</a>
+            <a href="#contact" class="btn btn-outline btn-lg">Contact Us</a>
+          </div>
+        </div>
+        <div class="hero-visual fade-up fade-up-delay-2">
+          <div class="hero-visual-wrap">
+            <img src="Assets/UpgradeMateDashboard.PNG" alt="UpgradeMate Dashboard" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ WHY UPGRADEMATE ═══════════════════════════════════════ -->
+  <section class="section bg-alt" id="features">
+    <div class="container">
+      <div style="text-align:center; margin-bottom: 56px;">
+        <div class="tag">Why UpgradeMate?</div>
+        <h2 class="section-title" style="max-width:560px; margin:0 auto 16px;">Built for the complexity of enterprise environments</h2>
+        <p class="section-subtitle" style="margin:0 auto;">Designed specifically for corporate IT teams managing Windows upgrades at scale.</p>
+      </div>
+      <div class="why-grid">
+        <div class="why-card">
+          <div class="why-icon blue"><img src="Assets/Ico_SetupInMinutes.png" alt="Setup in Minutes" style="width:60px;height:60px;object-fit:contain;" /></div>
+          <h3>Setup in Minutes</h3>
+          <p>Our wizard handles everything — inventory, OS upgrade packages, collections. What used to take hours now takes minutes.</p>
+        </div>
+        <div class="why-card">
+          <div class="why-icon blue"><img src="Assets/Ico_RealTimeAnalytics.png" alt="Real-Time Analytics" style="width:60px;height:60px;object-fit:contain;" /></div>
+          <h3>Real-Time Analytics</h3>
+          <p>PowerBI dashboard that actually helps. Track every upgrade, spot blockers instantly, cut test phases in half.</p>
+        </div>
+        <div class="why-card">
+          <div class="why-icon blue"><img src="Assets/Ico_HigherSuccessRates.png" alt="Higher Success Rates" style="width:60px;height:60px;object-fit:contain;" /></div>
+          <h3>Higher Success Rates</h3>
+          <p>Smart compatibility checks mean only ready machines get upgraded. Fewer failures, happier users.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FOR END USERS ═════════════════════════════════════════ -->
+  <section class="section" id="for-users">
+    <div class="container">
+      <div class="split">
+        <div class="split-content">
+          <div class="tag">For End Users</div>
+          <h2 class="section-title">Upgrades That Respect Your Time</h2>
+          <p class="section-subtitle">No surprises, no downtime. A guided experience that keeps you in control.</p>
+          <ul class="feature-list">
+            <li class="feature-item">
+              <div class="feature-icon"><img src="Assets/Ico_LightningFastUpdates.png" alt="Lightning-Fast Updates" style="width:30px;height:30px;object-fit:contain;" /></div>
+              <div class="feature-text">
+                <h4>Lightning-Fast Updates</h4>
+                <p>Pre-downloaded packages eliminate waiting time during upgrades. When you're ready, it's already there.</p>
+              </div>
+            </li>
+            <li class="feature-item">
+              <div class="feature-icon"><img src="Assets/Ico_YouChooseWhen.png" alt="You Choose When" style="width:30px;height:30px;object-fit:contain;" /></div>
+              <div class="feature-text">
+                <h4>You Choose When</h4>
+                <p>Users can select upgrade timing within IT's defined schedule. Work on your terms, upgrade when it suits you best.</p>
+              </div>
+            </li>
+            <li class="feature-item">
+              <div class="feature-icon"><img src="Assets/Ico_ZeroDataLoss.png" alt="Zero Data Loss" style="width:30px;height:30px;object-fit:contain;" /></div>
+              <div class="feature-text">
+                <h4>Zero Data Loss</h4>
+                <p>Clear guidance and screen locks prevent accidental data loss throughout the entire upgrade process.</p>
+              </div>
+            </li>
+            <li class="feature-item">
+              <div class="feature-icon"><img src="Assets/Ico_FamiliarExperience.png" alt="Familiar Experience" style="width:30px;height:30px;object-fit:contain;" /></div>
+              <div class="feature-text">
+                <h4>Familiar Experience</h4>
+                <p>Company branding and localized messaging included. It feels like your IT team is right there with you.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="split-visual">
+          <div class="visual-glow"></div>
+          <div class="visual-frame" style="border-radius: 0;">
+            <img src="Assets/Configuration.gif" alt="UpgradeMate end-user upgrade screen" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider container"></div>
+
+  <!-- ═══ FOR IT ADMINS ═════════════════════════════════════════ -->
+  <section class="section" id="for-admins">
+    <div class="container">
+      <div class="split reverse">
+        <div class="split-content">
+          <div class="tag">For IT Admins</div>
+          <h2 class="section-title">Control Meets Simplicity</h2>
+          <p class="section-subtitle">Everything you need to manage enterprise upgrades at scale — without the headaches.</p>
+          <ul class="feature-list">
+            <li class="feature-item">
+              <div class="feature-icon blue"><img src="Assets/Ico_NativeSCCMIntegration.png" alt="Native SCCM Integration" style="width:30px;height:30px;object-fit:contain;" /></div>
+              <div class="feature-text">
+                <h4>Native SCCM Integration</h4>
+                <p>Uses Collections, Task Sequences, and Deployments for complete control. Works with your existing ConfigMgr investment.</p>
+              </div>
+            </li>
+            <li class="feature-item">
+              <div class="feature-icon blue"><img src="Assets/Ico_WorksOfflineToo.png" alt="Works Offline Too" style="width:30px;height:30px;object-fit:contain;" /></div>
+              <div class="feature-text">
+                <h4>Works Offline Too</h4>
+                <p>Two-stage process supports remote workers and home offices. Download first, upgrade later — wherever they are.</p>
+              </div>
+            </li>
+            <li class="feature-item">
+              <div class="feature-icon blue"><img src="Assets/Ico_BusinessIntelligence.png" alt="Business Intelligence" style="width:30px;height:30px;object-fit:contain;" /></div>
+              <div class="feature-text">
+                <h4>Business Intelligence</h4>
+                <p>Real-time PowerBI dashboards for visibility. Track every upgrade, spot blockers instantly, cut test phases in half.</p>
+              </div>
+            </li>
+            <li class="feature-item">
+              <div class="feature-icon blue"><img src="Assets/Ico_AutomatedSetup.png" alt="Automated Setup" style="width:30px;height:30px;object-fit:contain;" /></div>
+              <div class="feature-text">
+                <h4>Automated Setup</h4>
+                <p>Complete environment configuration automation. What used to take hours now takes minutes with our guided wizard.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="split-visual">
+          <div class="visual-glow"></div>
+          <div class="visual-frame" style="border-radius: 0;">
+            <img src="Assets/UpgradeMateDashboard.PNG" alt="UpgradeMate PowerBI Dashboard" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ PRICING ═══════════════════════════════════════════════ -->
+  <section class="section bg-alt" id="pricing">
+    <div class="container">
+      <div style="text-align:center; margin-bottom: 48px;">
+        <div class="tag">Pricing</div>
+        <h2 class="section-title">Transparent Pricing That Scales With You</h2>
+        <p class="section-subtitle" style="margin: 0 auto;">No hidden fees, no surprises. Pay for what you use.</p>
+      </div>
+      <div class="pricing-tiers">
+
+        <div class="pricing-tier">
+          <div class="tier-range">Up to 3,000 computers</div>
+          <div class="tier-price-wrap">
+            <div class="tier-price"><sup>$</sup>990</div>
+          </div>
+          <div class="tier-period">per Site / year</div>
+          <div class="tier-divider"></div>
+          <div class="tier-note">Fixed rate — ideal for small&nbsp;&amp;&nbsp;mid-size orgs</div>
+        </div>
+
+        <div class="pricing-tier featured">
+          <div class="tier-badge">Most Popular</div>
+          <div class="tier-range">Up to 10,000 computers</div>
+          <div class="tier-price-wrap">
+            <div class="tier-price"><sup>$</sup>1,990</div>
+          </div>
+          <div class="tier-period">per Site / year</div>
+          <div class="tier-divider"></div>
+          <div class="tier-note">Fixed rate — perfect for large enterprises</div>
+        </div>
+
+        <div class="pricing-tier">
+          <div class="tier-range">Above 10,000 computers</div>
+          <div class="tier-price-wrap">
+            <div class="tier-price"><sup>$</sup>2,990</div>
+          </div>
+          <div class="tier-period">per Site / year</div>
+          <div class="tier-divider"></div>
+          <div class="tier-note">Fixed rate — unlimited scale, one price</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FOOTER ════════════════════════════════════════════════ -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <a href="#" class="footer-logo">
+        <img src="Assets/LogoBig_Dark.png" alt="UpgradeMate" />
+      </a>
+      <p class="footer-copy">© 2026 UpgradeMate. Make Windows Upgrades Actually Work.</p>
+      <ul class="footer-links">
+        <li><a href="#">Privacy</a></li>
+        <li><a href="#">Terms</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+  </footer>
+
+
+</body>
+</html>
