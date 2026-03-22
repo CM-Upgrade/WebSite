@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact Us – UpgradeMate</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="/Assets/Ico_Web_32.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    /* ─── RESET & BASE ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:           #0F2033;
+      --bg-card:      #162D46;
+      --bg-card-2:    #1a3454;
+      --accent:       #0578D4;
+      --accent-hover: #0668bb;
+      --green:        #92C353;
+      --orange:       #EB8B23;
+      --text-head:    #FFFFFF;
+      --text-body:    #A0B1C5;
+      --text-muted:   #6b83a0;
+      --border:       rgba(255,255,255,0.07);
+      --radius-sm:    4px;
+      --radius:       8px;
+      --radius-lg:    16px;
+      --radius-xl:    24px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text-body);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    img { max-width: 100%; display: block; }
+    a { text-decoration: none; color: inherit; }
+
+    /* ─── UTILITY ──────────────────────────────────────────────── */
+    .container {
+      width: 100%;
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: rgba(5,120,212,.12);
+      border: 1px solid rgba(5,120,212,.25);
+      border-radius: 100px;
+      padding: 4px 12px;
+      margin-bottom: 16px;
+    }
+
+    /* ─── BUTTONS ──────────────────────────────────────────────── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 600;
+      border-radius: var(--radius);
+      padding: 12px 24px;
+      border: none;
+      cursor: pointer;
+      transition: all .2s ease;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+    .btn-primary:hover {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(5,120,212,.35);
+    }
+
+    /* ─── NAV ──────────────────────────────────────────────────── */
+    .nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(15,32,51,.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      transition: background .3s;
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 72px;
+    }
+
+    .nav-logo img {
+      height: 46px;
+      width: auto;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-body);
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--text-head); }
+    .nav-links a.active { color: var(--text-head); }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* ─── BURGER ────────────────────────────────────────────────── */
+    .burger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      width: 36px;
+      height: 36px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      z-index: 200;
+    }
+
+    .burger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--text-head);
+      border-radius: 2px;
+      transition: transform .3s ease, opacity .3s ease;
+      transform-origin: center;
+    }
+
+    .burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .burger.open span:nth-child(2) { opacity: 0; }
+    .burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* ─── MOBILE MENU ───────────────────────────────────────────── */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 72px; left: 0; right: 0;
+      background: rgba(15,32,51,.97);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 24px;
+      z-index: 99;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .mobile-menu.open { display: flex; }
+
+    .mobile-menu a {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--text-body);
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+      transition: color .2s;
+    }
+
+    .mobile-menu a:last-child { border-bottom: none; }
+    .mobile-menu a:hover { color: var(--text-head); }
+
+    /* ─── PAGE HERO ─────────────────────────────────────────────── */
+    .page-hero {
+      padding-top: 140px;
+      padding-bottom: 64px;
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .page-hero::before {
+      content: '';
+      position: absolute;
+      top: -200px; left: 50%;
+      transform: translateX(-50%);
+      width: 800px; height: 700px;
+      background: radial-gradient(ellipse at center,
+        rgba(5,120,212,.15) 0%,
+        transparent 65%);
+      pointer-events: none;
+    }
+
+    .page-hero-title {
+      font-size: clamp(32px, 5vw, 52px);
+      font-weight: 800;
+      color: var(--text-head);
+      line-height: 1.1;
+      letter-spacing: -.02em;
+      margin-bottom: 16px;
+    }
+
+    .page-hero-title .highlight {
+      background: linear-gradient(135deg, #0578D4, #4db8ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .page-hero-sub {
+      font-size: 18px;
+      color: var(--text-body);
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    /* ─── CONTACT SECTION ──────────────────────────────────────── */
+    .contact-section {
+      padding: 0 0 96px;
+    }
+
+    .contact-layout {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    /* ─── INFO CARDS ────────────────────────────────────────────── */
+    .contact-info {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .info-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      transition: border-color .2s, box-shadow .2s;
+    }
+
+    .info-card:hover {
+      border-color: rgba(5,120,212,.3);
+      box-shadow: 0 8px 24px rgba(0,0,0,.2);
+    }
+
+    .info-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius);
+      background: rgba(5,120,212,.12);
+      border: 1px solid rgba(5,120,212,.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .info-icon svg {
+      width: 20px;
+      height: 20px;
+      color: var(--accent);
+    }
+
+    .info-label {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .info-value {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-head);
+    }
+
+    .info-value a {
+      color: var(--accent);
+      transition: color .2s;
+    }
+    .info-value a:hover { color: #4db8ff; }
+
+    /* ─── FORM WRAPPER ──────────────────────────────────────────── */
+    .form-wrapper {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 40px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .form-wrapper::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 240px; height: 240px;
+      background: radial-gradient(circle, rgba(5,120,212,.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .form-header {
+      margin-bottom: 28px;
+    }
+
+    .form-header h2 {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text-head);
+      margin-bottom: 6px;
+    }
+
+    .form-header p {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    /* JotForm iframe reset */
+    .jotform-embed {
+      width: 100%;
+    }
+
+    .jotform-embed iframe {
+      border: none !important;
+    }
+
+    /* ─── FOOTER ───────────────────────────────────────────────── */
+    .footer {
+      padding: 32px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .footer-logo img { height: 28px; }
+
+    .footer-copy {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+
+    .footer-links a {
+      font-size: 13px;
+      color: var(--text-muted);
+      transition: color .2s;
+    }
+    .footer-links a:hover { color: var(--text-head); }
+
+    /* ─── ANIMATIONS ───────────────────────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-up {
+      opacity: 0;
+      animation: fadeUp .6s ease forwards;
+    }
+
+    .fade-up-delay-1 { animation-delay: .1s; }
+    .fade-up-delay-2 { animation-delay: .2s; }
+    .fade-up-delay-3 { animation-delay: .3s; }
+
+    /* ─── RESPONSIVE ───────────────────────────────────────────── */
+    @media (max-width: 1000px) {
+      .nav-links { display: none; }
+      .nav-actions { display: none; }
+      .burger { display: flex; }
+    }
+
+    @media (max-width: 860px) {
+      .contact-layout {
+        grid-template-columns: 1fr;
+      }
+      .contact-info {
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+      .info-card {
+        flex: 1 1 200px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .form-wrapper { padding: 24px 18px; }
+      .contact-info { flex-direction: column; }
+      .footer-inner { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══ NAVIGATION ═══════════════════════════════════════════ -->
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a href="/" class="nav-logo">
+        <img src="/Assets/LogoBig_Dark.png" alt="UpgradeMate" />
+      </a>
+      <ul class="nav-links">
+        <li><a href="/#features">Features</a></li>
+        <li><a href="/#for-users">For Users</a></li>
+        <li><a href="/#for-admins">For IT Admins</a></li>
+        <li><a href="/#pricing">Pricing</a></li>
+        <li><a href="/docs">Documents</a></li>
+        <li><a href="/contact" class="active">Contact Us</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="/trynow" class="btn btn-primary">Try Now</a>
+      </div>
+      <button class="burger" id="burger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ═══ MOBILE MENU ══════════════════════════════════════════ -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="/#features" onclick="closeMobileMenu()">Features</a>
+    <a href="/#for-users" onclick="closeMobileMenu()">For Users</a>
+    <a href="/#for-admins" onclick="closeMobileMenu()">For IT Admins</a>
+    <a href="/#pricing" onclick="closeMobileMenu()">Pricing</a>
+    <a href="/docs" onclick="closeMobileMenu()">Documents</a>
+    <a href="/contact" onclick="closeMobileMenu()">Contact Us</a>
+  </div>
+
+  <!-- ═══ PAGE HERO ═════════════════════════════════════════════ -->
+  <section class="page-hero">
+    <div class="container">
+      <div class="tag fade-up fade-up-delay-1">Contact</div>
+      <h1 class="page-hero-title fade-up fade-up-delay-2">
+        We'd Love to <span class="highlight">Hear From You</span>
+      </h1>
+      <p class="page-hero-sub fade-up fade-up-delay-3">
+        Have a question, need a demo, or want to discuss your enterprise upgrade challenges? Drop us a message and we'll get back to you quickly.
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══ CONTACT ═══════════════════════════════════════════════ -->
+  <section class="contact-section">
+    <div class="container">
+      <div class="contact-layout">
+
+        <!-- Info Cards -->
+        <div class="contact-info fade-up fade-up-delay-1">
+
+          <div class="info-card">
+            <div class="info-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
+              </svg>
+            </div>
+            <div>
+              <div class="info-label">Email</div>
+              <div class="info-value"><a href="mailto:info@upgrademate.com">info@upgrademate.com</a></div>
+            </div>
+          </div>
+
+          <div class="info-card">
+            <div class="info-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+              </svg>
+            </div>
+            <div>
+              <div class="info-label">Response Time</div>
+              <div class="info-value">Within 1 business day</div>
+            </div>
+          </div>
+
+          <div class="info-card">
+            <div class="info-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+              </svg>
+            </div>
+            <div>
+              <div class="info-label">Free Trial</div>
+              <div class="info-value">30-day trial, no credit card needed</div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- JotForm Embed -->
+        <div class="form-wrapper fade-up fade-up-delay-2">
+          <div class="form-header">
+            <h2>Send Us a Message</h2>
+            <p>Fill in the form below and our team will get back to you shortly.</p>
+          </div>
+          <div class="jotform-embed">
+            <script type="text/javascript" src="https://form.jotform.com/jsform/260544247516962"></script>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FOOTER ════════════════════════════════════════════════ -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <a href="/" class="footer-logo">
+        <img src="/Assets/LogoBig_Dark.png" alt="UpgradeMate" />
+      </a>
+      <p class="footer-copy">© 2026 UpgradeMate. Make Windows Upgrades Actually Work.</p>
+      <ul class="footer-links">
+        <li><a href="#">Privacy</a></li>
+        <li><a href="#">Terms</a></li>
+        <li><a href="/contact">Contact</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <script>
+    const burger = document.getElementById('burger');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    burger.addEventListener('click', () => {
+      burger.classList.toggle('open');
+      mobileMenu.classList.toggle('open');
+    });
+
+    function closeMobileMenu() {
+      burger.classList.remove('open');
+      mobileMenu.classList.remove('open');
+    }
+  </script>
+
+</body>
+</html>
