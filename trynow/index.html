@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
   <style>
     /* ─── RESET & BASE ─────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -591,6 +592,8 @@
             <input type="text" name="website" tabindex="-1" autocomplete="off">
           </div>
 
+          <div class="cf-turnstile" data-sitekey="0x4AAAAAAC0prEEJSRvXpHZo" data-theme="dark"></div>
+
           <button type="submit" class="btn-submit">Start Free Trial</button>
           <div id="statusMsg" class="status-msg"></div>
         </form>
@@ -631,19 +634,13 @@
   </script>
 
   <script>
-    // ── Power Automate URL ────────────────────────────────────────
-    // KURULUM-REHBERI.md → Adım 8'deki HTTP POST URL'yi buraya yapıştırın
-    const FLOW_URL = 'BURAYA_POWER_AUTOMATE_URL_YAPISTIRIN';
+    // ── Azure Functions URL ───────────────────────────────────────
+    const API_URL = 'http://localhost:7071/api/trynow'; // TODO: production'da Azure Functions URL ile değiştir
     // ─────────────────────────────────────────────────────────────
 
     const form      = document.getElementById('trynowForm');
     const statusMsg = document.getElementById('statusMsg');
     const submitBtn = form.querySelector('button[type="submit"]');
-    const pageLoadTime = Date.now();
-
-    function generateToken() {
-      return btoa('form-' + Date.now() + '-valid').substring(0, 24);
-    }
 
     function validateForm() {
       let valid = true;
@@ -717,27 +714,10 @@
 
       if (!validateForm()) return;
 
-      // Spam kontrol 1: Honeypot
-      if (form.querySelector('input[name="website"]').value !== '') {
-        statusMsg.className = 'status-msg success';
-        statusMsg.textContent = 'Your trial request has been received!';
-        form.reset();
-        return;
-      }
-
-      // Spam kontrol 2: Zamanlama (3 sn'den hızlı = bot)
-      if ((Date.now() - pageLoadTime) / 1000 < 3) {
-        statusMsg.className = 'status-msg success';
-        statusMsg.textContent = 'Your trial request has been received!';
-        form.reset();
-        return;
-      }
-
-      // Spam kontrol 3: Rate limiting (2 dk)
-      const lastSubmit = sessionStorage.getItem('lastTrialSubmit');
-      if (lastSubmit && (Date.now() - parseInt(lastSubmit)) < 120000) {
+      const turnstileToken = turnstile.getResponse();
+      if (!turnstileToken) {
         statusMsg.className = 'status-msg error';
-        statusMsg.textContent = 'Please wait a few minutes before submitting again.';
+        statusMsg.textContent = 'Please complete the security check.';
         return;
       }
 
@@ -747,36 +727,37 @@
       statusMsg.style.display = 'none';
 
       const payload = {
-        firstName:     form.firstName.value.trim(),
-        lastName:      form.lastName.value.trim(),
-        email:         form.email.value.trim(),
-        companyName:   form.companyName.value.trim(),
-        sccmSiteCode:  form.sccmSiteCode.value.trim().toUpperCase(),
-        sccmSupportId: form.sccmSupportId.value.trim(),
-        computerCount: form.computerCount.value.trim(),
+        firstName:      form.firstName.value.trim(),
+        lastName:       form.lastName.value.trim(),
+        email:          form.email.value.trim(),
+        companyName:    form.companyName.value.trim(),
+        sccmSiteCode:   form.sccmSiteCode.value.trim().toUpperCase(),
+        sccmSupportId:  form.sccmSupportId.value.trim(),
+        computerCount:  form.computerCount.value.trim(),
         windowsVersion: form.windowsVersion.value,
-        _timestamp:    new Date().toISOString(),
-        _token:        generateToken()
+        _hp:                    form.querySelector('input[name="website"]').value,
+        'cf-turnstile-response': turnstileToken
       };
 
       try {
-        const res = await fetch(FLOW_URL, {
+        const res = await fetch(API_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
         });
 
         if (res.ok) {
-          statusMsg.className = 'status-msg success';
-          statusMsg.textContent = "Your trial request has been received! We'll be in touch shortly.";
-          sessionStorage.setItem('lastTrialSubmit', Date.now().toString());
-          form.reset();
+          window.location.href = '../thank-you/?status=success&type=trynow';
+          return;
+        } else if (res.status === 409) {
+          window.location.href = '../thank-you/?status=error&type=trial-exists';
+          return;
         } else {
           throw new Error('Server error');
         }
       } catch (err) {
-        statusMsg.className = 'status-msg error';
-        statusMsg.textContent = 'Something went wrong. Please try again later.';
+        window.location.href = '../thank-you/?status=error&type=trynow';
+        return;
       }
 
       submitBtn.disabled = false;

@@ -1,0 +1,10 @@
+# Azurite local storage emulator
+__azurite_db_*.json
+__blobstorage__/
+AzuriteConfig
+
+# macOS
+.DS_Store
+
+# Claude
+.claude/settings.local.json

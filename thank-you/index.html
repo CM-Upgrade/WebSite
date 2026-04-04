@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thank You – UpgradeMate</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="../Assets/Ico_Web_32.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:           #0F2033;
+      --bg-card:      #162D46;
+      --accent:       #0578D4;
+      --green:        #92C353;
+      --text-head:    #FFFFFF;
+      --text-body:    #A0B1C5;
+      --text-muted:   #6b83a0;
+      --border:       rgba(255,255,255,0.07);
+      --radius:       8px;
+      --radius-xl:    24px;
+    }
+
+    body {
+      font-family: 'Inter', 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text-body);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    a { text-decoration: none; color: inherit; }
+    img { max-width: 100%; display: block; }
+
+    /* ─── NAV ── */
+    .nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(15,32,51,.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 72px;
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .nav-logo img { height: 46px; }
+
+    /* ─── MAIN ── */
+    .main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 120px 24px 80px;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 56px 48px;
+      max-width: 560px;
+      width: 100%;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: -80px; left: 50%;
+      transform: translateX(-50%);
+      width: 320px; height: 320px;
+      background: radial-gradient(circle, rgba(146,195,83,.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .icon-wrap {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: rgba(146,195,83,.12);
+      border: 1px solid rgba(146,195,83,.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 28px;
+    }
+
+    .icon-wrap svg {
+      width: 36px;
+      height: 36px;
+      color: var(--green);
+    }
+
+    .card-title {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--text-head);
+      letter-spacing: -.02em;
+      margin-bottom: 12px;
+    }
+
+    .card-sub {
+      font-size: 16px;
+      color: var(--text-body);
+      line-height: 1.7;
+      margin-bottom: 32px;
+    }
+
+    .card-sub strong {
+      color: var(--text-head);
+    }
+
+    .btn-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent);
+      color: #fff;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 600;
+      padding: 12px 28px;
+      border-radius: var(--radius);
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background .2s, transform .1s;
+    }
+    .btn-back:hover { background: #0668bb; transform: translateY(-1px); }
+
+    /* ─── ERROR STATE ── */
+    .card.error .icon-wrap {
+      background: rgba(248,113,113,.12);
+      border-color: rgba(248,113,113,.25);
+    }
+    .card.error .icon-wrap svg { color: #f87171; }
+    .card.error::before {
+      background: radial-gradient(circle, rgba(248,113,113,.06) 0%, transparent 70%);
+    }
+
+    /* ─── FOOTER ── */
+    .footer {
+      padding: 24px;
+      text-align: center;
+      border-top: 1px solid var(--border);
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    @media (max-width: 600px) {
+      .card { padding: 36px 24px; }
+      .card-title { font-size: 22px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="../" class="nav-logo">
+        <img src="../Assets/LogoBig_Dark.png" alt="UpgradeMate" />
+      </a>
+    </div>
+  </nav>
+
+  <main class="main">
+    <div class="card" id="card">
+
+      <!-- Success state (default) -->
+      <div id="successState">
+        <div class="icon-wrap">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+          </svg>
+        </div>
+        <h1 class="card-title" id="successTitle">Your request has been received!</h1>
+        <p class="card-sub" id="successSub">
+          Thank you for reaching out. <strong>We'll get back to you by email as soon as possible.</strong>
+        </p>
+        <a href="../" class="btn-back">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+          </svg>
+          Back to Home
+        </a>
+      </div>
+
+      <!-- Error state -->
+      <div id="errorState" style="display:none">
+        <div class="icon-wrap">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+          </svg>
+        </div>
+        <h1 class="card-title" id="errorTitle">Submission failed</h1>
+        <p class="card-sub" id="errorSub">We couldn't process your request. Please try again or contact us directly.</p>
+        <a href="javascript:history.back()" class="btn-back">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+          </svg>
+          Go Back
+        </a>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    © 2026 UpgradeMate. Make Windows Upgrades Actually Work.
+  </footer>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const status = params.get('status');
+    const type   = params.get('type');   // 'contact' | 'trynow' | 'trial-exists'
+
+    const successState = document.getElementById('successState');
+    const errorState   = document.getElementById('errorState');
+    const card         = document.getElementById('card');
+
+    if (status === 'error') {
+      successState.style.display = 'none';
+      errorState.style.display   = 'block';
+      card.classList.add('error');
+
+      if (type === 'trial-exists') {
+        document.getElementById('errorTitle').textContent = 'Trial already requested';
+        document.getElementById('errorSub').textContent =
+          'A trial license has already been requested for this SCCM Support ID. Please contact us if you need further assistance.';
+      }
+
+    } else {
+      // Success — mesajı form tipine göre özelleştir
+      if (type === 'trynow') {
+        document.getElementById('successTitle').textContent = 'Trial request received!';
+        document.getElementById('successSub').innerHTML =
+          'Thank you! We have received your free trial request. <strong>We\'ll send your trial license to your email address as soon as possible.</strong>';
+      }
+    }
+  </script>
+
+</body>
+</html>
