@@ -1,7 +1,11 @@
 {
   "permissions": {
     "allow": [
-      "Bash(ls c:/Repos/TestWebSite/*.html)"
+      "Bash(ls c:/Repos/TestWebSite/*.html)",
+      "Read(//c/Repos/**)"
+    ],
+    "additionalDirectories": [
+      "c:\\Repos\\upgrademate-api\\api"
     ]
   }
 }
