@@ -441,11 +441,13 @@
     }
 
     .footer-links a {
-      font-size: 13px;
-      color: var(--text-muted);
-      transition: color .2s;
+      display: flex;
+      align-items: center;
+      opacity: .5;
+      transition: opacity .2s;
     }
-    .footer-links a:hover { color: var(--text-head); }
+    .footer-links a:hover { opacity: 1; }
+    .footer-links img { height: 20px; width: auto; }
 
     /* ─── ANIMATIONS ───────────────────────────────────────────── */
     @keyframes fadeUp {
@@ -610,9 +612,9 @@
       </a>
       <p class="footer-copy">© 2026 UpgradeMate. Make Windows Upgrades Actually Work.</p>
       <ul class="footer-links">
-        <li><a href="#">Privacy</a></li>
-        <li><a href="#">Terms</a></li>
-        <li><a href="../contact">Contact</a></li>
+        <li><a href="https://x.com/upgrademate" target="_blank" rel="noopener" aria-label="X (Twitter)"><img src="../Assets/Ico_X.png" alt="X" /></a></li>
+        <li><a href="https://www.youtube.com/channel/UCilU4-vUVSo569WrsPdJ5_Q" target="_blank" rel="noopener" aria-label="YouTube"><img src="../Assets/Ico_Youtube.png" alt="YouTube" /></a></li>
+        <li><a href="#" aria-label="LinkedIn"><img src="../Assets/Ico_Linkedin.png" alt="LinkedIn" /></a></li>
       </ul>
     </div>
   </footer>

@@ -15,6 +15,7 @@
       --bg:           #0F2033;
       --bg-card:      #162D46;
       --accent:       #0578D4;
+      --accent-hover: #0668bb;
       --green:        #92C353;
       --text-head:    #FFFFFF;
       --text-body:    #A0B1C5;
@@ -23,6 +24,8 @@
       --radius:       8px;
       --radius-xl:    24px;
     }
+
+    html { scroll-behavior: smooth; }
 
     body {
       font-family: 'Inter', 'Segoe UI', sans-serif;
@@ -35,8 +38,40 @@
       flex-direction: column;
     }
 
-    a { text-decoration: none; color: inherit; }
     img { max-width: 100%; display: block; }
+    a { text-decoration: none; color: inherit; }
+
+    .container {
+      width: 100%;
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ─── BUTTONS ── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 600;
+      border-radius: var(--radius);
+      padding: 12px 24px;
+      border: none;
+      cursor: pointer;
+      transition: all .2s ease;
+      white-space: nowrap;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+    .btn-primary:hover {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(5,120,212,.35);
+    }
 
     /* ─── NAV ── */
     .nav {
@@ -45,18 +80,98 @@
       z-index: 100;
       background: rgba(15,32,51,.85);
       backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
+      transition: background .3s;
     }
+
     .nav-inner {
       display: flex;
       align-items: center;
       justify-content: space-between;
       height: 72px;
-      max-width: 1160px;
-      margin: 0 auto;
-      padding: 0 24px;
     }
-    .nav-logo img { height: 46px; }
+
+    .nav-logo img { height: 46px; width: auto; }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-body);
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--text-head); }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* ─── BURGER ── */
+    .burger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      width: 36px;
+      height: 36px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      z-index: 200;
+    }
+
+    .burger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--text-head);
+      border-radius: 2px;
+      transition: transform .3s ease, opacity .3s ease;
+      transform-origin: center;
+    }
+
+    .burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .burger.open span:nth-child(2) { opacity: 0; }
+    .burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* ─── MOBILE MENU ── */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 72px; left: 0; right: 0;
+      background: rgba(15,32,51,.97);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 24px;
+      z-index: 99;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .mobile-menu.open { display: flex; }
+
+    .mobile-menu a {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--text-body);
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+      transition: color .2s;
+    }
+
+    .mobile-menu a:last-child { border-bottom: none; }
+    .mobile-menu a:hover { color: var(--text-head); }
 
     /* ─── MAIN ── */
     .main {
@@ -64,7 +179,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 120px 24px 80px;
+      padding: 140px 24px 96px;
     }
 
     .card {
@@ -101,11 +216,7 @@
       margin: 0 auto 28px;
     }
 
-    .icon-wrap svg {
-      width: 36px;
-      height: 36px;
-      color: var(--green);
-    }
+    .icon-wrap svg { width: 36px; height: 36px; color: var(--green); }
 
     .card-title {
       font-size: 28px;
@@ -122,27 +233,7 @@
       margin-bottom: 32px;
     }
 
-    .card-sub strong {
-      color: var(--text-head);
-    }
-
-    .btn-back {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--accent);
-      color: #fff;
-      font-family: inherit;
-      font-size: 15px;
-      font-weight: 600;
-      padding: 12px 28px;
-      border-radius: var(--radius);
-      border: none;
-      cursor: pointer;
-      text-decoration: none;
-      transition: background .2s, transform .1s;
-    }
-    .btn-back:hover { background: #0668bb; transform: translateY(-1px); }
+    .card-sub strong { color: var(--text-head); }
 
     /* ─── ERROR STATE ── */
     .card.error .icon-wrap {
@@ -156,29 +247,89 @@
 
     /* ─── FOOTER ── */
     .footer {
-      padding: 24px;
-      text-align: center;
+      padding: 32px 0;
       border-top: 1px solid var(--border);
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .footer-logo img { height: 28px; }
+
+    .footer-copy {
       font-size: 13px;
       color: var(--text-muted);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+
+    .footer-links a {
+      display: flex;
+      align-items: center;
+      opacity: .5;
+      transition: opacity .2s;
+    }
+    .footer-links a:hover { opacity: 1; }
+    .footer-links img { height: 20px; width: auto; }
+
+    /* ─── RESPONSIVE ── */
+    @media (max-width: 1000px) {
+      .nav-links { display: none; }
+      .nav-actions { display: none; }
+      .burger { display: flex; }
     }
 
     @media (max-width: 600px) {
       .card { padding: 36px 24px; }
       .card-title { font-size: 22px; }
+      .footer-inner { flex-direction: column; text-align: center; }
     }
   </style>
 </head>
 <body>
 
+  <!-- ═══ NAVIGATION ═══════════════════════════════════════════ -->
   <nav class="nav">
-    <div class="nav-inner">
+    <div class="container nav-inner">
       <a href="../" class="nav-logo">
         <img src="../Assets/LogoBig_Dark.png" alt="UpgradeMate" />
       </a>
+      <ul class="nav-links">
+        <li><a href="../#features">Features</a></li>
+        <li><a href="../#for-users">For Users</a></li>
+        <li><a href="../#for-admins">For IT Admins</a></li>
+        <li><a href="../#pricing">Pricing</a></li>
+        <li><a href="../docs">Documents</a></li>
+        <li><a href="../contact">Contact Us</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="../trynow" class="btn btn-primary">Try Now</a>
+      </div>
+      <button class="burger" id="burger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </nav>
 
+  <!-- ═══ MOBILE MENU ══════════════════════════════════════════ -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="../#features" onclick="closeMobileMenu()">Features</a>
+    <a href="../#for-users" onclick="closeMobileMenu()">For Users</a>
+    <a href="../#for-admins" onclick="closeMobileMenu()">For IT Admins</a>
+    <a href="../#pricing" onclick="closeMobileMenu()">Pricing</a>
+    <a href="../docs" onclick="closeMobileMenu()">Documents</a>
+    <a href="../contact" onclick="closeMobileMenu()">Contact Us</a>
+  </div>
+
+  <!-- ═══ MAIN ══════════════════════════════════════════════════ -->
   <main class="main">
     <div class="card" id="card">
 
@@ -193,7 +344,7 @@
         <p class="card-sub" id="successSub">
           Thank you for reaching out. <strong>We'll get back to you by email as soon as possible.</strong>
         </p>
-        <a href="../" class="btn-back">
+        <a href="../" class="btn btn-primary">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
           </svg>
@@ -210,7 +361,7 @@
         </div>
         <h1 class="card-title" id="errorTitle">Submission failed</h1>
         <p class="card-sub" id="errorSub">We couldn't process your request. Please try again or contact us directly.</p>
-        <a href="javascript:history.back()" class="btn-back">
+        <a href="javascript:history.back()" class="btn btn-primary">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
           </svg>
@@ -221,14 +372,40 @@
     </div>
   </main>
 
+  <!-- ═══ FOOTER ════════════════════════════════════════════════ -->
   <footer class="footer">
-    © 2026 UpgradeMate. Make Windows Upgrades Actually Work.
+    <div class="container footer-inner">
+      <a href="../" class="footer-logo">
+        <img src="../Assets/LogoBig_Dark.png" alt="UpgradeMate" />
+      </a>
+      <p class="footer-copy">© 2026 UpgradeMate. Make Windows Upgrades Actually Work.</p>
+      <ul class="footer-links">
+        <li><a href="https://x.com/upgrademate" target="_blank" rel="noopener" aria-label="X (Twitter)"><img src="../Assets/Ico_X.png" alt="X" /></a></li>
+        <li><a href="https://www.youtube.com/channel/UCilU4-vUVSo569WrsPdJ5_Q" target="_blank" rel="noopener" aria-label="YouTube"><img src="../Assets/Ico_Youtube.png" alt="YouTube" /></a></li>
+        <li><a href="#" aria-label="LinkedIn"><img src="../Assets/Ico_Linkedin.png" alt="LinkedIn" /></a></li>
+      </ul>
+    </div>
   </footer>
+
+  <script>
+    const burger = document.getElementById('burger');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    burger.addEventListener('click', () => {
+      burger.classList.toggle('open');
+      mobileMenu.classList.toggle('open');
+    });
+
+    function closeMobileMenu() {
+      burger.classList.remove('open');
+      mobileMenu.classList.remove('open');
+    }
+  </script>
 
   <script>
     const params = new URLSearchParams(window.location.search);
     const status = params.get('status');
-    const type   = params.get('type');   // 'contact' | 'trynow' | 'trial-exists'
+    const type   = params.get('type');
 
     const successState = document.getElementById('successState');
     const errorState   = document.getElementById('errorState');
@@ -244,9 +421,7 @@
         document.getElementById('errorSub').textContent =
           'A trial license has already been requested for this SCCM Support ID. Please contact us if you need further assistance.';
       }
-
     } else {
-      // Success — mesajı form tipine göre özelleştir
       if (type === 'trynow') {
         document.getElementById('successTitle').textContent = 'Trial request received!';
         document.getElementById('successSub').innerHTML =
