@@ -258,23 +258,31 @@
     .contact-info {
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 0;
     }
 
     .info-card {
       background: var(--bg-card);
       border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
       padding: 24px;
       display: flex;
       gap: 16px;
       align-items: flex-start;
-      transition: border-color .2s, box-shadow .2s;
     }
 
-    .info-card:hover {
-      border-color: rgba(5,120,212,.3);
-      box-shadow: 0 8px 24px rgba(0,0,0,.2);
+    .info-card:first-child {
+      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+      border-bottom: none;
+      padding-bottom: 20px;
+    }
+
+    .info-card:last-child {
+      padding-top: 20px;
+    }
+
+    .info-card:last-child {
+      border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+      border-top: none;
     }
 
     .info-icon {
@@ -307,7 +315,7 @@
     .info-value {
       font-size: 14px;
       font-weight: 500;
-      color: var(--text-head);
+      color: var(--text-body);
     }
 
     .info-value a {
@@ -548,16 +556,31 @@
       }
       .contact-info {
         flex-direction: row;
-        flex-wrap: wrap;
       }
       .info-card {
-        flex: 1 1 200px;
+        flex: 1;
+      }
+      .info-card:first-child {
+        border-radius: var(--radius-lg) 0 0 var(--radius-lg);
+        border-bottom: 1px solid var(--border);
+        border-right: none;
+      }
+      .info-card:last-child {
+        border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
       }
     }
 
     @media (max-width: 600px) {
       .form-wrapper { padding: 24px 18px; }
       .contact-info { flex-direction: column; }
+      .info-card:first-child {
+        border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+        border-right: 1px solid var(--border);
+        border-bottom: none;
+      }
+      .info-card:last-child {
+        border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+      }
       .footer-inner { flex-direction: column; text-align: center; }
     }
   </style>
@@ -680,7 +703,7 @@
               <input type="text" name="website" tabindex="-1" autocomplete="off">
             </div>
 
-            <div class="cf-turnstile" data-sitekey="0x4AAAAAAC0prEEJSRvXpHZo" data-theme="dark"></div>
+            <div class="cf-turnstile" data-sitekey="0x4AAAAAAC0prEEJSRvXpHZo" data-theme="dark" style="display:flex; justify-content:center; margin-bottom:8px;"></div>
 
             <button type="submit" class="btn-submit">Send Message</button>
             <div id="statusMsg" class="status-msg"></div>
@@ -723,7 +746,7 @@
 
   <script>
     // ── Azure Functions URL ───────────────────────────────────────
-    const API_URL = 'http://localhost:7071/api/contact'; // TODO: production'da Azure Functions URL ile değiştir
+    const API_URL = 'https://upgrademate-api-eshge4a4ezapcmep.westeurope-01.azurewebsites.net/api/contact';
     // ─────────────────────────────────────────────────────────────
 
     const form      = document.getElementById('contactForm');
