@@ -12,18 +12,17 @@
 Kullanıcı (contact/index.html)
   │  form gönder + Turnstile token
   ▼
-Cloudflare (upgrademate.io)
-  │  DDoS filtre, Rate Limit, bot engel
-  ▼
 Azure Functions  /api/contact
-  │  ① Turnstile token doğrula (Cloudflare API)
-  │  ② Honeypot kontrolü
+  │  ① Honeypot kontrolü
+  │  ② Turnstile token doğrula (Cloudflare API)
   │  ③ Alan doğrulama
   │  ④ Graph API token al
-  │  ⑤ SharePoint'e kaydet
-  │  ⑥ E-posta bildir (Exchange Online)
+  │  ⑤ SharePoint'e kaydet  +  E-posta bildir (paralel)
   ▼
-Exchange Online → info@upgrademate.com
+Başarı → thank-you/?status=success&type=contact
+Hata   → thank-you/?status=error&type=contact
+
+Exchange Online → murat@trz-tech.com   (from: info@upgrademate.io)
 SharePoint List → ContactFormSubmissions
 ```
 
@@ -31,15 +30,11 @@ SharePoint List → ContactFormSubmissions
 
 ## Ön Gereksinimler
 
-- Azure hesabı (portal.azure.com) — M365 E3 ile birlikte gelir
-- Cloudflare hesabı — ücretsiz (dash.cloudflare.com)
-- Node.js 20 LTS (local geliştirme için)
-- Azure Functions Core Tools v4 (local test için)
-- Git
-
-> **Not:** Bu form ve TryNow formu aynı Azure altyapısını paylaşır.
-> Azure AD App Registration ve Azure Functions App adımları **bir kez** yapılır.
-> Her iki formu kuruyorsanız bu adımları atlayabilirsiniz.
+- Azure hesabı (portal.azure.com)
+- Cloudflare hesabı (dash.cloudflare.com)
+- Node.js 22 LTS
+- Azure Functions Core Tools v4
+- Azurite (local storage emulator)
 
 ---
 
@@ -48,53 +43,50 @@ SharePoint List → ContactFormSubmissions
 > ⚠️ TryNow formu için zaten yaptıysanız bu adımı atlayın.
 
 1. **portal.azure.com** → **Azure Active Directory** → **App registrations**
-2. **New registration** tıklayın:
+2. **New registration**:
    - Name: `UpgradeMate Form Handler`
    - Supported account types: **Single tenant**
-   - Redirect URI: boş bırakın
-3. **Register** → oluşturulan uygulamayı açın
-4. Şunları not edin:
+   - Redirect URI: boş
+3. **Register** → not edin:
    - **Application (client) ID** → `CLIENT_ID`
    - **Directory (tenant) ID** → `TENANT_ID`
-5. **Certificates & secrets** → **New client secret**:
+4. **Certificates & secrets** → **New client secret**:
    - Description: `form-handler-secret`
    - Expires: 24 months
-   - **Value** kısmını hemen kopyalayın → `CLIENT_SECRET`
-     *(sayfayı yenileyince bir daha göremezsiniz)*
-6. **API permissions** → **Add a permission** → **Microsoft Graph** → **Application permissions**:
-   - `Mail.Send` — e-posta gönderimi
-   - `Sites.ReadWrite.All` — SharePoint liste erişimi
-7. **Grant admin consent for [organizasyon]** → **Yes**
+   - **Value'yu hemen kopyalayın** → `CLIENT_SECRET`
+5. **API permissions** → **Add** → **Microsoft Graph** → **Application permissions**:
+   - `Mail.Send`
+   - `Sites.ReadWrite.All`
+6. **Grant admin consent** → **Yes**
 
 ---
 
 ## ADIM 2: SharePoint Listesi
 
-1. SharePoint sitenize gidin
-2. **Site contents** → **+ New** → **List**
-3. Liste adı: `ContactFormSubmissions`
-4. Şu sütunları ekleyin (**+ Add column** ile):
+1. SharePoint sitenize gidin → **Site contents** → **+ New** → **List**
+2. Liste adı: `ContactFormSubmissions`
+3. Sütunları ekleyin:
 
-| Sütun Adı   | Tür                 |
-|-------------|---------------------|
-| FirstName   | Single line of text |
-| LastName    | Single line of text |
-| Email       | Single line of text |
-| CompanyName | Single line of text |
-| Message     | Multiple lines      |
-| SubmittedAt | Single line of text |
+| Sütun Adı   | Tür                    |
+|-------------|------------------------|
+| FirstName   | Single line of text    |
+| LastName    | Single line of text    |
+| Email       | Single line of text    |
+| CompanyName | Single line of text    |
+| Message     | Multiple lines of text |
+| SubmittedAt | Single line of text    |
 
-5. SharePoint site URL'nizi not edin: `https://[tenant].sharepoint.com/sites/[site]`
-
-**SharePoint Site ID ve List ID'yi almak:**
+**ID'leri Graph Explorer'dan almak (aka.ms/ge):**
 
 ```
-https://graph.microsoft.com/v1.0/sites/[tenant].sharepoint.com:/sites/[site]
-```
+# Site ID
+GET https://graph.microsoft.com/v1.0/sites/[tenant].sharepoint.com:/sites/[site]
+→ "id" alanı → SHAREPOINT_SITE_ID
 
-Bu URL'yi Graph Explorer (aka.ms/ge) üzerinden çağırın:
-- Dönen JSON'dan `id` → `SHAREPOINT_SITE_ID`
-- Sonra: `https://graph.microsoft.com/v1.0/sites/{siteId}/lists` → `ContactFormSubmissions`'ın `id`'si → `CONTACT_LIST_ID`
+# List ID (önce Sites.ReadWrite.All delegated consent gerekir)
+GET https://graph.microsoft.com/v1.0/sites/{siteId}/lists/ContactFormSubmissions
+→ "id" alanı → CONTACT_LIST_ID
+```
 
 ---
 
@@ -106,71 +98,72 @@ Bu URL'yi Graph Explorer (aka.ms/ge) üzerinden çağırın:
 2. Ayarlar:
    - Site name: `UpgradeMate Forms`
    - Domain: `upgrademate.io`
-   - Widget type: **Managed** (önerilen)
-3. Oluşturulan değerleri not edin:
-   - **Site Key** (public, HTML'e girer) → `TURNSTILE_SITE_KEY`
-   - **Secret Key** (private, Functions'a girer) → `TURNSTILE_SECRET_KEY`
+   - Widget type: **Managed**
+3. Oluşan değerleri not edin:
+   - **Site Key** → HTML'e girer (public)
+   - **Secret Key** → `TURNSTILE_SECRET_KEY` (private)
+4. **Settings → Hostnames** → test ortamı domain'ini ekleyin (örn: `cm-upgrade.github.io`, `localhost`)
 
-**Cloudflare Rate Limiting (önerilen):**
-- Cloudflare Dashboard → **Security** → **WAF** → **Rate limiting rules**
-- Rule: `/api/contact` → 5 istek / 1 dakika / IP başına → Block 1 dakika
+**Production'da Cloudflare Rate Limiting** (upgrademate.io Cloudflare'e taşınınca):
+- Dashboard → **Security** → **WAF** → **Rate limiting rules**
+- Rule: `/api/contact` → 5 istek / 1 dakika / IP → Block 1 dakika
 
 ---
 
 ## ADIM 4: Azure Functions Projesi
 
-> ⚠️ TryNow formu için zaten repo oluşturduysanız aynı projeye ekleyin.
-
 ```bash
-# Yeni repo oluştur
 mkdir upgrademate-api && cd upgrademate-api
-func init --worker-runtime node --language javascript
-git init
+npm install -g azurite azure-functions-core-tools@4
 ```
 
 **Klasör yapısı:**
 ```
 upgrademate-api/
-├── api/
-│   ├── contact/
-│   │   ├── index.js          ← bu formun kodu
-│   │   └── function.json
-│   ├── trynow/               ← TryNow formu buraya
-│   │   ├── index.js
-│   │   └── function.json
-│   └── _shared/
-│       ├── graphAuth.js      ← Graph token (ortak)
-│       └── turnstile.js      ← CAPTCHA doğrulama (ortak)
+├── contact/
+│   ├── index.js
+│   └── function.json
+├── trynow/
+│   ├── index.js
+│   └── function.json
+├── _shared/
+│   ├── graphAuth.js
+│   └── turnstile.js
 ├── host.json
-├── local.settings.json       ← git'e GİRMEZ (.gitignore'a ekle)
+├── local.settings.json    ← git'e GİRMEZ
+├── .gitignore
 └── package.json
 ```
 
-**function.json** (`api/contact/function.json`):
+> ⚠️ Fonksiyonlar `api/` altında değil, **kök dizinde** olmalı.
+> Azure Functions runtime yalnızca kök dizini tarar.
+
+**`host.json`:**
 ```json
 {
-  "bindings": [
-    {
-      "authLevel": "anonymous",
-      "type": "httpTrigger",
-      "direction": "in",
-      "name": "req",
-      "methods": ["post", "options"]
-    },
-    {
-      "type": "http",
-      "direction": "out",
-      "name": "res"
-    }
-  ]
+  "version": "2.0",
+  "extensionBundle": {
+    "id": "Microsoft.Azure.Functions.ExtensionBundle",
+    "version": "[4.*, 5.0.0)"
+  }
 }
+```
+
+**`.gitignore`:**
+```
+node_modules/
+local.settings.json
+.env
+__azurite_db_*.json
+__blobstorage__/
+AzuriteConfig
 ```
 
 ---
 
 ## ADIM 5: Ortak Yardımcı Dosyalar
 
-**`api/_shared/graphAuth.js`**
+**`_shared/graphAuth.js`**
 ```javascript
 async function getGraphToken() {
   const url = `https://login.microsoftonline.com/${process.env.TENANT_ID}/oauth2/v2.0/token`;
@@ -185,17 +178,18 @@ async function getGraphToken() {
     })
   });
   const data = await res.json();
-  if (!data.access_token) throw new Error('Graph token alınamadı');
+  if (!data.access_token) throw new Error('Graph token alınamadı: ' + JSON.stringify(data));
   return data.access_token;
 }
 
 module.exports = { getGraphToken };
 ```
 
-**`api/_shared/turnstile.js`**
+**`_shared/turnstile.js`**
 ```javascript
 async function verifyTurnstile(token, ip) {
   if (!token) return false;
+  if (process.env.TURNSTILE_SKIP === 'true') return true; // local test bypass
   const res = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -216,251 +210,186 @@ module.exports = { verifyTurnstile };
 
 ## ADIM 6: Contact Function Kodu
 
-**`api/contact/index.js`**
-```javascript
-const { getGraphToken }    = require('../_shared/graphAuth');
-const { verifyTurnstile }  = require('../_shared/turnstile');
-
-const CORS_HEADERS = {
-  'Access-Control-Allow-Origin':  process.env.ALLOWED_ORIGIN || 'https://upgrademate.io',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type',
-  'Content-Type': 'application/json'
-};
-
-module.exports = async function (context, req) {
-
-  // CORS preflight
-  if (req.method === 'OPTIONS') {
-    context.res = { status: 204, headers: CORS_HEADERS };
-    return;
-  }
-
-  const body = req.body;
-
-  // ① Honeypot — bot tuzağı (sessizce başarılı döner)
-  if (body?._hp) {
-    context.res = { status: 200, headers: CORS_HEADERS, body: JSON.stringify({ status: 'ok' }) };
-    return;
-  }
-
-  // ② Turnstile doğrulama
-  const clientIp = req.headers['x-forwarded-for'] || req.headers['client-ip'];
-  const captchaOk = await verifyTurnstile(body?.['cf-turnstile-response'], clientIp);
-  if (!captchaOk) {
-    context.res = { status: 403, headers: CORS_HEADERS, body: JSON.stringify({ error: 'Verification failed' }) };
-    return;
-  }
-
-  // ③ Alan doğrulama
-  const { firstName, lastName, email, companyName, message } = body || {};
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!firstName?.trim() || !email?.trim() || !companyName?.trim() || !message?.trim()) {
-    context.res = { status: 400, headers: CORS_HEADERS, body: JSON.stringify({ error: 'Missing required fields' }) };
-    return;
-  }
-  if (!emailRegex.test(email.trim())) {
-    context.res = { status: 400, headers: CORS_HEADERS, body: JSON.stringify({ error: 'Invalid email' }) };
-    return;
-  }
-  if (message.trim().length < 10) {
-    context.res = { status: 400, headers: CORS_HEADERS, body: JSON.stringify({ error: 'Message too short' }) };
-    return;
-  }
-
-  try {
-    const token = await getGraphToken();
-    await Promise.all([
-      saveToSharePoint(token, { firstName, lastName, email, companyName, message }),
-      sendNotificationEmail(token, { firstName, lastName, email, companyName, message })
-    ]);
-    context.res = { status: 200, headers: CORS_HEADERS, body: JSON.stringify({ status: 'success' }) };
-  } catch (err) {
-    context.log.error('Contact form error:', err);
-    context.res = { status: 500, headers: CORS_HEADERS, body: JSON.stringify({ error: 'Server error' }) };
-  }
-};
-
-async function saveToSharePoint(token, data) {
-  const url = `https://graph.microsoft.com/v1.0/sites/${process.env.SHAREPOINT_SITE_ID}/lists/${process.env.CONTACT_LIST_ID}/items`;
-  const res = await fetch(url, {
-    method: 'POST',
-    headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      fields: {
-        FirstName:   data.firstName.trim(),
-        LastName:    (data.lastName || '').trim(),
-        Email:       data.email.trim(),
-        CompanyName: data.companyName.trim(),
-        Message:     data.message.trim(),
-        SubmittedAt: new Date().toISOString()
-      }
-    })
-  });
-  if (!res.ok) throw new Error(`SharePoint error: ${res.status}`);
-}
-
-async function sendNotificationEmail(token, data) {
-  const url = `https://graph.microsoft.com/v1.0/users/${process.env.SENDER_EMAIL}/sendMail`;
-  const res = await fetch(url, {
-    method: 'POST',
-    headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      message: {
-        subject: `New Contact — ${data.firstName} ${data.lastName || ''} (${data.companyName})`,
-        body: {
-          contentType: 'HTML',
-          content: `
-            <h2>New Contact Form Submission</h2>
-            <table cellpadding="8" cellspacing="0">
-              <tr><td><strong>Name</strong></td><td>${data.firstName} ${data.lastName || ''}</td></tr>
-              <tr><td><strong>Email</strong></td><td>${data.email}</td></tr>
-              <tr><td><strong>Company</strong></td><td>${data.companyName}</td></tr>
-              <tr><td><strong>Submitted</strong></td><td>${new Date().toISOString()}</td></tr>
-            </table>
-            <h3>Message</h3>
-            <p>${data.message.replace(/\n/g, '<br>')}</p>
-          `
-        },
-        toRecipients: [{ emailAddress: { address: process.env.NOTIFICATION_EMAIL } }],
-        from: { emailAddress: { address: process.env.SENDER_EMAIL } }
-      }
-    })
-  });
-  if (!res.ok) throw new Error(`Mail error: ${res.status}`);
+**`contact/function.json`:**
+```json
+{
+  "bindings": [
+    {
+      "authLevel": "anonymous",
+      "type": "httpTrigger",
+      "direction": "in",
+      "name": "req",
+      "methods": ["post", "options"]
+    },
+    {
+      "type": "http",
+      "direction": "out",
+      "name": "res"
+    }
+  ]
 }
 ```
+
+**`contact/index.js`:** — mevcut kodu kullanın (gerçek kaynak: `c:\Repos\upgrademate-api\contact\index.js`)
+
+Önemli notlar:
+- Mail subject: `New Message — {ad} {soyad} ({şirket})`
+- `toRecipients`: `NOTIFICATION_EMAIL` (murat@trz-tech.com)
+- `from`: `SENDER_EMAIL` (info@upgrademate.io)
+- SharePoint alanları: `FirstName, LastName, Email, CompanyName, Message, SubmittedAt`
 
 ---
 
 ## ADIM 7: Ortam Değişkenleri
 
-**`local.settings.json`** (local test — git'e GİRMEZ):
+**`local.settings.json`** (git'e GİRMEZ):
 ```json
 {
   "IsEncrypted": false,
   "Values": {
-    "AzureWebJobsStorage": "",
+    "AzureWebJobsStorage":      "UseDevelopmentStorage=true",
     "FUNCTIONS_WORKER_RUNTIME": "node",
-    "TENANT_ID":              "xxxx-xxxx-xxxx-xxxx",
-    "CLIENT_ID":              "xxxx-xxxx-xxxx-xxxx",
-    "CLIENT_SECRET":          "xxxxxxxxxxxxxxxxxxx",
-    "TURNSTILE_SECRET_KEY":   "0x4AAAAAAA...",
-    "SHAREPOINT_SITE_ID":     "tenant.sharepoint.com,xxxx,xxxx",
-    "CONTACT_LIST_ID":        "xxxx-xxxx-xxxx-xxxx",
-    "SENDER_EMAIL":           "info@upgrademate.com",
-    "NOTIFICATION_EMAIL":     "info@upgrademate.com",
-    "ALLOWED_ORIGIN":         "http://localhost:3000"
+    "TENANT_ID":                "xxxx-xxxx-xxxx-xxxx",
+    "CLIENT_ID":                "xxxx-xxxx-xxxx-xxxx",
+    "CLIENT_SECRET":            "xxxxxxxxxxxxxxxxxxxx",
+    "TURNSTILE_SECRET_KEY":     "0x4AAAAAAA...",
+    "TURNSTILE_SKIP":           "true",
+    "SHAREPOINT_SITE_ID":       "tenant.sharepoint.com,xxxx,xxxx",
+    "CONTACT_LIST_ID":          "xxxx-xxxx-xxxx-xxxx",
+    "SENDER_EMAIL":             "info@upgrademate.io",
+    "NOTIFICATION_EMAIL":       "murat@trz-tech.com",
+    "ALLOWED_ORIGIN":           "*"
   }
 }
 ```
 
-**.gitignore**:
-```
-local.settings.json
-node_modules/
-.env
-```
+> `TURNSTILE_SKIP=true` yalnızca local'de kullanılır, production'a eklenmez.
+> `ALLOWED_ORIGIN=*` yalnızca local'de. Production'da domain yazılır.
 
-**Azure Portal'da production değişkenleri:**
-1. Function App → **Configuration** → **Application settings**
-2. Her değişkeni `+ New application setting` ile ekleyin
-3. `ALLOWED_ORIGIN` = `https://upgrademate.io`
+**Azure Portal — production değişkenleri** (Function App → Environment variables):
+
+| Değişken | Değer |
+|---|---|
+| `AzureWebJobsStorage` | Storage account connection string |
+| `TENANT_ID` | Azure AD tenant ID |
+| `CLIENT_ID` | App registration client ID |
+| `CLIENT_SECRET` | App registration client secret |
+| `TURNSTILE_SECRET_KEY` | Cloudflare Turnstile secret key |
+| `SHAREPOINT_SITE_ID` | `tenant.sharepoint.com,guid,guid` |
+| `CONTACT_LIST_ID` | ContactFormSubmissions liste GUID |
+| `SENDER_EMAIL` | `info@upgrademate.io` |
+| `NOTIFICATION_EMAIL` | `murat@trz-tech.com` |
+| `ALLOWED_ORIGIN` | `https://upgrademate.io` |
 
 ---
 
-## ADIM 8: Deploy
+## ADIM 8: Azure Storage Account
+
+> Azure Functions Consumption plan için gerekli.
+
+1. **portal.azure.com** → **Create a resource** → **Storage account**
+2. Ayarlar:
+   - Resource group: `upgrademate-rg`
+   - Name: `upgradematestorage`
+   - Region: West Europe
+   - Performance: Standard
+   - Redundancy: LRS
+3. Oluşunca: **Security + networking** → **Access keys** → **key1 Connection string** kopyalayın
+4. Function App → **Environment variables** → `AzureWebJobsStorage` = connection string
+
+---
+
+## ADIM 9: Deploy
 
 ```bash
 # Azure'a login
 az login
 
-# Function App oluştur (henüz yoksa)
-az functionapp create \
-  --resource-group upgrademate-rg \
-  --consumption-plan-location westeurope \
-  --runtime node \
-  --runtime-version 20 \
-  --functions-version 4 \
-  --name upgrademate-api \
-  --storage-account upgradematestg
-
 # Deploy
+cd upgrademate-api
 func azure functionapp publish upgrademate-api
 ```
 
-Function URL'si: `https://upgrademate-api.azurewebsites.net/api/contact`
+**Sonrası — Azure Portal CORS ayarı:**
+- Function App → **API** → **CORS**
+- Allowed Origins listesine ekleyin: `https://cm-upgrade.github.io` (test) ve `https://upgrademate.io` (prod)
+
+> ⚠️ Azure Functions'ın kendi CORS katmanı kod içindeki CORS header'larından önce çalışır.
+> Bu ayar yapılmadan preflight (`OPTIONS`) istekleri 400 döner.
+
+**Endpoint URL:** `https://upgrademate-api-[hash].westeurope-01.azurewebsites.net/api/contact`
 
 ---
 
-## ADIM 9: HTML Formunu Güncelleme
+## ADIM 10: HTML Formunu Güncelleme
 
-`contact/index.html` içinde değiştirilecekler:
+`contact/index.html` içinde:
 
-1. Cloudflare Turnstile script'i `<head>`'e ekle:
+1. `<head>`'e Turnstile script:
 ```html
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 ```
 
-2. Form içine Turnstile widget ekle (submit butonunun üstüne):
+2. Submit butonunun üstüne Turnstile widget:
 ```html
-<div class="cf-turnstile" data-sitekey="TURNSTILE_SITE_KEY_BURAYA" data-theme="dark"></div>
+<div class="cf-turnstile" data-sitekey="TURNSTILE_SITE_KEY" data-theme="dark"></div>
 ```
 
-3. Form submit JS'i güncelle — endpoint ve token:
+3. Submit JS:
 ```javascript
-const API_URL = 'https://upgrademate-api.azurewebsites.net/api/contact';
+const API_URL = 'https://upgrademate-api-[hash].westeurope-01.azurewebsites.net/api/contact';
 
-// fetch çağrısında:
-const turnstileToken = document.querySelector('[name="cf-turnstile-response"]')?.value;
+const turnstileToken = turnstile.getResponse();
+if (!turnstileToken) { /* hata göster */ return; }
+
 const payload = {
   firstName, lastName, email, companyName, message,
   'cf-turnstile-response': turnstileToken,
-  _hp: ''   // honeypot (boş kalırsa bot değil)
+  _hp: honeypotInput.value   // boş = gerçek kullanıcı
 };
-```
 
-4. Tüm client-side spam kontrollerini (honeypot JS, timing, sessionStorage) kaldır.
+// Başarı → ../thank-you/?status=success&type=contact
+// Hata   → ../thank-you/?status=error&type=contact
+```
 
 ---
 
-## ADIM 10: Test
+## ADIM 11: Local Test
 
+**Terminal 1 — Azurite:**
 ```bash
-# Local test
-func start
-
-# cURL ile test
-curl -X POST http://localhost:7071/api/contact \
-  -H "Content-Type: application/json" \
-  -d '{
-    "firstName": "Test",
-    "lastName": "User",
-    "email": "test@example.com",
-    "companyName": "Test Corp",
-    "message": "Bu bir test mesajıdır.",
-    "cf-turnstile-response": "XXXXX"
-  }'
+azurite --silent
 ```
 
-> Local test için Turnstile'ı bypass etmek: `TURNSTILE_SECRET_KEY` değerini
-> `1x0000000000000000000000000000000AA` yapın (Cloudflare test secret'ı, her token'ı geçirir).
+**Terminal 2 — Functions:**
+```bash
+func start
+# → contact: [POST,OPTIONS] http://localhost:7071/api/contact
+```
+
+**Terminal 3 — Test:**
+```powershell
+Invoke-RestMethod -Method POST -Uri "http://localhost:7071/api/contact" `
+  -ContentType "application/json" `
+  -Body '{"firstName":"Test","lastName":"User","email":"test@co.com","companyName":"Test Corp","message":"Bu bir test mesajıdır.","cf-turnstile-response":"bypass","_hp":""}'
+```
 
 Kontrol edin:
+- ✅ `{"status":"success"}` döndü mü?
 - ✅ SharePoint `ContactFormSubmissions` listesinde yeni satır var mı?
-- ✅ `info@upgrademate.com` adresine bildirim e-postası geldi mi?
-- ✅ Formda başarı mesajı göründü mü?
-- ✅ Honeypot dolu gönderimde SharePoint'e kayıt YOK mu?
+- ✅ `murat@trz-tech.com` adresine mail geldi mi?
+- ✅ Mail konusu `New Message —` ile başlıyor mu?
 
 ---
 
 ## Sorun Giderme
 
-| Hata | Olası Neden | Çözüm |
-|------|-------------|-------|
-| 403 CAPTCHA failed | Turnstile secret yanlış | `TURNSTILE_SECRET_KEY` kontrol edin |
-| 401 Graph token | App kayıt veya izin sorunu | Admin consent verildi mi? |
-| 403 SharePoint | `Sites.ReadWrite.All` izni eksik | API permissions kontrol edin |
-| 403 Mail.Send | İzin eksik veya yanlış UPN | `SENDER_EMAIL` Exchange'de var mı? |
-| CORS hatası | `ALLOWED_ORIGIN` yanlış | Origin tam URL eşleşmeli (/ olmadan) |
-| 500 Server error | Log inceleyin | Azure Portal → Function → Monitor |
+| Hata | Neden | Çözüm |
+|------|-------|-------|
+| `OPTIONS` 400 CORS | Azure Portal CORS ayarı eksik | Function App → API → CORS → domain ekle |
+| 403 Verification failed | Turnstile secret yanlış veya TURNSTILE_SKIP eksik | local: TURNSTILE_SKIP=true ekle |
+| 401 Graph token | CLIENT_SECRET yanlış veya süresi dolmuş | App registration → secret kontrol |
+| 403 SharePoint | Sites.ReadWrite.All izni eksik | API permissions → admin consent |
+| 403 Mail.Send | İzin eksik veya SENDER_EMAIL yanlış | Graph izinleri + Exchange UPN |
+| Storage unhealthy | AzureWebJobsStorage boş | Azurite başlat (local) veya connection string ekle (Azure) |
+| No job functions found | Fonksiyonlar api/ altında | Kök dizine taşı |
