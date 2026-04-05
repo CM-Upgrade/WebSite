@@ -1,7 +1,7 @@
 # UpgradeMate Site Mimarisi
 
-> **Son güncelleme:** 2026-04-04
-> **Durum:** Geliştirme aşaması — production henüz yayında değil
+> **Son güncelleme:** 2026-04-06
+> **Durum:** Geliştirme aşaması — contact ve trynow formları production'da aktif
 
 ---
 
@@ -11,9 +11,9 @@
 upgrademate.io (production hedef)
 │
 ├── Static Frontend    → GitHub Pages (TestWebSite repo)
-├── Form Backend       → Azure Functions (upgrademate-api repo)  [⏳ kurulum aşaması]
+├── Form Backend       → Azure Functions (upgrademate-api repo)  [✅ aktif]
 ├── Veri Katmanı       → SharePoint Lists + Exchange Online (M365 E3)
-├── CDN & Güvenlik     → Cloudflare Free Plan                    [⏳ kurulum aşaması]
+├── CDN & Güvenlik     → Cloudflare Free Plan                    [⏳ domain bağlanacak]
 └── Ödeme              → iyzico Checkout Form                    [⏳ planlandı]
 ```
 
@@ -76,17 +76,18 @@ Assets/
 ## Backend (upgrademate-api repo)
 
 ### Teknoloji
-- Azure Functions — Node.js 20, Consumption Plan (ücretsiz tier)
+- Azure Functions — Node.js 22, Consumption Plan (ücretsiz tier)
 - Kimlik doğrulama: Azure AD App Registration (client credentials)
 - Veri erişimi: Microsoft Graph API (M365 E3 dahili)
 - CAPTCHA doğrulama: Cloudflare Turnstile API
+- Local geliştirme: Azurite (storage emulator)
 
 ### Endpoint'ler
 
 | Endpoint | Durum | Açıklama |
 |----------|-------|----------|
-| `POST /api/contact` | ⏳ kurulum aşaması | İletişim formu işleme |
-| `POST /api/trynow` | ⏳ kurulum aşaması | Deneme talebi işleme |
+| `POST /api/contact` | ✅ aktif | İletişim formu işleme |
+| `POST /api/trynow` | ✅ aktif | Deneme talebi işleme (duplicate kontrol dahil) |
 | `POST /api/payment-init` | ⏳ planlandı | iyzico ödeme başlatma |
 | `POST /api/payment-callback` | ⏳ planlandı | 3DS sonuç doğrulama |
 | `POST /api/webhook` | ⏳ planlandı | iyzico event bildirimleri |
@@ -117,8 +118,8 @@ Request
 
 | Liste | Kaynak Form | Durum |
 |-------|-------------|-------|
-| `ContactFormSubmissions` | /contact | ⏳ oluşturulacak |
-| `TrialRequests` | /trynow | ⏳ oluşturulacak |
+| `ContactFormSubmissions` | /contact | ✅ aktif |
+| `TrialRequests` | /trynow | ✅ aktif (SccmSupportId indexed) |
 | `Customers` | ödeme akışı | ⏳ planlandı |
 | `Payments` | ödeme akışı | ⏳ planlandı |
 | `Licenses` | ödeme akışı | ⏳ planlandı |
@@ -132,8 +133,8 @@ Request
 | DDoS koruması | Free | ⏳ domain bağlanacak |
 | CDN / önbellekleme | Free | ⏳ |
 | SSL/TLS | Free | ⏳ |
-| Turnstile CAPTCHA | Free | ⏳ site key alınacak |
-| WAF Rate Limiting | Free | ⏳ kurallar yazılacak |
+| Turnstile CAPTCHA | Free | ✅ aktif (site key alındı, formlara eklendi) |
+| WAF Rate Limiting | Free | ⏳ domain bağlanınca kurulacak |
 
 ---
 
@@ -184,16 +185,18 @@ Request
 
 ## Production'a Geçiş Kontrol Listesi
 
+- [x] Azure AD App Registration tamamla, Graph API izinleri ver
+- [x] Cloudflare Turnstile site key al
+- [x] SharePoint listeleri oluştur (ContactFormSubmissions, TrialRequests)
+- [x] Azure Functions deploy et (`upgrademate-api`)
+- [x] Azure Application Settings'e ortam değişkenlerini gir
+- [x] Form HTML'lerini Azure Functions URL ile güncelle
+- [x] Turnstile widget'ını formlara ekle
+- [x] Contact formu uçtan uca test et
+- [x] TryNow formu uçtan uca test et
 - [ ] Cloudflare'e domain bağla (`upgrademate.io`)
 - [ ] SSL sertifikasını Cloudflare üzerinden aktif et
-- [ ] Azure Functions deploy et (`upgrademate-api`)
-- [ ] Azure AD App Registration tamamla, Graph API izinleri ver
-- [ ] Cloudflare Turnstile site key al
-- [ ] SharePoint listelerini oluştur
-- [ ] Azure Application Settings'e ortam değişkenlerini gir
-- [ ] Form HTML'lerini Azure Functions URL ile güncelle
-- [ ] Turnstile widget'ını formlara ekle
-- [ ] Contact formu uçtan uca test et
-- [ ] TryNow formu uçtan uca test et
+- [ ] Cloudflare WAF rate limiting kurallarını yaz
+- [ ] iyzico merchant başvurusu → ödeme sistemi kurulumu
 - [ ] `_docs/` klasörünü repodan sil: `git rm -r _docs/`
 - [ ] Production commit & push
