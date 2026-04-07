@@ -258,7 +258,6 @@
       border-radius: var(--radius-xl);
       padding: 40px;
       position: relative;
-      overflow: hidden;
     }
 
     .form-wrapper::before {
@@ -287,11 +286,76 @@
     }
 
     .form-group label {
-      display: block;
+      display: flex;
+      align-items: center;
+      gap: 6px;
       font-size: 13px;
       font-weight: 600;
       color: var(--text-body);
       margin-bottom: 7px;
+    }
+
+    .help-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: rgba(5,120,212,.2);
+      border: 1px solid rgba(5,120,212,.4);
+      color: var(--accent);
+      font-size: 10px;
+      font-weight: 700;
+      cursor: default;
+      line-height: 1;
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .form-group {
+      position: relative;
+    }
+
+    .help-popup {
+      display: none;
+      position: absolute;
+      bottom: calc(100% + 6px);
+      left: 0;
+      width: 300px;
+      background: #0d1f33;
+      border: 1px solid rgba(5,120,212,.3);
+      border-radius: var(--radius);
+      padding: 14px;
+      box-shadow: 0 8px 32px rgba(0,0,0,.5);
+      z-index: 999;
+      color: var(--text-body);
+      font-size: 12px;
+      font-weight: 400;
+      text-align: left;
+      pointer-events: none;
+    }
+
+    .help-popup.visible { display: block; }
+
+    .help-popup::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 12px;
+      border: 6px solid transparent;
+      border-top-color: rgba(5,120,212,.3);
+    }
+
+    .help-popup ol {
+      margin: 0;
+      padding-left: 16px;
+      line-height: 1.8;
+    }
+
+    .help-popup p {
+      margin: 0;
+      line-height: 1.7;
     }
 
     .form-group input,
@@ -539,11 +603,11 @@
           <div class="form-row">
             <div class="form-group">
               <label>First Name</label>
-              <input type="text" name="firstName" placeholder="First Name" required>
+              <input type="text" name="firstName" required>
             </div>
             <div class="form-group">
               <label>Last Name</label>
-              <input type="text" name="lastName" placeholder="Last Name" required>
+              <input type="text" name="lastName" required>
             </div>
           </div>
 
@@ -562,11 +626,17 @@
           <!-- Row 3: SCCM Site Code + SCCM Support ID -->
           <div class="form-row">
             <div class="form-group">
-              <label>SCCM Site Code</label>
+              <label>SCCM Site Code <span class="help-btn" data-popup="siteCodePopup">?</span></label>
+              <div class="help-popup" id="siteCodePopup">
+                <p>Refer to the three-character Site Code found under <strong>Administration &gt; Site Configuration &gt; Sites</strong>.</p>
+              </div>
               <input type="text" name="sccmSiteCode" placeholder="XYZ" maxlength="3" required>
             </div>
             <div class="form-group">
-              <label>SCCM Support ID</label>
+              <label>SCCM Support ID <span class="help-btn" data-popup="supportIdPopup">?</span></label>
+              <div class="help-popup" id="supportIdPopup">
+                <p>Refer to the Support ID found in the <strong>'About Configuration Manager'</strong> window, accessible via the blue menu arrow in the top-left corner.</p>
+              </div>
               <input type="text" name="sccmSupportId" required>
             </div>
           </div>
@@ -574,7 +644,10 @@
           <!-- Row 4: Number of Computers + Windows Version -->
           <div class="form-row">
             <div class="form-group">
-              <label>Number of Computers</label>
+              <label>Client Count <span class="help-btn" data-popup="clientCountPopup">?</span></label>
+              <div class="help-popup" id="clientCountPopup">
+                <p>Refer to the Member Count of the <strong>'All Desktop and Server Clients'</strong> collection under Assets and Compliance &gt; Device Collections.</p>
+              </div>
               <input type="number" name="computerCount" placeholder="e.g. 5000" min="1" required>
             </div>
             <div class="form-group">
@@ -616,6 +689,23 @@
       </ul>
     </div>
   </footer>
+
+  <script>
+    // Help popups
+    document.querySelectorAll('.help-btn').forEach(btn => {
+      const popup = document.getElementById(btn.dataset.popup);
+
+      btn.addEventListener('mouseenter', () => popup.classList.add('visible'));
+      btn.addEventListener('mouseleave', () => popup.classList.remove('visible'));
+      btn.addEventListener('click', e => {
+        e.stopPropagation();
+        popup.classList.toggle('visible');
+      });
+    });
+    document.addEventListener('click', () => {
+      document.querySelectorAll('.help-popup.visible').forEach(p => p.classList.remove('visible'));
+    });
+  </script>
 
   <script>
     // Burger menu
