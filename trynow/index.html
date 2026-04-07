@@ -294,11 +294,6 @@
       margin-bottom: 7px;
     }
 
-    .form-group label .required {
-      color: #f87171;
-      margin-left: 2px;
-    }
-
     .form-group input,
     .form-group select {
       width: 100%;
@@ -329,6 +324,13 @@
     .form-group input::placeholder {
       color: var(--text-muted);
     }
+
+    .form-group input[type="number"]::-webkit-inner-spin-button,
+    .form-group input[type="number"]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    .form-group input[type="number"] { -moz-appearance: textfield; appearance: textfield; }
 
     .form-group input:focus,
     .form-group select:focus {
@@ -521,7 +523,7 @@
         Try UpgradeMate <span class="highlight">For Free</span>
       </h1>
       <p class="page-hero-sub fade-up fade-up-delay-3">
-        Start your 10-day free trial — no credit card required. Fill in the form and we'll get you set up right away.
+        Get started with your 10-day free trial. No credit card required. Complete the form below to begin.
       </p>
     </div>
   </section>
@@ -536,11 +538,11 @@
           <!-- Row 1: First Name + Last Name -->
           <div class="form-row">
             <div class="form-group">
-              <label>First Name <span class="required">*</span></label>
+              <label>First Name</label>
               <input type="text" name="firstName" placeholder="First Name" required>
             </div>
             <div class="form-group">
-              <label>Last Name <span class="required">*</span></label>
+              <label>Last Name</label>
               <input type="text" name="lastName" placeholder="Last Name" required>
             </div>
           </div>
@@ -548,11 +550,11 @@
           <!-- Row 2: Email + Company Name -->
           <div class="form-row">
             <div class="form-group">
-              <label>Email <span class="required">*</span></label>
+              <label>Email</label>
               <input type="email" name="email" placeholder="example@company.com" required>
             </div>
             <div class="form-group">
-              <label>Company Name <span class="required">*</span></label>
+              <label>Company Name</label>
               <input type="text" name="companyName" required>
             </div>
           </div>
@@ -560,11 +562,11 @@
           <!-- Row 3: SCCM Site Code + SCCM Support ID -->
           <div class="form-row">
             <div class="form-group">
-              <label>SCCM Site Code <span class="required">*</span></label>
+              <label>SCCM Site Code</label>
               <input type="text" name="sccmSiteCode" placeholder="XYZ" maxlength="3" required>
             </div>
             <div class="form-group">
-              <label>SCCM Support ID <span class="required">*</span></label>
+              <label>SCCM Support ID</label>
               <input type="text" name="sccmSupportId" required>
             </div>
           </div>
@@ -572,11 +574,11 @@
           <!-- Row 4: Number of Computers + Windows Version -->
           <div class="form-row">
             <div class="form-group">
-              <label>Number of Computers <span class="required">*</span></label>
+              <label>Number of Computers</label>
               <input type="number" name="computerCount" placeholder="e.g. 5000" min="1" required>
             </div>
             <div class="form-group">
-              <label>Windows Version to Upgrade <span class="required">*</span></label>
+              <label>Windows Version to Upgrade</label>
               <select name="windowsVersion" required>
                 <option value="">Please Select</option>
                 <option value="26200">Windows 11 25H2</option>
