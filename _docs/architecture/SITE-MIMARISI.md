@@ -67,7 +67,7 @@ Assets/
 | For Users | `/#for-users` | ✅ |
 | For IT Admins | `/#for-admins` | ✅ |
 | Pricing | `/#pricing` | ✅ |
-| Documents | `/docs` | ⏳ sayfa yok |
+| Documents | `https://docs.upgrademate.io` | ✅ harici site |
 | Contact Us | `/contact` | ✅ |
 | Try Now (CTA) | `/trynow` | ✅ |
 
