@@ -237,6 +237,7 @@ module.exports = { verifyTurnstile };
 - `toRecipients`: `NOTIFICATION_EMAIL` (murat@trz-tech.com)
 - `from`: `SENDER_EMAIL` (info@upgrademate.io)
 - SharePoint alanları: `FirstName, LastName, Email, CompanyName, Message, SubmittedAt`
+- Zorunlu alanlar: `firstName`, `email`, `message` — `companyName` opsiyoneldir
 
 ---
 
@@ -371,7 +372,7 @@ func start
 ```powershell
 Invoke-RestMethod -Method POST -Uri "http://localhost:7071/api/contact" `
   -ContentType "application/json" `
-  -Body '{"firstName":"Test","lastName":"User","email":"test@co.com","companyName":"Test Corp","message":"Bu bir test mesajıdır.","cf-turnstile-response":"bypass","_hp":""}'
+  -Body '{"firstName":"Test","lastName":"User","email":"test@co.com","message":"Bu bir test mesajıdır.","cf-turnstile-response":"bypass","_hp":""}'
 ```
 
 Kontrol edin:
