@@ -34,3 +34,15 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Azurite local storage emulator
+__azurite_db_*.json
+__blobstorage__/
+AzuriteConfig
+
+# Claude
+.claude/settings.local.json
+CLAUDE.md
+
+# Docs (ayrı repoda yönetilir)
+_docs/
