@@ -9,3 +9,6 @@ AzuriteConfig
 # Claude
 .claude/settings.local.json
 CLAUDE.md
+
+# Docs (ayrı repoda yönetilir)
+_docs/
