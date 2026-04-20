@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Payment Result – UpgradeMate</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="../Assets/Ico_Web_32.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../Assets/site.css" />
+  <style>
+    body { min-height: 100vh; display: flex; flex-direction: column; }
+
+    .main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 140px 24px 96px;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 56px 48px;
+      max-width: 580px;
+      width: 100%;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* ─── SUCCESS ────────────────────────────────────────────────── */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: -80px; left: 50%;
+      transform: translateX(-50%);
+      width: 340px; height: 340px;
+      background: radial-gradient(circle, rgba(146,195,83,.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .icon-wrap {
+      width: 76px; height: 76px;
+      border-radius: 50%;
+      background: rgba(146,195,83,.12);
+      border: 1px solid rgba(146,195,83,.25);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 28px;
+    }
+    .icon-wrap svg { width: 38px; height: 38px; color: var(--green); }
+
+    /* ─── ERROR ──────────────────────────────────────────────────── */
+    .card.error::before {
+      background: radial-gradient(circle, rgba(248,113,113,.06) 0%, transparent 70%);
+    }
+    .card.error .icon-wrap {
+      background: rgba(248,113,113,.12);
+      border-color: rgba(248,113,113,.25);
+    }
+    .card.error .icon-wrap svg { color: #f87171; }
+
+    /* ─── CONTENT ────────────────────────────────────────────────── */
+    .card-title {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--text-head);
+      letter-spacing: -.02em;
+      margin-bottom: 12px;
+    }
+    .card-sub {
+      font-size: 15px;
+      color: var(--text-body);
+      line-height: 1.75;
+      margin-bottom: 28px;
+    }
+    .card-sub strong { color: var(--text-head); }
+
+    /* ─── LICENSE BOX ────────────────────────────────────────────── */
+    .license-box {
+      background: rgba(5,120,212,.06);
+      border: 1px solid rgba(5,120,212,.2);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      margin-bottom: 28px;
+      text-align: left;
+    }
+    .license-box-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+    .license-box-value {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-head);
+      line-height: 1.6;
+    }
+
+    /* ─── ACTIONS ────────────────────────────────────────────────── */
+    .actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* ─── STEPS ──────────────────────────────────────────────────── */
+    .steps {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      margin-bottom: 36px;
+    }
+    .step {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+    .step.done   { color: var(--green); }
+    .step.active { color: var(--text-body); font-weight: 600; }
+    .step-num {
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      background: var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700;
+      flex-shrink: 0;
+    }
+    .step.done   .step-num { background: var(--green); color: #fff; }
+    .step.active .step-num { background: var(--accent); color: #fff; }
+    .step-divider {
+      width: 32px; height: 1px;
+      background: var(--border);
+      margin: 0 4px;
+      flex-shrink: 0;
+    }
+    .step-divider.done { background: var(--green); }
+
+    /* ─── RESPONSIVE ─────────────────────────────────────────────── */
+    @media (max-width: 600px) {
+      .card { padding: 36px 24px; }
+      .card-title { font-size: 22px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══ NAVIGATION ═══════════════════════════════════════════ -->
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a href="../" class="nav-logo">
+        <img src="../Assets/LogoBig_Dark.png" alt="UpgradeMate" />
+      </a>
+      <ul class="nav-links">
+        <li><a href="../#features">Features</a></li>
+        <li><a href="../#for-users">For Users</a></li>
+        <li><a href="../#for-admins">For IT Admins</a></li>
+        <li><a href="../#pricing">Pricing</a></li>
+        <li><a href="https://docs.upgrademate.io">Documents</a></li>
+        <li><a href="../contact">Contact Us</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="../trynow" class="btn btn-primary">Try Now</a>
+      </div>
+      <button class="burger" id="burger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ═══ MOBILE MENU ══════════════════════════════════════════ -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="../#features" onclick="closeMobileMenu()">Features</a>
+    <a href="../#for-users" onclick="closeMobileMenu()">For Users</a>
+    <a href="../#for-admins" onclick="closeMobileMenu()">For IT Admins</a>
+    <a href="../#pricing" onclick="closeMobileMenu()">Pricing</a>
+    <a href="https://docs.upgrademate.io" onclick="closeMobileMenu()">Documents</a>
+    <a href="../contact" onclick="closeMobileMenu()">Contact Us</a>
+  </div>
+
+  <!-- ═══ MAIN ══════════════════════════════════════════════════ -->
+  <main class="main">
+    <div class="card" id="card">
+
+      <!-- Steps -->
+      <div class="steps" id="steps">
+        <div class="step done">
+          <div class="step-num">
+            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/>
+            </svg>
+          </div>
+          Details
+        </div>
+        <div class="step-divider done"></div>
+        <div class="step done" id="stepPayment">
+          <div class="step-num" id="stepPaymentNum">
+            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/>
+            </svg>
+          </div>
+          Payment
+        </div>
+        <div class="step-divider" id="divider3"></div>
+        <div class="step active" id="stepConfirm">
+          <div class="step-num">3</div>
+          Confirmation
+        </div>
+      </div>
+
+      <!-- Icon -->
+      <div class="icon-wrap">
+        <svg id="iconSuccess" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+        </svg>
+        <svg id="iconError" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="display:none">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+        </svg>
+      </div>
+
+      <h1 class="card-title" id="cardTitle">Payment Successful!</h1>
+      <p class="card-sub" id="cardSub">
+        Your license is now active.<br>
+        <strong>Your license key has been sent to your email address.</strong>
+      </p>
+
+      <!-- License info box (success only) -->
+      <div class="license-box" id="licenseBox">
+        <div class="license-box-label">What's next?</div>
+        <div class="license-box-value" id="licenseBoxContent">
+          Check your inbox for the activation email with your license key.<br>
+          Follow the setup guide in our documentation to get started.
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="actions" id="actions">
+        <a href="https://docs.upgrademate.io" class="btn btn-primary">
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
+          </svg>
+          Setup Guide
+        </a>
+        <a href="../" class="btn btn-outline">Back to Home</a>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ═══ FOOTER ════════════════════════════════════════════════ -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <a href="../" class="footer-logo">
+        <img src="../Assets/LogoBig_Dark.png" alt="UpgradeMate" />
+      </a>
+      <p class="footer-copy">© 2026 UpgradeMate. Make Windows Upgrades Actually Work.</p>
+      <ul class="footer-links">
+        <li><a href="https://x.com/upgrademate" target="_blank" rel="noopener" aria-label="X (Twitter)"><img src="../Assets/Ico_X.png" alt="X" /></a></li>
+        <li><a href="https://www.youtube.com/@UpgradeMate" target="_blank" rel="noopener" aria-label="YouTube"><img src="../Assets/Ico_Youtube.png" alt="YouTube" /></a></li>
+        <li><a href="#" aria-label="LinkedIn"><img src="../Assets/Ico_Linkedin.png" alt="LinkedIn" /></a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <script>
+    const burger = document.getElementById('burger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    burger.addEventListener('click', () => {
+      burger.classList.toggle('open');
+      mobileMenu.classList.toggle('open');
+    });
+    function closeMobileMenu() {
+      burger.classList.remove('open');
+      mobileMenu.classList.remove('open');
+    }
+  </script>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const status = params.get('status');
+    const plan   = params.get('plan');
+    const msg    = params.get('msg');
+
+    const PLAN_NAMES = {
+      starter:    'Starter',
+      business:   'Business',
+      enterprise: 'Enterprise'
+    };
+    const planName = PLAN_NAMES[plan] || '';
+
+    if (status === 'error') {
+      document.getElementById('card').classList.add('error');
+
+      // Steps: payment step → error state
+      const stepPayment = document.getElementById('stepPayment');
+      stepPayment.classList.remove('done');
+      stepPayment.classList.add('active');
+      document.getElementById('stepPaymentNum').innerHTML = '!';
+      document.getElementById('divider3').classList.remove('done');
+
+      const stepConfirm = document.getElementById('stepConfirm');
+      stepConfirm.classList.remove('active');
+
+      // Icons
+      document.getElementById('iconSuccess').style.display = 'none';
+      document.getElementById('iconError').style.display   = '';
+
+      // Content
+      document.getElementById('cardTitle').textContent = 'Payment Failed';
+      document.getElementById('cardSub').innerHTML =
+        (msg ? decodeURIComponent(msg) + '<br>' : '') +
+        'Your card was not charged. Please try again or use a different payment method.';
+
+      document.getElementById('licenseBox').style.display = 'none';
+
+      document.getElementById('actions').innerHTML = `
+        <a href="../checkout/" class="btn btn-primary">
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/>
+          </svg>
+          Try Again
+        </a>
+        <a href="../contact/" class="btn btn-outline">Contact Support</a>
+      `;
+
+    } else {
+      // Success — steps all done
+      document.getElementById('divider3').classList.add('done');
+      document.getElementById('stepConfirm').classList.remove('active');
+      document.getElementById('stepConfirm').classList.add('done');
+      document.getElementById('stepConfirm').querySelector('.step-num').innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/>
+        </svg>`;
+
+      if (planName) {
+        document.getElementById('cardTitle').textContent = 'Payment Successful!';
+        document.getElementById('cardSub').innerHTML =
+          `Your <strong>UpgradeMate ${planName}</strong> license is now active.<br>` +
+          '<strong>Your license key has been sent to your email address.</strong>';
+      }
+    }
+  </script>
+
+</body>
+</html>
