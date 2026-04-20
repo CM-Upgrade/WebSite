@@ -13,23 +13,12 @@
     /* ─── PLAN SELECTOR ─────────────────────────────────────────── */
     .checkout-section { padding: 0 0 96px; }
 
-    .plan-selector { margin-bottom: 32px; }
-
-    .subsection-label {
-      font-size: 12px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: .07em;
-      color: var(--text-muted);
-      margin-bottom: 14px;
-    }
+    .plan-selector { margin-bottom: 16px; }
 
     .plan-cards {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 20px;
-      max-width: 860px;
-      margin: 0 auto 32px;
     }
 
     .plan-card {
@@ -147,6 +136,70 @@
     .form-row .form-group { margin-bottom: 16px; }
 
     .form-group textarea { min-height: 90px; resize: vertical; }
+
+    /* ─── SELECT ────────────────────────────────────────────────── */
+    .form-card select {
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b83a0' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 36px;
+    }
+    .form-card select option {
+      background: #162D46;
+      color: var(--text-head);
+    }
+
+    /* ─── HELP BUTTON & POPUP ───────────────────────────────────── */
+    .form-group label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .help-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 15px; height: 15px;
+      border-radius: 50%;
+      background: rgba(5,120,212,.2);
+      border: 1px solid rgba(5,120,212,.4);
+      color: var(--accent);
+      font-size: 10px;
+      font-weight: 700;
+      cursor: default;
+      line-height: 1;
+      flex-shrink: 0;
+      position: relative;
+    }
+    .help-popup {
+      display: none;
+      position: absolute;
+      bottom: calc(100% + 6px);
+      left: 0;
+      width: 280px;
+      background: #0d1f33;
+      border: 1px solid rgba(5,120,212,.3);
+      border-radius: var(--radius);
+      padding: 14px;
+      box-shadow: 0 8px 32px rgba(0,0,0,.5);
+      z-index: 999;
+      color: var(--text-body);
+      font-size: 12px;
+      font-weight: 400;
+      text-align: left;
+      pointer-events: none;
+    }
+    .help-popup.visible { display: block; }
+    .help-popup::after {
+      content: '';
+      position: absolute;
+      top: 100%; left: 12px;
+      border: 6px solid transparent;
+      border-top-color: rgba(5,120,212,.3);
+    }
+    .help-popup p { margin: 0; line-height: 1.7; }
 
     /* ─── RADIO GROUP ───────────────────────────────────────────── */
     .radio-group {
@@ -351,8 +404,8 @@
     <div class="container">
 
       <!-- Plan Selector -->
-      <div class="plan-selector fade-up">
-        <div class="subsection-label">Choose Your Plan</div>
+      <div class="form-card plan-selector fade-up">
+        <div class="form-card-title">Choose Your Plan</div>
         <div class="plan-cards" id="planCards"></div>
       </div>
 
@@ -390,6 +443,47 @@
 
             </div>
 
+            <!-- Site Information -->
+            <div class="form-card">
+              <div class="form-card-title">Site Information</div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label>SCCM Site Code <span class="help-btn" data-popup="siteCodePopup">?</span></label>
+                  <div class="help-popup" id="siteCodePopup">
+                    <p>Refer to the three-character Site Code found under <strong>Administration &gt; Site Configuration &gt; Sites</strong>.</p>
+                  </div>
+                  <input type="text" name="sccmSiteCode" placeholder="XYZ" maxlength="3">
+                </div>
+                <div class="form-group">
+                  <label>SCCM Support ID <span class="help-btn" data-popup="supportIdPopup">?</span></label>
+                  <div class="help-popup" id="supportIdPopup">
+                    <p>Refer to the Support ID found in the <strong>'About Configuration Manager'</strong> window, accessible via the blue menu arrow in the top-left corner.</p>
+                  </div>
+                  <input type="text" name="sccmSupportId">
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Client Count <span class="help-btn" data-popup="clientCountPopup">?</span></label>
+                  <div class="help-popup" id="clientCountPopup">
+                    <p>Refer to the Member Count of the <strong>'All Desktop and Server Clients'</strong> collection under Assets and Compliance &gt; Device Collections.</p>
+                  </div>
+                  <input type="number" name="computerCount" placeholder="e.g. 5000" min="1">
+                </div>
+                <div class="form-group">
+                  <label>Windows Version to Upgrade</label>
+                  <select name="windowsVersion">
+                    <option value="" disabled selected>Please Select</option>
+                    <option value="26200">Windows 11 25H2</option>
+                    <option value="26100">Windows 11 24H2</option>
+                  </select>
+                </div>
+              </div>
+
+            </div>
+
             <!-- Billing Information -->
             <div class="form-card">
               <div class="form-card-title">Billing Information</div>
@@ -398,22 +492,6 @@
                 <label>Country</label>
                 <select name="country" id="countrySelect">
                   <option value="" disabled selected>Select a country...</option>
-                  <option value="TR">Turkey</option>
-                  <option value="DE">Germany</option>
-                  <option value="FR">France</option>
-                  <option value="NL">Netherlands</option>
-                  <option value="BE">Belgium</option>
-                  <option value="AT">Austria</option>
-                  <option value="CH">Switzerland</option>
-                  <option value="GB">United Kingdom</option>
-                  <option value="US">United States</option>
-                  <option value="CA">Canada</option>
-                  <option value="AU">Australia</option>
-                  <option value="AE">United Arab Emirates</option>
-                  <option value="SA">Saudi Arabia</option>
-                  <option value="QA">Qatar</option>
-                  <option value="KW">Kuwait</option>
-                  <option value="OTHER">Other</option>
                 </select>
               </div>
 
@@ -520,6 +598,18 @@
 
   <!-- ═══ SCRIPTS ═══════════════════════════════════════════════ -->
   <script>
+    // ── Help Popups ───────────────────────────────────────────────
+    document.querySelectorAll('.help-btn').forEach(btn => {
+      const popup = document.getElementById(btn.dataset.popup);
+      btn.addEventListener('mouseenter', () => popup.classList.add('visible'));
+      btn.addEventListener('mouseleave', () => popup.classList.remove('visible'));
+      btn.addEventListener('click', e => { e.stopPropagation(); popup.classList.toggle('visible'); });
+    });
+    document.addEventListener('click', () => {
+      document.querySelectorAll('.help-popup.visible').forEach(p => p.classList.remove('visible'));
+    });
+  </script>
+  <script>
     // ── Nav ───────────────────────────────────────────────────────
     const burger = document.getElementById('burger');
     const mobileMenu = document.getElementById('mobileMenu');
@@ -572,6 +662,35 @@
 
     const urlPlan = new URLSearchParams(window.location.search).get('plan');
     if (urlPlan && PLANS[urlPlan]) selectedPlan = urlPlan;
+
+    // ── Country List (Intl.DisplayNames ile browser üretir) ───────
+    (function populateCountries() {
+      const disp = new Intl.DisplayNames(['en'], { type: 'region' });
+      const codes = [
+        'AF','AL','DZ','AD','AO','AG','AR','AM','AU','AT','AZ','BS','BH','BD','BB',
+        'BY','BE','BZ','BJ','BT','BO','BA','BW','BR','BN','BG','BF','BI','CV','KH',
+        'CM','CA','CF','TD','CL','CN','CO','KM','CG','CD','CR','HR','CU','CY','CZ',
+        'DK','DJ','DM','DO','EC','EG','SV','GQ','ER','EE','SZ','ET','FJ','FI','FR',
+        'GA','GM','GE','DE','GH','GR','GD','GT','GN','GW','GY','HT','HN','HU','IS',
+        'IN','ID','IR','IQ','IE','IL','IT','JM','JP','JO','KZ','KE','KI','KW','KG',
+        'LA','LV','LB','LS','LR','LY','LI','LT','LU','MG','MW','MY','MV','ML','MT',
+        'MH','MR','MU','MX','FM','MD','MC','MN','ME','MA','MZ','MM','NA','NR','NP',
+        'NL','NZ','NI','NE','NG','KP','MK','NO','OM','PK','PW','PS','PA','PG','PY',
+        'PE','PH','PL','PT','QA','RO','RU','RW','KN','LC','VC','WS','SM','ST','SA',
+        'SN','RS','SC','SL','SG','SK','SI','SB','SO','ZA','KR','SS','ES','LK','SD',
+        'SR','SE','CH','SY','TJ','TZ','TH','TL','TG','TO','TT','TN','TR','TM','TV',
+        'UG','UA','AE','GB','US','UY','UZ','VU','VE','VN','YE','ZM','ZW'
+      ];
+      const sel = document.getElementById('countrySelect');
+      codes
+        .map(c => ({ c, n: disp.of(c) }))
+        .sort((a, b) => a.n.localeCompare(b.n))
+        .forEach(({ c, n }) => {
+          const o = document.createElement('option');
+          o.value = c; o.textContent = n;
+          sel.appendChild(o);
+        });
+    })();
 
     // ── Plan Cards ────────────────────────────────────────────────
     function renderPlanCards() {
@@ -690,6 +809,11 @@
         const err = this.parentNode.querySelector('.field-error');
         if (err) err.remove();
       });
+      el.addEventListener('change', function () {
+        this.classList.remove('invalid');
+        const err = this.parentNode.querySelector('.field-error');
+        if (err) err.remove();
+      });
     });
 
     function validateForm() {
@@ -717,6 +841,18 @@
       }
 
       if (!f.company.value.trim())  err(f.company, 'Company is required.');
+
+      const siteCode = f.sccmSiteCode;
+      if (!siteCode.value.trim()) {
+        err(siteCode, 'SCCM Site Code is required.');
+      } else if (!/^[A-Za-z0-9]{3}$/.test(siteCode.value.trim())) {
+        err(siteCode, 'Site Code must be exactly 3 characters.');
+      }
+      if (!f.sccmSupportId.value.trim()) err(f.sccmSupportId, 'SCCM Support ID is required.');
+      if (!f.computerCount.value || parseInt(f.computerCount.value) < 1)
+        err(f.computerCount, 'Client count is required.');
+      if (!f.windowsVersion.value) err(f.windowsVersion, 'Please select a Windows version.');
+
       if (!f.country.value)         err(f.country, 'Please select a country.');
       if (!f.address.value.trim())  err(f.address, 'Address is required.');
 
