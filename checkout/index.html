@@ -891,8 +891,12 @@
         taxNumber:    isTurkey  ? f.taxNumber.value.trim()    : '',
         vatId:        !isTurkey ? f.vatId.value.trim()        : '',
         invoiceType:  f.querySelector('[name="invoiceType"]:checked').value,
-        companyTitle: isCorporate ? f.companyTitle.value.trim() : '',
-        _hp:          f.website.value
+        companyTitle:   isCorporate ? f.companyTitle.value.trim() : '',
+        sccmSiteCode:   f.sccmSiteCode.value.trim().toUpperCase(),
+        sccmSupportId:  f.sccmSupportId.value.trim(),
+        computerCount:  f.computerCount.value.trim(),
+        windowsVersion: f.windowsVersion.value,
+        _hp:            f.website.value
       };
 
       try {
