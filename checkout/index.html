@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Checkout – UpgradeMate</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="../Assets/Ico_Web_32.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../Assets/site.css" />
+  <style>
+    /* ─── PLAN SELECTOR ─────────────────────────────────────────── */
+    .checkout-section { padding: 0 0 96px; }
+
+    .plan-selector { margin-bottom: 32px; }
+
+    .subsection-label {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+    }
+
+    .plan-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .plan-card {
+      background: var(--bg-card);
+      border: 2px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      cursor: pointer;
+      transition: border-color .2s, background .2s;
+      position: relative;
+    }
+    .plan-card:hover { border-color: rgba(5,120,212,.4); }
+    .plan-card.selected {
+      border-color: var(--accent);
+      background: rgba(5,120,212,.06);
+    }
+    .plan-card-badge {
+      position: absolute;
+      top: -10px; left: 50%;
+      transform: translateX(-50%);
+      background: var(--accent);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 10px;
+      border-radius: 99px;
+      white-space: nowrap;
+    }
+    .plan-card-range {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+    .plan-card-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-head);
+      margin-bottom: 8px;
+    }
+    .plan-card-price {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--accent);
+    }
+    .plan-card-price sup { font-size: 14px; font-weight: 600; vertical-align: super; }
+    .plan-card-period {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* ─── CHECKOUT LAYOUT ───────────────────────────────────────── */
+    .checkout-layout {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 24px;
+      align-items: start;
+    }
+
+    /* ─── FORM CARD ─────────────────────────────────────────────── */
+    .form-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      margin-bottom: 16px;
+    }
+    .form-card:last-child { margin-bottom: 0; }
+    .form-card-title {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 0;
+    }
+    .form-row .form-group { margin-bottom: 16px; }
+
+    .form-group textarea { min-height: 90px; resize: vertical; }
+
+    /* ─── RADIO GROUP ───────────────────────────────────────────── */
+    .radio-group {
+      display: flex;
+      gap: 20px;
+      margin-top: 6px;
+    }
+    .radio-option {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 14px;
+      color: var(--text-body);
+      cursor: pointer;
+      user-select: none;
+    }
+    .radio-option input[type="radio"] {
+      width: 15px; height: 15px;
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+
+    /* ─── ORDER SUMMARY ─────────────────────────────────────────── */
+    .order-summary {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      position: sticky;
+      top: 96px;
+    }
+    .summary-header {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+    .summary-plan-name {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-head);
+      margin-bottom: 3px;
+    }
+    .summary-plan-range {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+    .summary-line {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      color: var(--text-body);
+      padding: 9px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .summary-total {
+      display: flex;
+      justify-content: space-between;
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text-head);
+      padding-top: 14px;
+      margin-top: 4px;
+    }
+    .summary-rate-note {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-align: right;
+      margin-top: 6px;
+    }
+    .summary-vat-exempt {
+      font-size: 12px;
+      color: var(--green);
+      margin-top: 8px;
+    }
+    .summary-loading {
+      font-size: 13px;
+      color: var(--text-muted);
+      text-align: center;
+      padding: 20px 0;
+    }
+    .summary-error {
+      font-size: 13px;
+      color: #e05c5c;
+      text-align: center;
+      padding: 12px 0 4px;
+    }
+    .btn-retry {
+      display: block;
+      margin: 6px auto 0;
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 12px;
+      padding: 5px 14px;
+      border-radius: var(--radius);
+      cursor: pointer;
+    }
+    .btn-retry:hover { border-color: var(--accent); color: var(--accent); }
+
+    .btn-pay {
+      display: block;
+      width: 100%;
+      margin-top: 20px;
+      padding: 14px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius);
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .2s, opacity .2s;
+    }
+    .btn-pay:hover:not(:disabled) { background: var(--accent-hover); }
+    .btn-pay:disabled { opacity: .45; cursor: not-allowed; }
+
+    .security-note {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 12px;
+    }
+    .security-note svg {
+      width: 13px; height: 13px;
+      color: var(--green);
+      flex-shrink: 0;
+    }
+
+    /* ─── RESPONSIVE ────────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .checkout-layout { grid-template-columns: 1fr; }
+      .order-summary { position: static; }
+    }
+    @media (max-width: 680px) {
+      .plan-cards { grid-template-columns: 1fr; }
+      .plan-card { padding-top: 24px; }
+    }
+    @media (max-width: 560px) {
+      .form-row { grid-template-columns: 1fr; }
+      .form-row .form-group { margin-bottom: 0; }
+      .form-card { padding: 20px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══ NAVIGATION ═══════════════════════════════════════════ -->
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a href="../" class="nav-logo">
+        <img src="../Assets/LogoBig_Dark.png" alt="UpgradeMate" />
+      </a>
+      <ul class="nav-links">
+        <li><a href="../#features">Features</a></li>
+        <li><a href="../#for-users">For Users</a></li>
+        <li><a href="../#for-admins">For IT Admins</a></li>
+        <li><a href="../#pricing">Pricing</a></li>
+        <li><a href="https://docs.upgrademate.io">Documents</a></li>
+        <li><a href="../contact">Contact Us</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="../trynow" class="btn btn-primary">Try Now</a>
+      </div>
+      <button class="burger" id="burger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ═══ MOBILE MENU ══════════════════════════════════════════ -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="../#features" onclick="closeMobileMenu()">Features</a>
+    <a href="../#for-users" onclick="closeMobileMenu()">For Users</a>
+    <a href="../#for-admins" onclick="closeMobileMenu()">For IT Admins</a>
+    <a href="../#pricing" onclick="closeMobileMenu()">Pricing</a>
+    <a href="https://docs.upgrademate.io" onclick="closeMobileMenu()">Documents</a>
+    <a href="../contact" onclick="closeMobileMenu()">Contact Us</a>
+  </div>
+
+  <!-- ═══ PAGE HERO ═════════════════════════════════════════════ -->
+  <section class="page-hero">
+    <div class="container">
+      <div class="tag fade-up fade-up-delay-1">Purchase</div>
+      <h1 class="page-hero-title fade-up fade-up-delay-2">
+        Complete Your <span class="highlight">Purchase</span>
+      </h1>
+      <p class="page-hero-sub fade-up fade-up-delay-3">
+        Select a plan, fill in your billing details, and activate your UpgradeMate license instantly.
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══ CHECKOUT ═════════════════════════════════════════════ -->
+  <section class="checkout-section">
+    <div class="container">
+
+      <!-- Plan Selector -->
+      <div class="plan-selector fade-up">
+        <div class="subsection-label">Choose Your Plan</div>
+        <div class="plan-cards" id="planCards"></div>
+      </div>
+
+      <div class="checkout-layout">
+
+        <!-- ── Left: Form ── -->
+        <div>
+          <form id="checkoutForm" novalidate>
+
+            <!-- Personal Information -->
+            <div class="form-card">
+              <div class="form-card-title">Personal Information</div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label>First Name</label>
+                  <input type="text" name="firstName" placeholder="First Name">
+                </div>
+                <div class="form-group">
+                  <label>Last Name</label>
+                  <input type="text" name="lastName" placeholder="Last Name">
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Work Email</label>
+                  <input type="email" name="email" placeholder="you@company.com">
+                </div>
+                <div class="form-group">
+                  <label>Company</label>
+                  <input type="text" name="company" placeholder="Company Name">
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Billing Information -->
+            <div class="form-card">
+              <div class="form-card-title">Billing Information</div>
+
+              <div class="form-group">
+                <label>Country</label>
+                <select name="country" id="countrySelect">
+                  <option value="TR" selected>Turkey</option>
+                  <option value="DE">Germany</option>
+                  <option value="FR">France</option>
+                  <option value="NL">Netherlands</option>
+                  <option value="BE">Belgium</option>
+                  <option value="AT">Austria</option>
+                  <option value="CH">Switzerland</option>
+                  <option value="GB">United Kingdom</option>
+                  <option value="US">United States</option>
+                  <option value="CA">Canada</option>
+                  <option value="AU">Australia</option>
+                  <option value="AE">United Arab Emirates</option>
+                  <option value="SA">Saudi Arabia</option>
+                  <option value="QA">Qatar</option>
+                  <option value="KW">Kuwait</option>
+                  <option value="OTHER">Other</option>
+                </select>
+              </div>
+
+              <div class="form-row" id="cityDistrictRow">
+                <div class="form-group">
+                  <label>City</label>
+                  <input type="text" name="city" placeholder="City">
+                </div>
+                <div class="form-group">
+                  <label>District</label>
+                  <input type="text" name="district" placeholder="District">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Full Address</label>
+                <textarea name="address" placeholder="Street, building, floor..."></textarea>
+              </div>
+
+              <!-- Turkey: Tax Office + Tax Number -->
+              <div class="form-row" id="turkeyTaxRow">
+                <div class="form-group">
+                  <label>Tax Office</label>
+                  <input type="text" name="taxOffice" placeholder="Tax Office">
+                </div>
+                <div class="form-group">
+                  <label>Tax Number</label>
+                  <input type="text" name="taxNumber" placeholder="Tax Number">
+                </div>
+              </div>
+
+              <!-- Non-Turkey: VAT ID -->
+              <div class="form-group" id="vatIdRow" style="display:none">
+                <label>VAT ID <span style="font-weight:400;color:var(--text-muted)">(optional)</span></label>
+                <input type="text" name="vatId" placeholder="e.g. DE123456789">
+              </div>
+
+              <!-- Invoice Type -->
+              <div class="form-group">
+                <label>Invoice Type</label>
+                <div class="radio-group">
+                  <label class="radio-option">
+                    <input type="radio" name="invoiceType" value="individual" checked>
+                    Individual
+                  </label>
+                  <label class="radio-option">
+                    <input type="radio" name="invoiceType" value="corporate">
+                    Corporate
+                  </label>
+                </div>
+              </div>
+
+              <!-- Company Title (Corporate only) -->
+              <div class="form-group" id="companyTitleRow" style="display:none">
+                <label>Company Title <span style="font-weight:400;color:var(--text-muted)">(Legal Name)</span></label>
+                <input type="text" name="companyTitle" placeholder="Official legal company name">
+              </div>
+
+            </div>
+
+            <!-- Honeypot -->
+            <div class="hp-field" aria-hidden="true">
+              <input type="text" name="website" tabindex="-1" autocomplete="off">
+            </div>
+
+          </form>
+        </div>
+
+        <!-- ── Right: Order Summary ── -->
+        <div class="order-summary">
+          <div class="summary-header">Order Summary</div>
+          <div id="summaryContent">
+            <div class="summary-loading">Loading today's rate...</div>
+          </div>
+          <button type="button" id="payBtn" class="btn-pay" disabled>
+            Proceed to Payment
+          </button>
+          <p class="security-note">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />
+            </svg>
+            Secured by iyzico · PCI DSS Level 1
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FOOTER ════════════════════════════════════════════════ -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <a href="../" class="footer-logo">
+        <img src="../Assets/LogoBig_Dark.png" alt="UpgradeMate" />
+      </a>
+      <p class="footer-copy">© 2026 UpgradeMate. Make Windows Upgrades Actually Work.</p>
+      <ul class="footer-links">
+        <li><a href="https://x.com/upgrademate" target="_blank" rel="noopener" aria-label="X (Twitter)"><img src="../Assets/Ico_X.png" alt="X" /></a></li>
+        <li><a href="https://www.youtube.com/@UpgradeMate" target="_blank" rel="noopener" aria-label="YouTube"><img src="../Assets/Ico_Youtube.png" alt="YouTube" /></a></li>
+        <li><a href="#" aria-label="LinkedIn"><img src="../Assets/Ico_Linkedin.png" alt="LinkedIn" /></a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <!-- ═══ SCRIPTS ═══════════════════════════════════════════════ -->
+  <script>
+    // ── Nav ───────────────────────────────────────────────────────
+    const burger = document.getElementById('burger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    burger.addEventListener('click', () => {
+      burger.classList.toggle('open');
+      mobileMenu.classList.toggle('open');
+    });
+    function closeMobileMenu() {
+      burger.classList.remove('open');
+      mobileMenu.classList.remove('open');
+    }
+  </script>
+
+  <script>
+    // ── Config ────────────────────────────────────────────────────
+    const EXCHANGE_RATE_URL = 'https://api.upgrademate.io/api/exchange-rate';
+    const PAYMENT_INIT_URL  = 'https://api.upgrademate.io/api/payment-init';
+    const VAT_RATE = 0.20;
+
+    const PLANS = {
+      starter: {
+        name: 'Starter',
+        range: 'Up to 3,000 computers',
+        usd: 990,
+        featured: false
+      },
+      business: {
+        name: 'Business',
+        range: 'Up to 10,000 computers',
+        usd: 1990,
+        featured: true
+      },
+      enterprise: {
+        name: 'Enterprise',
+        range: 'Above 10,000 computers',
+        usd: 2990,
+        featured: false
+      }
+    };
+
+    // ── State ─────────────────────────────────────────────────────
+    let selectedPlan = 'business';
+    let exchangeRate = null;
+    let rateDate     = null;
+    let isTurkey     = true;
+    let isCorporate  = false;
+
+    const urlPlan = new URLSearchParams(window.location.search).get('plan');
+    if (urlPlan && PLANS[urlPlan]) selectedPlan = urlPlan;
+
+    // ── Plan Cards ────────────────────────────────────────────────
+    function renderPlanCards() {
+      document.getElementById('planCards').innerHTML = Object.entries(PLANS).map(([id, p]) => `
+        <div class="plan-card ${id === selectedPlan ? 'selected' : ''}"
+             onclick="selectPlan('${id}')">
+          ${p.featured ? '<div class="plan-card-badge">Most Popular</div>' : ''}
+          <div class="plan-card-range">${p.range}</div>
+          <div class="plan-card-name">UpgradeMate ${p.name}</div>
+          <div class="plan-card-price"><sup>$</sup>${p.usd.toLocaleString()}</div>
+          <div class="plan-card-period">per Site / year</div>
+        </div>
+      `).join('');
+    }
+
+    function selectPlan(id) {
+      selectedPlan = id;
+      renderPlanCards();
+      renderSummary();
+    }
+
+    // ── Exchange Rate ─────────────────────────────────────────────
+    async function fetchRate() {
+      try {
+        const res = await fetch(EXCHANGE_RATE_URL);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const data = await res.json();
+        exchangeRate = data.usd_try;
+        rateDate     = data.date;
+        return true;
+      } catch {
+        return false;
+      }
+    }
+
+    // ── Order Summary ─────────────────────────────────────────────
+    function formatTRY(n) {
+      return n.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' TL';
+    }
+
+    function renderSummary() {
+      const plan    = PLANS[selectedPlan];
+      const el      = document.getElementById('summaryContent');
+      const payBtn  = document.getElementById('payBtn');
+
+      if (isTurkey && !exchangeRate) return; // still loading
+
+      let html = `
+        <div class="summary-plan-name">UpgradeMate ${plan.name}</div>
+        <div class="summary-plan-range">${plan.range} · per Site / year</div>
+      `;
+
+      if (isTurkey) {
+        const base  = plan.usd * exchangeRate;
+        const vat   = base * VAT_RATE;
+        const total = base + vat;
+        html += `
+          <div class="summary-line"><span>Base price</span><span>${formatTRY(base)}</span></div>
+          <div class="summary-line"><span>KDV (%20)</span><span>${formatTRY(vat)}</span></div>
+          <div class="summary-total"><span>Total</span><span>${formatTRY(total)}</span></div>
+          <div class="summary-rate-note">TCMB kur: 1 USD = ${exchangeRate.toFixed(4)} TL${rateDate ? ' · ' + rateDate : ''}</div>
+        `;
+      } else {
+        html += `
+          <div class="summary-line"><span>Price</span><span>$${plan.usd.toLocaleString()}</span></div>
+          <div class="summary-total"><span>Total</span><span>$${plan.usd.toLocaleString()}</span></div>
+          <div class="summary-vat-exempt">VAT exempt — hizmet ihracatı</div>
+        `;
+      }
+
+      el.innerHTML = html;
+      payBtn.disabled = false;
+    }
+
+    // ── Country / Invoice Type ────────────────────────────────────
+    document.getElementById('countrySelect').addEventListener('change', function () {
+      isTurkey = this.value === 'TR';
+      document.getElementById('turkeyTaxRow').style.display  = isTurkey ? '' : 'none';
+      document.getElementById('vatIdRow').style.display      = isTurkey ? 'none' : '';
+      renderSummary();
+    });
+
+    document.querySelectorAll('[name="invoiceType"]').forEach(r => {
+      r.addEventListener('change', function () {
+        isCorporate = this.value === 'corporate';
+        document.getElementById('companyTitleRow').style.display = isCorporate ? '' : 'none';
+      });
+    });
+
+    // ── Validation ────────────────────────────────────────────────
+    const form = document.getElementById('checkoutForm');
+
+    form.querySelectorAll('input, textarea, select').forEach(el => {
+      el.addEventListener('input', function () {
+        this.classList.remove('invalid');
+        const err = this.parentNode.querySelector('.field-error');
+        if (err) err.remove();
+      });
+    });
+
+    function validateForm() {
+      let valid = true;
+      form.querySelectorAll('.invalid').forEach(el => el.classList.remove('invalid'));
+      form.querySelectorAll('.field-error').forEach(el => el.remove());
+
+      function err(input, msg) {
+        input.classList.add('invalid');
+        const div = document.createElement('div');
+        div.className = 'field-error';
+        div.textContent = msg;
+        input.parentNode.appendChild(div);
+        valid = false;
+      }
+
+      const f = form;
+      if (!f.firstName.value.trim()) err(f.firstName, 'First name is required.');
+      if (!f.lastName.value.trim())  err(f.lastName,  'Last name is required.');
+
+      if (!f.email.value.trim()) {
+        err(f.email, 'Email is required.');
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.email.value.trim())) {
+        err(f.email, 'Please enter a valid email address.');
+      }
+
+      if (!f.company.value.trim())  err(f.company, 'Company is required.');
+      if (!f.address.value.trim())  err(f.address, 'Address is required.');
+
+      if (isTurkey) {
+        if (!f.city.value.trim())      err(f.city,      'City is required.');
+        if (!f.taxOffice.value.trim()) err(f.taxOffice, 'Tax office is required.');
+        if (!f.taxNumber.value.trim()) err(f.taxNumber, 'Tax number is required.');
+      }
+
+      if (isCorporate && !f.companyTitle.value.trim()) {
+        err(f.companyTitle, 'Company title is required.');
+      }
+
+      return valid;
+    }
+
+    // ── Pay Button ────────────────────────────────────────────────
+    document.getElementById('payBtn').addEventListener('click', async function () {
+      if (!validateForm()) return;
+
+      this.disabled = true;
+      this.innerHTML = '<span class="spinner"></span> Please wait...';
+
+      const f = form;
+      const payload = {
+        plan:         selectedPlan,
+        firstName:    f.firstName.value.trim(),
+        lastName:     f.lastName.value.trim(),
+        email:        f.email.value.trim(),
+        company:      f.company.value.trim(),
+        country:      f.country.value,
+        city:         f.city.value.trim(),
+        district:     f.district.value.trim(),
+        address:      f.address.value.trim(),
+        taxOffice:    isTurkey  ? f.taxOffice.value.trim()    : '',
+        taxNumber:    isTurkey  ? f.taxNumber.value.trim()    : '',
+        vatId:        !isTurkey ? f.vatId.value.trim()        : '',
+        invoiceType:  f.querySelector('[name="invoiceType"]:checked').value,
+        companyTitle: isCorporate ? f.companyTitle.value.trim() : '',
+        _hp:          f.website.value
+      };
+
+      try {
+        const res  = await fetch(PAYMENT_INIT_URL, {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify(payload)
+        });
+        const data = await res.json();
+
+        if (!res.ok || !data.checkoutFormContent) throw new Error('init failed');
+
+        sessionStorage.setItem('iyzico_form',    data.checkoutFormContent);
+        sessionStorage.setItem('iyzico_plan',    selectedPlan);
+        sessionStorage.setItem('iyzico_summary', JSON.stringify({
+          planName: PLANS[selectedPlan].name,
+          isTurkey,
+          usd:     PLANS[selectedPlan].usd,
+          rate:    exchangeRate
+        }));
+        window.location.href = '../payment/';
+
+      } catch {
+        this.disabled = false;
+        this.textContent = 'Proceed to Payment';
+        const statusMsg = document.createElement('div');
+        statusMsg.className = 'status-msg error';
+        statusMsg.style.cssText = 'display:block;margin-top:12px';
+        statusMsg.textContent = 'Payment initialization failed. Please try again.';
+        this.parentNode.appendChild(statusMsg);
+        setTimeout(() => statusMsg.remove(), 5000);
+      }
+    });
+
+    // ── Init ─────────────────────────────────────────────────────
+    (async () => {
+      renderPlanCards();
+
+      if (isTurkey) {
+        const ok = await fetchRate();
+        if (!ok) {
+          document.getElementById('summaryContent').innerHTML = `
+            <div class="summary-error">Exchange rate temporarily unavailable.</div>
+            <button class="btn-retry" onclick="retryRate()">Retry</button>
+          `;
+          return;
+        }
+      }
+
+      renderSummary();
+    })();
+
+    async function retryRate() {
+      document.getElementById('summaryContent').innerHTML =
+        '<div class="summary-loading">Loading today\'s rate...</div>';
+      const ok = await fetchRate();
+      if (!ok) {
+        document.getElementById('summaryContent').innerHTML = `
+          <div class="summary-error">Exchange rate temporarily unavailable.</div>
+          <button class="btn-retry" onclick="retryRate()">Retry</button>
+        `;
+        return;
+      }
+      renderSummary();
+    }
+  </script>
+
+</body>
+</html>
