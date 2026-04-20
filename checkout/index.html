@@ -27,39 +27,56 @@
     .plan-cards {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
+      gap: 20px;
+      max-width: 860px;
+      margin: 0 auto 32px;
     }
 
     .plan-card {
       background: var(--bg-card);
-      border: 2px solid var(--border);
+      border: 1px solid var(--border);
       border-radius: var(--radius-lg);
-      padding: 20px;
-      cursor: pointer;
-      transition: border-color .2s, background .2s;
+      padding: 36px 28px;
+      text-align: center;
       position: relative;
+      cursor: pointer;
+      transition: transform .2s, border-color .2s, box-shadow .2s;
     }
-    .plan-card:hover { border-color: rgba(5,120,212,.4); }
+    .plan-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(0,0,0,.3);
+    }
     .plan-card.selected {
       border-color: var(--accent);
-      background: rgba(5,120,212,.06);
+      background: linear-gradient(160deg, rgba(5,120,212,.12) 0%, var(--bg-card) 60%);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(0,0,0,.3);
+    }
+    .plan-card.featured {
+      border-color: rgba(5,120,212,.4);
+      background: linear-gradient(160deg, rgba(5,120,212,.1) 0%, var(--bg-card) 60%);
     }
     .plan-card-badge {
       position: absolute;
-      top: -10px; left: 50%;
+      top: -13px; left: 50%;
       transform: translateX(-50%);
       background: var(--accent);
       color: #fff;
       font-size: 11px;
-      font-weight: 600;
-      padding: 2px 10px;
-      border-radius: 99px;
+      font-weight: 700;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      padding: 3px 14px;
+      border-radius: 100px;
       white-space: nowrap;
     }
     .plan-card-range {
-      font-size: 12px;
+      font-size: 13px;
+      font-weight: 800;
       color: var(--text-muted);
-      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      margin-bottom: 16px;
     }
     .plan-card-name {
       font-size: 15px;
@@ -68,16 +85,32 @@
       margin-bottom: 8px;
     }
     .plan-card-price {
-      font-size: 24px;
-      font-weight: 800;
-      color: var(--accent);
+      font-size: 48px;
+      font-weight: 600;
+      line-height: 1;
+      background: linear-gradient(135deg, #0578D4, #4db8ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
-    .plan-card-price sup { font-size: 14px; font-weight: 600; vertical-align: super; }
+    .plan-card-price sup {
+      font-size: 22px;
+      font-weight: 600;
+      vertical-align: super;
+      line-height: 0;
+    }
     .plan-card-period {
-      font-size: 12px;
+      font-size: 13px;
       color: var(--text-muted);
-      margin-top: 2px;
+      margin-top: 8px;
+      margin-bottom: 24px;
     }
+    .plan-card-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 0 0 16px;
+    }
+    .plan-card-note { font-size: 13px; color: var(--text-muted); }
 
     /* ─── CHECKOUT LAYOUT ───────────────────────────────────────── */
     .checkout-layout {
@@ -255,8 +288,8 @@
       .order-summary { position: static; }
     }
     @media (max-width: 680px) {
-      .plan-cards { grid-template-columns: 1fr; }
-      .plan-card { padding-top: 24px; }
+      .plan-cards { grid-template-columns: 1fr; max-width: 100%; }
+      .plan-card { padding: 28px 20px; }
     }
     @media (max-width: 560px) {
       .form-row { grid-template-columns: 1fr; }
@@ -364,7 +397,8 @@
               <div class="form-group">
                 <label>Country</label>
                 <select name="country" id="countrySelect">
-                  <option value="TR" selected>Turkey</option>
+                  <option value="" disabled selected>Select a country...</option>
+                  <option value="TR">Turkey</option>
                   <option value="DE">Germany</option>
                   <option value="FR">France</option>
                   <option value="NL">Netherlands</option>
@@ -383,7 +417,7 @@
                 </select>
               </div>
 
-              <div class="form-row" id="cityDistrictRow">
+              <div class="form-row" id="cityDistrictRow" style="display:none">
                 <div class="form-group">
                   <label>City</label>
                   <input type="text" name="city" placeholder="City">
@@ -400,7 +434,7 @@
               </div>
 
               <!-- Turkey: Tax Office + Tax Number -->
-              <div class="form-row" id="turkeyTaxRow">
+              <div class="form-row" id="turkeyTaxRow" style="display:none">
                 <div class="form-group">
                   <label>Tax Office</label>
                   <input type="text" name="taxOffice" placeholder="Tax Office">
@@ -510,18 +544,21 @@
         name: 'Starter',
         range: 'Up to 3,000 computers',
         usd: 990,
+        note: 'Fixed rate — ideal for small & mid-size orgs',
         featured: false
       },
       business: {
         name: 'Business',
         range: 'Up to 10,000 computers',
         usd: 1990,
+        note: 'Fixed rate — perfect for large enterprises',
         featured: true
       },
       enterprise: {
         name: 'Enterprise',
         range: 'Above 10,000 computers',
         usd: 2990,
+        note: 'Fixed rate — unlimited scale, one price',
         featured: false
       }
     };
@@ -530,7 +567,7 @@
     let selectedPlan = 'business';
     let exchangeRate = null;
     let rateDate     = null;
-    let isTurkey     = true;
+    let isTurkey     = false;
     let isCorporate  = false;
 
     const urlPlan = new URLSearchParams(window.location.search).get('plan');
@@ -539,13 +576,14 @@
     // ── Plan Cards ────────────────────────────────────────────────
     function renderPlanCards() {
       document.getElementById('planCards').innerHTML = Object.entries(PLANS).map(([id, p]) => `
-        <div class="plan-card ${id === selectedPlan ? 'selected' : ''}"
+        <div class="plan-card ${id === selectedPlan ? 'selected' : ''} ${p.featured ? 'featured' : ''}"
              onclick="selectPlan('${id}')">
           ${p.featured ? '<div class="plan-card-badge">Most Popular</div>' : ''}
           <div class="plan-card-range">${p.range}</div>
-          <div class="plan-card-name">UpgradeMate ${p.name}</div>
           <div class="plan-card-price"><sup>$</sup>${p.usd.toLocaleString()}</div>
           <div class="plan-card-period">per Site / year</div>
+          <div class="plan-card-divider"></div>
+          <div class="plan-card-note">${p.note}</div>
         </div>
       `).join('');
     }
@@ -576,11 +614,15 @@
     }
 
     function renderSummary() {
-      const plan    = PLANS[selectedPlan];
-      const el      = document.getElementById('summaryContent');
-      const payBtn  = document.getElementById('payBtn');
+      const plan   = PLANS[selectedPlan];
+      const el     = document.getElementById('summaryContent');
+      const payBtn = document.getElementById('payBtn');
 
-      if (isTurkey && !exchangeRate) return; // still loading
+      if (!isTurkey && document.getElementById('countrySelect').value === '') {
+        el.innerHTML = '<div class="summary-loading">Select a country to see pricing.</div>';
+        return;
+      }
+      if (isTurkey && !exchangeRate) return;
 
       let html = `
         <div class="summary-plan-name">UpgradeMate ${plan.name}</div>
@@ -592,9 +634,9 @@
         const vat   = base * VAT_RATE;
         const total = base + vat;
         html += `
-          <div class="summary-line"><span>Base price</span><span>${formatTRY(base)}</span></div>
+          <div class="summary-line"><span>Fiyat</span><span>${formatTRY(base)}</span></div>
           <div class="summary-line"><span>KDV (%20)</span><span>${formatTRY(vat)}</span></div>
-          <div class="summary-total"><span>Total</span><span>${formatTRY(total)}</span></div>
+          <div class="summary-total"><span>Toplam (KDV dahil)</span><span>${formatTRY(total)}</span></div>
           <div class="summary-rate-note">TCMB kur: 1 USD = ${exchangeRate.toFixed(4)} TL${rateDate ? ' · ' + rateDate : ''}</div>
         `;
       } else {
@@ -610,10 +652,25 @@
     }
 
     // ── Country / Invoice Type ────────────────────────────────────
-    document.getElementById('countrySelect').addEventListener('change', function () {
+    document.getElementById('countrySelect').addEventListener('change', async function () {
       isTurkey = this.value === 'TR';
-      document.getElementById('turkeyTaxRow').style.display  = isTurkey ? '' : 'none';
-      document.getElementById('vatIdRow').style.display      = isTurkey ? 'none' : '';
+      document.getElementById('cityDistrictRow').style.display = '';
+      document.getElementById('turkeyTaxRow').style.display    = isTurkey ? '' : 'none';
+      document.getElementById('vatIdRow').style.display        = isTurkey ? 'none' : '';
+
+      if (isTurkey && !exchangeRate) {
+        document.getElementById('summaryContent').innerHTML =
+          '<div class="summary-loading">Loading today\'s rate...</div>';
+        document.getElementById('payBtn').disabled = true;
+        const ok = await fetchRate();
+        if (!ok) {
+          document.getElementById('summaryContent').innerHTML = `
+            <div class="summary-error">Exchange rate temporarily unavailable.</div>
+            <button class="btn-retry" onclick="retryRate()">Retry</button>
+          `;
+          return;
+        }
+      }
       renderSummary();
     });
 
@@ -660,6 +717,7 @@
       }
 
       if (!f.company.value.trim())  err(f.company, 'Company is required.');
+      if (!f.country.value)         err(f.country, 'Please select a country.');
       if (!f.address.value.trim())  err(f.address, 'Address is required.');
 
       if (isTurkey) {
@@ -734,22 +792,9 @@
     });
 
     // ── Init ─────────────────────────────────────────────────────
-    (async () => {
-      renderPlanCards();
-
-      if (isTurkey) {
-        const ok = await fetchRate();
-        if (!ok) {
-          document.getElementById('summaryContent').innerHTML = `
-            <div class="summary-error">Exchange rate temporarily unavailable.</div>
-            <button class="btn-retry" onclick="retryRate()">Retry</button>
-          `;
-          return;
-        }
-      }
-
-      renderSummary();
-    })();
+    renderPlanCards();
+    document.getElementById('summaryContent').innerHTML =
+      '<div class="summary-loading">Select a country to see pricing.</div>';
 
     async function retryRate() {
       document.getElementById('summaryContent').innerHTML =
