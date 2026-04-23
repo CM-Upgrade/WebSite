@@ -227,6 +227,10 @@
         document.getElementById('successTitle').textContent = 'Trial request received!';
         document.getElementById('successSub').innerHTML =
           'Thank you for your free trial request.<br>We\'ll send your trial licence to your e-mail address soon.';
+      } else if (type === 'contact') {
+        document.getElementById('successTitle').textContent = 'Contact request received!';
+        document.getElementById('successSub').innerHTML =
+          'Thank you for reaching out. We\'ll get back to you via email soon.';
       }
     }
   </script>
