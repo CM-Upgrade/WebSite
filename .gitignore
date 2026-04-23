@@ -7,5 +7,4 @@ AzuriteConfig
 .DS_Store
 
 # Claude
-.claude/settings.local.json
-CLAUDE.md
+.claude/
