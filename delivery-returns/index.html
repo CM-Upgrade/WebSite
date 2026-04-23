@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Delivery &amp; Returns – UpgradeMate</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="../Assets/Ico_Web_32.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../Assets/site.css" />
+  <style>
+    /* ─── LEGAL PAGE ────────────────────────────────────────────── */
+    .legal-section { padding: 0 0 96px; }
+    .legal-section .container { max-width: 860px; }
+
+    .legal-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 48px 56px;
+    }
+
+    .legal-updated {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 32px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .legal-card h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-head);
+      margin-top: 36px;
+      margin-bottom: 12px;
+      letter-spacing: -.01em;
+    }
+
+    .legal-card h2:first-of-type { margin-top: 0; }
+
+    .legal-card h3 {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-head);
+      margin-top: 20px;
+      margin-bottom: 8px;
+    }
+
+    .legal-card p,
+    .legal-card li {
+      font-size: 15px;
+      color: var(--text-body);
+      line-height: 1.75;
+    }
+
+    .legal-card p { margin-bottom: 14px; }
+
+    .legal-card ul {
+      padding-left: 22px;
+      margin-bottom: 14px;
+    }
+
+    .legal-card li { margin-bottom: 6px; }
+
+    .legal-card a {
+      color: var(--accent);
+      transition: color .2s;
+    }
+
+    .legal-card a:hover { color: #4db8ff; }
+
+    .legal-card strong { color: var(--text-head); font-weight: 600; }
+
+    .info-block {
+      background: rgba(5,120,212,.06);
+      border: 1px solid rgba(5,120,212,.18);
+      border-radius: var(--radius);
+      padding: 20px 22px;
+      margin: 18px 0 22px;
+    }
+
+    .info-block p { margin-bottom: 4px; }
+    .info-block p:last-child { margin-bottom: 0; }
+
+    @media (max-width: 700px) {
+      .legal-card { padding: 28px 22px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══ NAVIGATION ═══════════════════════════════════════════ -->
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a href="../" class="nav-logo">
+        <img src="../Assets/LogoBig_Dark.png" alt="UpgradeMate" />
+      </a>
+      <ul class="nav-links">
+        <li><a href="../#features">Features</a></li>
+        <li><a href="../#for-users">For Users</a></li>
+        <li><a href="../#for-admins">For IT Admins</a></li>
+        <li><a href="../#pricing">Pricing</a></li>
+        <li><a href="https://docs.upgrademate.io">Documents</a></li>
+        <li><a href="../contact">Contact Us</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="../trynow" class="btn btn-primary">Try Now</a>
+      </div>
+      <button class="burger" id="burger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ═══ MOBILE MENU ══════════════════════════════════════════ -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="../#features" onclick="closeMobileMenu()">Features</a>
+    <a href="../#for-users" onclick="closeMobileMenu()">For Users</a>
+    <a href="../#for-admins" onclick="closeMobileMenu()">For IT Admins</a>
+    <a href="../#pricing" onclick="closeMobileMenu()">Pricing</a>
+    <a href="https://docs.upgrademate.io" onclick="closeMobileMenu()">Documents</a>
+    <a href="../contact" onclick="closeMobileMenu()">Contact Us</a>
+  </div>
+
+  <!-- ═══ PAGE HERO ═════════════════════════════════════════════ -->
+  <section class="page-hero">
+    <div class="container">
+      <div class="tag fade-up fade-up-delay-1">Legal</div>
+      <h1 class="page-hero-title fade-up fade-up-delay-2">
+        Delivery &amp; <span class="highlight">Returns</span>
+      </h1>
+      <p class="page-hero-sub fade-up fade-up-delay-3">
+        How we deliver your license, and our policy on returns and refunds.
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══ LEGAL CONTENT ═════════════════════════════════════════ -->
+  <section class="legal-section">
+    <div class="container">
+      <div class="legal-card fade-up fade-up-delay-1">
+
+        <div class="legal-updated">Last updated: April 23, 2026</div>
+
+        <p>
+          UpgradeMate is a digital software product. This page explains how your license is
+          delivered after purchase and the terms that apply to returns and refunds.
+        </p>
+
+        <h2>1. Product and Delivery</h2>
+
+        <h3>1.1 What You Receive</h3>
+        <p>
+          UpgradeMate is delivered digitally. After your payment is successfully processed, you will
+          receive an email containing your license key, the software download link, and installation
+          instructions. No physical goods are shipped.
+        </p>
+
+        <h3>1.2 Delivery Time</h3>
+        <p>
+          Delivery is made by email within <strong>24 hours</strong> after your payment is confirmed.
+          In most cases delivery is much faster. If you have not received your license within 24
+          hours, please check your spam folder first, then contact us at
+          <a href="mailto:info@upgrademate.io">info@upgrademate.io</a>.
+        </p>
+
+        <h3>1.3 Delivery Address</h3>
+        <p>
+          Your license is delivered to the email address you provide at checkout. Please make sure
+          this address is correct and that you can receive messages from our domain.
+        </p>
+
+        <h2>2. Returns and Refunds</h2>
+
+        <h3>2.1 No Refunds After Delivery</h3>
+        <p>
+          UpgradeMate is a digital software product with a license that is delivered electronically
+          and takes effect immediately. <strong>Once the license key and download link have been
+          sent to you, the sale is considered complete and refunds are not accepted.</strong> By
+          completing your purchase you acknowledge that delivery begins immediately and waive any
+          applicable right of withdrawal for digital goods.
+        </p>
+
+        <h3>2.2 Try Before You Buy</h3>
+        <p>
+          To help you evaluate whether UpgradeMate fits your environment before you commit, we offer
+          a free 10-day trial. You can request it at
+          <a href="../trynow">upgrademate.io/trynow</a>. We strongly recommend completing the trial
+          before purchasing a license.
+        </p>
+
+        <h3>2.3 Technical Issues</h3>
+        <p>
+          If you experience a technical problem with your license or with installing or running the
+          software, our support team will help you resolve it. Please contact us at
+          <a href="mailto:info@upgrademate.io">info@upgrademate.io</a> with a description of the
+          issue and we will respond as quickly as possible.
+        </p>
+
+        <h2>3. Payment and Cancellations</h2>
+        <p>
+          If your payment fails or is not completed, no license is delivered and no charge is
+          retained. If you notice an unauthorized transaction, please contact us immediately at
+          <a href="mailto:info@upgrademate.io">info@upgrademate.io</a> so we can investigate.
+        </p>
+
+        <h2>4. Contact</h2>
+        <p>For questions about delivery, your license, or this policy, please contact us:</p>
+        <div class="info-block">
+          <p>Email: <a href="mailto:info@upgrademate.io">info@upgrademate.io</a></p>
+          <p>Website: <a href="https://upgrademate.io">upgrademate.io</a></p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FOOTER ════════════════════════════════════════════════ -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <a href="../" class="footer-logo">
+          <img src="../Assets/LogoBig_Dark.png" alt="UpgradeMate" />
+        </a>
+        <p class="footer-copy">© 2026 UpgradeMate. All rights reserved.</p>
+      </div>
+      <div class="footer-meta">
+        <div class="footer-legal">
+          <a href="../privacy/">Privacy Policy</a>
+          <a href="../delivery-returns/">Delivery &amp; Returns</a>
+          <a href="../terms/">Terms of Use</a>
+        </div>
+        <ul class="footer-links">
+          <li><a href="https://x.com/upgrademate" target="_blank" rel="noopener" aria-label="X (Twitter)"><img src="../Assets/Ico_X.png" alt="X" /></a></li>
+          <li><a href="https://www.youtube.com/@UpgradeMate" target="_blank" rel="noopener" aria-label="YouTube"><img src="../Assets/Ico_Youtube.png" alt="YouTube" /></a></li>
+          <li><a href="#" aria-label="LinkedIn"><img src="../Assets/Ico_Linkedin.png" alt="LinkedIn" /></a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const burger = document.getElementById('burger');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    burger.addEventListener('click', () => {
+      burger.classList.toggle('open');
+      mobileMenu.classList.toggle('open');
+    });
+
+    function closeMobileMenu() {
+      burger.classList.remove('open');
+      mobileMenu.classList.remove('open');
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Terms of Use – UpgradeMate</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="../Assets/Ico_Web_32.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../Assets/site.css" />
+  <style>
+    /* ─── LEGAL PAGE ────────────────────────────────────────────── */
+    .legal-section { padding: 0 0 96px; }
+    .legal-section .container { max-width: 860px; }
+
+    .legal-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 48px 56px;
+    }
+
+    .legal-updated {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 32px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .legal-card h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-head);
+      margin-top: 36px;
+      margin-bottom: 12px;
+      letter-spacing: -.01em;
+    }
+
+    .legal-card h2:first-of-type { margin-top: 0; }
+
+    .legal-card h3 {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-head);
+      margin-top: 20px;
+      margin-bottom: 8px;
+    }
+
+    .legal-card p,
+    .legal-card li {
+      font-size: 15px;
+      color: var(--text-body);
+      line-height: 1.75;
+    }
+
+    .legal-card p { margin-bottom: 14px; }
+
+    .legal-card ul {
+      padding-left: 22px;
+      margin-bottom: 14px;
+    }
+
+    .legal-card li { margin-bottom: 6px; }
+
+    .legal-card a {
+      color: var(--accent);
+      transition: color .2s;
+    }
+
+    .legal-card a:hover { color: #4db8ff; }
+
+    .legal-card strong { color: var(--text-head); font-weight: 600; }
+
+    .info-block {
+      background: rgba(5,120,212,.06);
+      border: 1px solid rgba(5,120,212,.18);
+      border-radius: var(--radius);
+      padding: 20px 22px;
+      margin: 18px 0 22px;
+    }
+
+    .info-block p { margin-bottom: 4px; }
+    .info-block p:last-child { margin-bottom: 0; }
+
+    @media (max-width: 700px) {
+      .legal-card { padding: 28px 22px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══ NAVIGATION ═══════════════════════════════════════════ -->
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a href="../" class="nav-logo">
+        <img src="../Assets/LogoBig_Dark.png" alt="UpgradeMate" />
+      </a>
+      <ul class="nav-links">
+        <li><a href="../#features">Features</a></li>
+        <li><a href="../#for-users">For Users</a></li>
+        <li><a href="../#for-admins">For IT Admins</a></li>
+        <li><a href="../#pricing">Pricing</a></li>
+        <li><a href="https://docs.upgrademate.io">Documents</a></li>
+        <li><a href="../contact">Contact Us</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="../trynow" class="btn btn-primary">Try Now</a>
+      </div>
+      <button class="burger" id="burger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ═══ MOBILE MENU ══════════════════════════════════════════ -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="../#features" onclick="closeMobileMenu()">Features</a>
+    <a href="../#for-users" onclick="closeMobileMenu()">For Users</a>
+    <a href="../#for-admins" onclick="closeMobileMenu()">For IT Admins</a>
+    <a href="../#pricing" onclick="closeMobileMenu()">Pricing</a>
+    <a href="https://docs.upgrademate.io" onclick="closeMobileMenu()">Documents</a>
+    <a href="../contact" onclick="closeMobileMenu()">Contact Us</a>
+  </div>
+
+  <!-- ═══ PAGE HERO ═════════════════════════════════════════════ -->
+  <section class="page-hero">
+    <div class="container">
+      <div class="tag fade-up fade-up-delay-1">Legal</div>
+      <h1 class="page-hero-title fade-up fade-up-delay-2">
+        Terms of <span class="highlight">Use</span>
+      </h1>
+      <p class="page-hero-sub fade-up fade-up-delay-3">
+        The terms that govern your use of UpgradeMate and our website.
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══ LEGAL CONTENT ═════════════════════════════════════════ -->
+  <section class="legal-section">
+    <div class="container">
+      <div class="legal-card fade-up fade-up-delay-1">
+
+        <div class="legal-updated">Last updated: April 23, 2026</div>
+
+        <p>
+          These Terms of Use ("Terms") govern your access to and use of the UpgradeMate software
+          and the website at <a href="https://upgrademate.io">upgrademate.io</a>. By purchasing,
+          installing, or using UpgradeMate, you agree to these Terms. If you do not agree, do not
+          use the software.
+        </p>
+
+        <h2>1. License Grant</h2>
+
+        <h3>1.1 Grant</h3>
+        <p>
+          Subject to your compliance with these Terms and payment of the applicable fees, we grant
+          you a non-exclusive, non-transferable, non-sublicensable license to install and use
+          UpgradeMate within your organization for the plan and term you purchased (per Site / year).
+        </p>
+
+        <h3>1.2 Trial Licenses</h3>
+        <p>
+          Trial licenses are provided for evaluation purposes only and expire at the end of the
+          trial period. Trial use is subject to the same restrictions as a paid license. We may
+          revoke a trial license at any time.
+        </p>
+
+        <h3>1.3 Delivery</h3>
+        <p>
+          Your license key and software download link are delivered by email after payment is
+          confirmed, as described in our
+          <a href="../delivery-returns/">Delivery &amp; Returns Policy</a>.
+        </p>
+
+        <h2>2. Restrictions</h2>
+        <p>You agree not to:</p>
+        <ul>
+          <li>Use UpgradeMate beyond the scope of your licensed plan (e.g., for more sites or computers than covered)</li>
+          <li>Copy, modify, translate, or create derivative works of the software, except as permitted by applicable law</li>
+          <li>Reverse engineer, decompile, or disassemble the software, except to the extent such restriction is prohibited by law</li>
+          <li>Rent, lease, lend, sell, sublicense, or otherwise transfer the software or license key to a third party</li>
+          <li>Remove or alter any proprietary notices or labels on the software</li>
+          <li>Use the software to develop a competing product</li>
+          <li>Use the software in any way that violates applicable laws or regulations</li>
+        </ul>
+
+        <h2>3. Ownership</h2>
+        <p>
+          UpgradeMate is licensed, not sold. We retain all right, title, and interest in and to the
+          software, including all intellectual property rights. These Terms do not grant you any
+          rights to our trademarks, service marks, or logos.
+        </p>
+        <p>
+          If you provide us with feedback, suggestions, or ideas about the software, you grant us a
+          perpetual, royalty-free, worldwide license to use that feedback for any purpose, without
+          obligation to you.
+        </p>
+
+        <h2>4. Fees, Payments, and Refunds</h2>
+        <p>
+          Fees for the software are stated on our pricing page and are charged per Site per year.
+          All fees are exclusive of applicable taxes (such as VAT), which will be added where
+          required by law. Payment is due in advance for the applicable term.
+        </p>
+        <p>
+          Because UpgradeMate is a digital product delivered electronically and takes effect on
+          delivery, refunds are not accepted once your license has been delivered. Full details
+          are in our <a href="../delivery-returns/">Delivery &amp; Returns Policy</a>. We recommend
+          using our free trial to evaluate the software before purchasing.
+        </p>
+
+        <h2>5. Warranty Disclaimer</h2>
+        <p>
+          UpgradeMate is provided <strong>"AS IS" and "AS AVAILABLE"</strong>, without warranty of
+          any kind, whether express, implied, or statutory, including but not limited to warranties
+          of merchantability, fitness for a particular purpose, and non-infringement. We do not
+          warrant that the software will be uninterrupted, error-free, or free of harmful components,
+          or that defects will be corrected. You use the software at your own risk.
+        </p>
+
+        <h2>6. Limitation of Liability</h2>
+        <p>
+          To the maximum extent permitted by law, in no event will we be liable for any indirect,
+          incidental, special, consequential, or punitive damages, or any loss of profits, revenue,
+          data, or goodwill arising out of or in connection with your use of the software, even if
+          we have been advised of the possibility of such damages.
+        </p>
+        <p>
+          Our total aggregate liability arising out of or related to these Terms or the software
+          will not exceed the fees you paid to us for the software in the twelve (12) months
+          preceding the event giving rise to the claim.
+        </p>
+
+        <h2>7. Term and Termination</h2>
+        <p>
+          Your license remains in effect for the term you purchased. Either party may terminate
+          these Terms for material breach if the breach is not cured within thirty (30) days after
+          written notice. We may suspend or terminate your license immediately if you materially
+          violate Section 2 (Restrictions).
+        </p>
+        <p>
+          Upon termination, your right to use the software ends and you must stop all use, uninstall
+          the software, and destroy all copies in your possession. Sections 3, 5, 6, 8, and 9 will
+          survive termination.
+        </p>
+
+        <h2>8. Changes to These Terms</h2>
+        <p>
+          We may update these Terms from time to time. The "Last updated" date above indicates when
+          the most recent changes were made. Material changes will be communicated via our website.
+          Continued use of the software after the changes take effect constitutes acceptance of the
+          updated Terms.
+        </p>
+
+        <h2>9. Governing Law</h2>
+        <p>
+          These Terms are governed by the laws of the Republic of Türkiye, without regard to its
+          conflict of laws principles. Any dispute arising out of or related to these Terms will be
+          subject to the exclusive jurisdiction of the courts and enforcement offices of Istanbul,
+          Türkiye.
+        </p>
+
+        <h2>10. Contact</h2>
+        <p>For questions about these Terms, please contact us:</p>
+        <div class="info-block">
+          <p>Email: <a href="mailto:info@upgrademate.io">info@upgrademate.io</a></p>
+          <p>Website: <a href="https://upgrademate.io">upgrademate.io</a></p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FOOTER ════════════════════════════════════════════════ -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <a href="../" class="footer-logo">
+          <img src="../Assets/LogoBig_Dark.png" alt="UpgradeMate" />
+        </a>
+        <p class="footer-copy">© 2026 UpgradeMate. All rights reserved.</p>
+      </div>
+      <div class="footer-meta">
+        <div class="footer-legal">
+          <a href="../privacy/">Privacy Policy</a>
+          <a href="../delivery-returns/">Delivery &amp; Returns</a>
+          <a href="../terms/">Terms of Use</a>
+        </div>
+        <ul class="footer-links">
+          <li><a href="https://x.com/upgrademate" target="_blank" rel="noopener" aria-label="X (Twitter)"><img src="../Assets/Ico_X.png" alt="X" /></a></li>
+          <li><a href="https://www.youtube.com/@UpgradeMate" target="_blank" rel="noopener" aria-label="YouTube"><img src="../Assets/Ico_Youtube.png" alt="YouTube" /></a></li>
+          <li><a href="#" aria-label="LinkedIn"><img src="../Assets/Ico_Linkedin.png" alt="LinkedIn" /></a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const burger = document.getElementById('burger');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    burger.addEventListener('click', () => {
+      burger.classList.toggle('open');
+      mobileMenu.classList.toggle('open');
+    });
+
+    function closeMobileMenu() {
+      burger.classList.remove('open');
+      mobileMenu.classList.remove('open');
+    }
+  </script>
+
+</body>
+</html>
