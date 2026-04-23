@@ -8,3 +8,9 @@ AzuriteConfig
 
 # Claude
 .claude/
+
+# Local-only wiki (not synced to GitHub)
+wiki/
+
+# IDE
+.vscode/
