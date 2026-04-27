@@ -498,6 +498,7 @@
             <div class="form-card">
               <div class="form-card-title">Billing Information</div>
 
+              <!-- Country -->
               <div class="form-group">
                 <label>Country</label>
                 <select name="country" id="countrySelect">
@@ -505,67 +506,95 @@
                 </select>
               </div>
 
-              <div class="form-row" id="cityDistrictRow" style="display:none">
-                <div class="form-group">
-                  <label>City</label>
-                  <input type="text" name="city">
+              <!-- Address fields (shown after country selected) -->
+              <div id="addressGroup" style="display:none">
+
+                <!-- City + Postal Code -->
+                <div class="form-row">
+                  <div class="form-group">
+                    <label>City</label>
+                    <input type="text" name="city">
+                  </div>
+                  <div class="form-group">
+                    <label>Postal Code</label>
+                    <input type="text" name="postalCode">
+                  </div>
                 </div>
-                <div class="form-group">
-                  <label>District</label>
+
+                <!-- District (TR only, optional) -->
+                <div class="form-group" id="districtField" style="display:none">
+                  <label>District <span style="font-weight:400;color:var(--text-muted)">(optional)</span></label>
                   <input type="text" name="district">
                 </div>
-              </div>
 
-              <div class="form-group">
-                <label>Full Address</label>
-                <textarea name="address"></textarea>
-              </div>
+                <!-- State / Region (non-TR only, optional) -->
+                <div class="form-group" id="stateField" style="display:none">
+                  <label>State / Region <span style="font-weight:400;color:var(--text-muted)">(optional)</span></label>
+                  <input type="text" name="state">
+                </div>
 
-              <!-- Turkey: Tax Office + Tax Number -->
-              <div class="form-row" id="turkeyTaxRow" style="display:none">
+                <!-- Full Address -->
                 <div class="form-group">
-                  <label>Tax Office</label>
-                  <input type="text" name="taxOffice">
+                  <label>Full Address</label>
+                  <textarea name="address"></textarea>
                 </div>
+
+                <!-- Invoice Type -->
                 <div class="form-group">
-                  <label>Tax Number</label>
-                  <input type="text" name="taxNumber">
+                  <label>Invoice Type</label>
+                  <div class="radio-group">
+                    <label class="radio-option">
+                      <input type="radio" name="invoiceType" value="individual" checked>
+                      Individual
+                    </label>
+                    <label class="radio-option">
+                      <input type="radio" name="invoiceType" value="corporate">
+                      Corporate
+                    </label>
+                  </div>
                 </div>
-              </div>
 
-              <!-- Non-Turkey: VAT ID -->
-              <div class="form-group" id="vatIdRow" style="display:none">
-                <label>VAT ID <span style="font-weight:400;color:var(--text-muted)">(optional)</span></label>
-                <input type="text" name="vatId">
-              </div>
-
-              <!-- Invoice Type -->
-              <div class="form-group">
-                <label>Invoice Type</label>
-                <div class="radio-group">
-                  <label class="radio-option">
-                    <input type="radio" name="invoiceType" value="individual" checked>
-                    Individual
-                  </label>
-                  <label class="radio-option">
-                    <input type="radio" name="invoiceType" value="corporate">
-                    Corporate
-                  </label>
+                <!-- TR Individual: TC Kimlik No (required) -->
+                <div class="form-group" id="trIndividualRow" style="display:none">
+                  <label>TC Kimlik No</label>
+                  <input type="text" name="tcKimlik" maxlength="11" inputmode="numeric">
                 </div>
-              </div>
 
-              <!-- Corporate only: Company Title + Tax Number -->
-              <div class="form-row" id="corporateRow" style="display:none">
-                <div class="form-group">
-                  <label>Company Title <span style="font-weight:400;color:var(--text-muted)">(Legal Name)</span></label>
-                  <input type="text" name="companyTitle">
-                </div>
-                <div class="form-group">
-                  <label>Tax Number</label>
-                  <input type="text" name="corporateTaxNumber">
-                </div>
-              </div>
+                <!-- Corporate fields (shown only when Corporate selected) -->
+                <div id="corporateFields" style="display:none">
 
+                  <div class="form-group">
+                    <label>Company Title <span style="font-weight:400;color:var(--text-muted)">(Legal Name)</span></label>
+                    <input type="text" name="companyTitle">
+                  </div>
+
+                  <!-- TR Corporate sub-fields (both required) -->
+                  <div class="form-row" id="trCorporateRow" style="display:none">
+                    <div class="form-group">
+                      <label>Tax Office</label>
+                      <input type="text" name="taxOffice">
+                    </div>
+                    <div class="form-group">
+                      <label>Tax Number (VKN)</label>
+                      <input type="text" name="taxNumber">
+                    </div>
+                  </div>
+
+                  <!-- Non-TR Corporate sub-fields (both optional) -->
+                  <div class="form-row" id="foreignCorporateRow" style="display:none">
+                    <div class="form-group">
+                      <label>Tax / Registration Number <span style="font-weight:400;color:var(--text-muted)">(optional)</span></label>
+                      <input type="text" name="corporateTaxNumber">
+                    </div>
+                    <div class="form-group">
+                      <label>VAT ID <span style="font-weight:400;color:var(--text-muted)">(optional)</span></label>
+                      <input type="text" name="vatId">
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
             </div>
 
             <!-- Honeypot -->
@@ -658,23 +687,21 @@
     const VAT_RATE = 0.20;
 
     const PLANS = {
-      starter: {
-        name: 'Starter',
-        range: 'Up to 3,000 computers',
-        usd: 990,
+      // GEÇİCİ: p3k test fiyatı $1 — iyzico Canlı sonrası 990'a geri al
+      p3k: {
+        name: 'Up to 3,000 Devices',
+        usd: 1,
         note: 'Fixed rate — ideal for small & mid-size orgs',
         featured: false
       },
-      business: {
-        name: 'Business',
-        range: 'Up to 10,000 computers',
+      p10k: {
+        name: 'Up to 10,000 Devices',
         usd: 1990,
         note: 'Fixed rate — perfect for large enterprises',
         featured: true
       },
-      enterprise: {
-        name: 'Enterprise',
-        range: 'Above 10,000 computers',
+      p10kplus: {
+        name: '10,000+ Devices',
         usd: 2990,
         note: 'Fixed rate — unlimited scale, one price',
         featured: false
@@ -682,7 +709,7 @@
     };
 
     // ── State ─────────────────────────────────────────────────────
-    let selectedPlan = 'business';
+    let selectedPlan = 'p10k';
     let exchangeRate = null;
     let rateDate     = null;
     let isTurkey     = false;
@@ -725,7 +752,7 @@
       document.getElementById('planCards').innerHTML = Object.entries(PLANS).map(([id, p]) => `
         <div class="plan-card ${id === selectedPlan ? 'selected' : ''} ${p.featured ? 'featured' : ''}"
              onclick="selectPlan('${id}')">
-          <div class="plan-card-range">${p.range}</div>
+          <div class="plan-card-range">${p.name}</div>
           <div class="plan-card-price"><sup>$</sup>${p.usd.toLocaleString()}</div>
           <div class="plan-card-period">per Site / year</div>
           <div class="plan-card-divider"></div>
@@ -772,7 +799,7 @@
 
       let html = `
         <div class="summary-plan-name">UpgradeMate ${plan.name}</div>
-        <div class="summary-plan-range">${plan.range} · per Site / year</div>
+        <div class="summary-plan-range">per Site / year</div>
       `;
 
       if (isTurkey) {
@@ -798,11 +825,19 @@
     }
 
     // ── Country / Invoice Type ────────────────────────────────────
+    function applyCorporateFieldVisibility() {
+      document.getElementById('corporateFields').style.display      = isCorporate ? '' : 'none';
+      document.getElementById('trCorporateRow').style.display       = (isCorporate && isTurkey)  ? '' : 'none';
+      document.getElementById('foreignCorporateRow').style.display  = (isCorporate && !isTurkey) ? '' : 'none';
+      document.getElementById('trIndividualRow').style.display      = (!isCorporate && isTurkey) ? '' : 'none';
+    }
+
     document.getElementById('countrySelect').addEventListener('change', async function () {
       isTurkey = this.value === 'TR';
-      document.getElementById('cityDistrictRow').style.display = '';
-      document.getElementById('turkeyTaxRow').style.display    = isTurkey ? '' : 'none';
-      document.getElementById('vatIdRow').style.display        = isTurkey ? 'none' : '';
+      document.getElementById('addressGroup').style.display  = '';
+      document.getElementById('districtField').style.display = isTurkey ? '' : 'none';
+      document.getElementById('stateField').style.display    = isTurkey ? 'none' : '';
+      applyCorporateFieldVisibility();
 
       if (isTurkey && !exchangeRate) {
         document.getElementById('summaryContent').innerHTML =
@@ -823,7 +858,7 @@
     document.querySelectorAll('[name="invoiceType"]').forEach(r => {
       r.addEventListener('change', function () {
         isCorporate = this.value === 'corporate';
-        document.getElementById('corporateRow').style.display = isCorporate ? '' : 'none';
+        applyCorporateFieldVisibility();
       });
     });
 
@@ -878,18 +913,24 @@
         err(f.computerCount, 'Client count is required.');
       if (!f.windowsVersion.value) err(f.windowsVersion, 'Please select a Windows version.');
 
-      if (!f.country.value)         err(f.country, 'Please select a country.');
-      if (!f.address.value.trim())  err(f.address, 'Address is required.');
-
-      if (isTurkey) {
-        if (!f.city.value.trim())      err(f.city,      'City is required.');
-        if (!f.taxOffice.value.trim()) err(f.taxOffice, 'Tax office is required.');
-        if (!f.taxNumber.value.trim()) err(f.taxNumber, 'Tax number is required.');
-      }
+      if (!f.country.value)             err(f.country,    'Please select a country.');
+      if (!f.city.value.trim())         err(f.city,       'City is required.');
+      if (!f.postalCode.value.trim())   err(f.postalCode, 'Postal code is required.');
+      if (!f.address.value.trim())      err(f.address,    'Address is required.');
 
       if (isCorporate) {
-        if (!f.companyTitle.value.trim())        err(f.companyTitle, 'Company title is required.');
-        if (!f.corporateTaxNumber.value.trim()) err(f.corporateTaxNumber, 'Tax number is required.');
+        if (!f.companyTitle.value.trim()) err(f.companyTitle, 'Company title is required.');
+        if (isTurkey) {
+          if (!f.taxOffice.value.trim()) err(f.taxOffice, 'Tax office is required.');
+          if (!f.taxNumber.value.trim()) err(f.taxNumber, 'Tax number is required.');
+        }
+      } else if (isTurkey) {
+        const tc = f.tcKimlik.value.trim();
+        if (!tc) {
+          err(f.tcKimlik, 'TC Kimlik No is required.');
+        } else if (!/^\d{11}$/.test(tc)) {
+          err(f.tcKimlik, 'TC Kimlik No must be exactly 11 digits.');
+        }
       }
 
       return valid;
@@ -911,14 +952,17 @@
         company:      f.company.value.trim(),
         country:      f.country.value,
         city:         f.city.value.trim(),
-        district:     f.district.value.trim(),
+        district:     isTurkey  ? f.district.value.trim() : '',
+        state:        !isTurkey ? f.state.value.trim()    : '',
+        postalCode:   f.postalCode.value.trim(),
         address:      f.address.value.trim(),
-        taxOffice:    isTurkey  ? f.taxOffice.value.trim()    : '',
-        taxNumber:    isTurkey  ? f.taxNumber.value.trim()    : '',
-        vatId:        !isTurkey ? f.vatId.value.trim()        : '',
         invoiceType:  f.querySelector('[name="invoiceType"]:checked').value,
-        companyTitle:      isCorporate ? f.companyTitle.value.trim()      : '',
-        corporateTaxNumber: isCorporate ? f.corporateTaxNumber.value.trim() : '',
+        tcKimlik:           (!isCorporate && isTurkey) ? f.tcKimlik.value.trim()    : '',
+        companyTitle:       isCorporate ? f.companyTitle.value.trim() : '',
+        taxOffice:          (isCorporate && isTurkey)  ? f.taxOffice.value.trim()          : '',
+        taxNumber:          (isCorporate && isTurkey)  ? f.taxNumber.value.trim()          : '',
+        corporateTaxNumber: (isCorporate && !isTurkey) ? f.corporateTaxNumber.value.trim() : '',
+        vatId:              (isCorporate && !isTurkey) ? f.vatId.value.trim()              : '',
         sccmSiteCode:   f.sccmSiteCode.value.trim().toUpperCase(),
         sccmSupportId:  f.sccmSupportId.value.trim(),
         computerCount:  f.computerCount.value.trim(),
