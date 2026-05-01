@@ -263,18 +263,27 @@
     }
 
     .pricing-tier {
+      display: block;
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
       padding: 36px 28px;
       text-align: center;
       position: relative;
+      color: inherit;
+      text-decoration: none;
+      cursor: pointer;
       transition: transform .2s, border-color .2s, box-shadow .2s;
     }
 
     .pricing-tier:hover {
       transform: translateY(-4px);
       box-shadow: 0 16px 40px rgba(0,0,0,.3);
+      border-color: rgba(5,120,212,.4);
+    }
+    .pricing-tier:hover .tier-cta {
+      background: var(--green);
+      color: #0F2033;
     }
 
     .pricing-tier.featured {
@@ -339,6 +348,19 @@
     }
 
     .tier-note { font-size: 13px; color: var(--text-muted); }
+
+    .tier-cta {
+      display: inline-block;
+      margin-top: 22px;
+      padding: 8px 24px;
+      background: var(--accent);
+      color: #FFFFFF;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: .02em;
+      border-radius: 100px;
+      transition: background .2s, color .2s;
+    }
 
     /* ─── SECTION BG ALTERNATION ───────────────────────────────── */
     .bg-alt { background: rgba(22,45,70,.4); }
@@ -564,36 +586,39 @@
       </div>
       <div class="pricing-tiers">
 
-        <div class="pricing-tier">
-          <div class="tier-range">Up to 3,000 computers</div>
+        <a href="checkout/?plan=p3k" class="pricing-tier">
+          <div class="tier-range">Up to 3,000 devices</div>
           <div class="tier-price-wrap">
             <div class="tier-price"><sup>$</sup>990</div>
           </div>
           <div class="tier-period">per Site / year</div>
           <div class="tier-divider"></div>
           <div class="tier-note">Fixed rate — Ideal for small&nbsp;&amp;&nbsp;mid-size organizations</div>
-        </div>
+          <div class="tier-cta">Buy Now</div>
+        </a>
 
-        <div class="pricing-tier featured">
+        <a href="checkout/?plan=p10k" class="pricing-tier featured">
           <div class="tier-badge">Most Popular</div>
-          <div class="tier-range">Up to 10,000 computers</div>
+          <div class="tier-range">Up to 10,000 devices</div>
           <div class="tier-price-wrap">
             <div class="tier-price"><sup>$</sup>1,990</div>
           </div>
           <div class="tier-period">per Site / year</div>
           <div class="tier-divider"></div>
           <div class="tier-note">Fixed rate — Perfect for large enterprises</div>
-        </div>
+          <div class="tier-cta">Buy Now</div>
+        </a>
 
-        <div class="pricing-tier">
-          <div class="tier-range">Above 10,000 computers</div>
+        <a href="checkout/?plan=p10kplus" class="pricing-tier">
+          <div class="tier-range">Above 10,000 devices</div>
           <div class="tier-price-wrap">
             <div class="tier-price"><sup>$</sup>2,990</div>
           </div>
           <div class="tier-period">per Site / year</div>
           <div class="tier-divider"></div>
           <div class="tier-note">Fixed rate — Unlimited scale, one price</div>
-        </div>
+          <div class="tier-cta">Buy Now</div>
+        </a>
 
       </div>
     </div>
