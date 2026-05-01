@@ -111,10 +111,115 @@
       position: relative;
       border-radius: 0;
       overflow: hidden;
+      cursor: pointer;
       box-shadow: 0 32px 80px rgba(0,0,0,.5), 0 0 0 1px var(--border);
     }
+    .hero-visual-wrap:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 4px;
+    }
 
-    .hero-visual-wrap img { width: 100%; border-radius: 0; }
+    .hero-visual-wrap img {
+      width: 100%;
+      border-radius: 0;
+      transition: filter .25s, transform .35s;
+    }
+    .hero-visual-wrap:hover img { filter: brightness(1.05); transform: scale(1.02); }
+
+    .hero-play-button {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 84px; height: 84px;
+      background: rgba(255,255,255,.95);
+      color: var(--accent);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 32px rgba(0,0,0,.45);
+      pointer-events: none;
+      transition: transform .25s, box-shadow .25s, background .25s;
+    }
+    .hero-play-button svg {
+      width: 36px; height: 36px;
+      margin-left: 4px; /* triangle optical alignment */
+    }
+    .hero-visual-wrap:hover .hero-play-button {
+      transform: translate(-50%, -50%) scale(1.1);
+      background: #fff;
+      box-shadow: 0 12px 40px rgba(5,120,212,.5);
+    }
+
+    /* ─── VIDEO MODAL ──────────────────────────────────────────── */
+    .video-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .video-modal.open {
+      display: flex;
+      animation: vmFadeIn .2s ease-out;
+    }
+    @keyframes vmFadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    .video-modal-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,.85);
+      cursor: pointer;
+    }
+    .video-modal-content {
+      position: relative;
+      width: 100%;
+      max-width: 960px;
+      z-index: 1;
+    }
+    .video-modal-iframe-wrap {
+      position: relative;
+      padding-bottom: 56.25%; /* 16:9 */
+      height: 0;
+      background: #000;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: 0 24px 64px rgba(0,0,0,.6);
+    }
+    .video-modal-iframe-wrap iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+    .video-modal-close {
+      position: absolute;
+      top: -44px;
+      right: 0;
+      width: 36px; height: 36px;
+      background: rgba(255,255,255,.1);
+      border: 1px solid rgba(255,255,255,.2);
+      color: #fff;
+      font-size: 24px;
+      line-height: 1;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background .15s;
+    }
+    .video-modal-close:hover { background: rgba(255,255,255,.2); }
+
+    @media (max-width: 600px) {
+      .hero-play-button { width: 64px; height: 64px; }
+      .hero-play-button svg { width: 28px; height: 28px; }
+      .video-modal { padding: 16px; }
+      .video-modal-close { top: -40px; }
+    }
 
     /* ─── WHY SECTION ──────────────────────────────────────────── */
     .why-grid {
@@ -440,8 +545,11 @@
           </div>
         </div>
         <div class="hero-visual fade-up fade-up-delay-2">
-          <div class="hero-visual-wrap">
+          <div class="hero-visual-wrap" id="heroVideoTrigger" role="button" tabindex="0" aria-label="Play UpgradeMate intro video">
             <img src="Assets/Dashboard.jpg" alt="UpgradeMate Dashboard" />
+            <div class="hero-play-button" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </div>
           </div>
         </div>
       </div>
@@ -648,6 +756,20 @@
     </div>
   </footer>
 
+  <!-- ═══ VIDEO MODAL ═══════════════════════════════════════════ -->
+  <div class="video-modal" id="videoModal" role="dialog" aria-label="UpgradeMate intro video" aria-hidden="true">
+    <div class="video-modal-backdrop" id="videoModalBackdrop"></div>
+    <div class="video-modal-content">
+      <button class="video-modal-close" id="videoModalClose" aria-label="Close video">&times;</button>
+      <div class="video-modal-iframe-wrap">
+        <iframe id="videoModalIframe" src=""
+                title="UpgradeMate intro video"
+                frameborder="0"
+                allow="autoplay; fullscreen; picture-in-picture"
+                allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
 
   <script>
     const burger = document.getElementById('burger');
@@ -662,6 +784,41 @@
       burger.classList.remove('open');
       mobileMenu.classList.remove('open');
     }
+
+    // ── Hero video modal ────────────────────────────────────────
+    (function () {
+      const trigger  = document.getElementById('heroVideoTrigger');
+      const modal    = document.getElementById('videoModal');
+      const iframe   = document.getElementById('videoModalIframe');
+      const closeBtn = document.getElementById('videoModalClose');
+      const backdrop = document.getElementById('videoModalBackdrop');
+
+      // Vimeo player — autoplay açık, h ve s parametreleri unlisted video erişimi için
+      const VIDEO_SRC = 'https://player.vimeo.com/video/1188491821?h=e08c759a55&s=349e05d75470427bff18865716576ba104766ba5_1777764346&autoplay=1';
+
+      function openModal() {
+        iframe.src = VIDEO_SRC;
+        modal.classList.add('open');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+      }
+      function closeModal() {
+        modal.classList.remove('open');
+        modal.setAttribute('aria-hidden', 'true');
+        iframe.src = ''; // playback'i durdurur
+        document.body.style.overflow = '';
+      }
+
+      trigger.addEventListener('click', openModal);
+      trigger.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openModal(); }
+      });
+      closeBtn.addEventListener('click', closeModal);
+      backdrop.addEventListener('click', closeModal);
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
+      });
+    })();
   </script>
 
 </body>
