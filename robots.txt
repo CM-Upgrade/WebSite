@@ -1,0 +1,12 @@
+# robots.txt for upgrademate.io
+# See https://www.robotstxt.org/
+
+User-agent: *
+Allow: /
+
+# Transactional / transient pages — not useful for search indexing
+Disallow: /payment/
+Disallow: /payment-result/
+Disallow: /thank-you/
+
+Sitemap: https://upgrademate.io/sitemap.xml
