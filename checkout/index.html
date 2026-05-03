@@ -342,6 +342,134 @@
       flex-shrink: 0;
     }
 
+    /* ─── ORDER CONFIRMATION MODAL ─────────────────────────────── */
+    .order-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .order-modal.open { display: flex; animation: omFadeIn .2s ease-out; }
+    @keyframes omFadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    .order-modal-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,.7);
+      cursor: pointer;
+    }
+    .order-modal-card {
+      position: relative;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px 32px;
+      max-width: 520px;
+      width: 100%;
+      z-index: 1;
+      box-shadow: 0 24px 64px rgba(0,0,0,.6);
+    }
+    .order-modal-header { margin-bottom: 16px; }
+    .order-modal-header .tag {
+      margin-bottom: 0;
+      color: rgb(235,139,35);
+      background: rgba(235,139,35,.18);
+      border-color: rgba(235,139,35,.5);
+    }
+    .order-modal-header .tag span {
+      width: 7px; height: 7px;
+      background: rgb(235,139,35);
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .order-warning {
+      background: rgba(5,120,212,.07);
+      border: 1px solid rgba(5,120,212,.2);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      margin-bottom: 10px;
+    }
+    .order-warning:last-of-type { margin-bottom: 0; }
+    .order-warning.warning-overkill {
+      border-color: rgba(235,139,35,.55);
+    }
+    .suggested-plan { color: var(--accent); font-weight: 600; }
+    .sccm-values {
+      margin-top: 10px;
+      padding: 10px 12px;
+      background: rgba(0,0,0,.22);
+      border-radius: 6px;
+      font-size: 12px;
+    }
+    .sccm-values div { padding: 2px 0; }
+    .sccm-values .label {
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    .sccm-values .value {
+      color: var(--text-head);
+      font-family: ui-monospace, Menlo, Consolas, monospace;
+      word-break: break-all;
+    }
+    .order-warning > strong {
+      display: block;
+      color: var(--text-head);
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .order-warning p {
+      margin: 0;
+      font-size: 13px;
+      color: var(--text-body);
+      line-height: 1.6;
+    }
+
+    .order-modal-error {
+      background: rgba(224,92,92,.1);
+      border: 1px solid rgba(224,92,92,.4);
+      border-radius: 6px;
+      padding: 10px 14px;
+      color: #e05c5c;
+      font-size: 13px;
+      margin-top: 14px;
+      text-align: center;
+    }
+    .order-modal-footer {
+      display: flex;
+      gap: 12px;
+      margin-top: 22px;
+      justify-content: flex-end;
+    }
+    .btn-modal-cancel,
+    .btn-modal-confirm {
+      padding: 10px 22px;
+      border-radius: var(--radius);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: background .15s, border-color .15s, color .15s;
+    }
+    .btn-modal-cancel {
+      background: transparent;
+      color: var(--text-body);
+      border-color: var(--border);
+    }
+    .btn-modal-cancel:hover {
+      border-color: var(--text-muted);
+      color: var(--text-head);
+    }
+    .btn-modal-confirm {
+      background: var(--accent);
+      color: #fff;
+    }
+    .btn-modal-confirm:hover { background: var(--accent-hover); }
+
     /* ─── PAYMENT BAND ──────────────────────────────────────────── */
     .payment-band {
       display: flex;
@@ -494,7 +622,10 @@
                   <input type="number" name="computerCount" min="1">
                 </div>
                 <div class="form-group">
-                  <label>Windows Version to Upgrade</label>
+                  <label>Windows Version to Upgrade <span class="help-btn" data-popup="windowsVersionPopup">?</span></label>
+                  <div class="help-popup" id="windowsVersionPopup">
+                    <p>During your one-year license period, you can request additional licenses for other Windows versions on the same SCCM site (Support ID) at no extra cost. When you need one, just reply to your activation email to request it.</p>
+                  </div>
                   <select name="windowsVersion">
                     <option value="" disabled selected>Please Select</option>
                     <option value="26200">Windows 11 25H2</option>
@@ -623,7 +754,7 @@
             <div class="summary-loading">Loading today's rate...</div>
           </div>
           <button type="button" id="payBtn" class="btn-pay" disabled>
-            Proceed to Payment
+            Place Order
           </button>
           <p class="security-note">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
@@ -639,6 +770,37 @@
       </div>
     </div>
   </section>
+
+  <!-- ═══ ORDER CONFIRMATION MODAL ═════════════════════════════ -->
+  <div class="order-modal" id="orderModal" role="dialog" aria-label="Confirm your order" aria-hidden="true">
+    <div class="order-modal-backdrop" id="orderBackdrop"></div>
+    <div class="order-modal-card">
+      <div class="order-modal-header">
+        <span class="tag"><span></span>Before You Continue</span>
+      </div>
+      <div class="order-modal-body">
+
+        <div class="order-warning warning-overkill" id="orderOverkillWarning" style="display:none">
+          <strong>Are you sure about your plan?</strong>
+          <p id="orderOverkillText"></p>
+        </div>
+
+        <div class="order-warning">
+          <strong>Make sure your SCCM details are correct</strong>
+          <p>Your license will be valid only for this Site Code and Support ID. Please double-check before paying.</p>
+          <div class="sccm-values">
+            <div><span class="label">SCCM Site Code:</span> <span class="value" id="modalSiteCode"></span></div>
+            <div><span class="label">SCCM Support ID:</span> <span class="value" id="modalSupportId"></span></div>
+          </div>
+        </div>
+
+      </div>
+      <div class="order-modal-footer">
+        <button type="button" id="orderCancelBtn" class="btn-modal-cancel">Back</button>
+        <button type="button" id="orderConfirmBtn" class="btn-modal-confirm">Pay Now</button>
+      </div>
+    </div>
+  </div>
 
   <!-- ═══ FOOTER ════════════════════════════════════════════════ -->
   <footer class="footer">
@@ -826,7 +988,7 @@
         html += `
           <div class="summary-line"><span>Price</span><span>$${plan.usd.toLocaleString()}</span></div>
           <div class="summary-total"><span>Total</span><span>$${plan.usd.toLocaleString()}</span></div>
-          <div class="summary-vat-exempt">VAT exempt — hizmet ihracatı</div>
+          <div class="summary-vat-exempt">VAT exempt</div>
         `;
       }
 
@@ -946,15 +1108,57 @@
       return valid;
     }
 
-    // ── Pay Button ────────────────────────────────────────────────
-    document.getElementById('payBtn').addEventListener('click', async function () {
-      if (!validateForm()) return;
+    // ── Place Order → Pay Modal ──────────────────────────────────
+    const TIER = { p3k: 0, p10k: 1, p10kplus: 2 };
+    function getMinimumPlan(deviceCount) {
+      const n = parseInt(deviceCount, 10) || 0;
+      if (n <= 3000)  return 'p3k';
+      if (n <= 10000) return 'p10k';
+      return 'p10kplus';
+    }
+    function escapeHtml(s) {
+      return String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' })[c]);
+    }
+    function checkPlanCoverage(plan, deviceCount) {
+      const min = getMinimumPlan(deviceCount);
+      const cmp = TIER[plan] - TIER[min];
+      if (cmp < 0) return { error: `Selected plan (${PLANS[plan].name}) doesn't cover ${deviceCount} devices. Please choose ${PLANS[min].name} or higher.` };
+      if (cmp > 0) return {
+        warning: `You selected ${escapeHtml(PLANS[plan].name)} for ${escapeHtml(deviceCount)} devices. The <span class="suggested-plan">${escapeHtml(PLANS[min].name)}</span> plan would cover your needs at lower cost. Continue anyway?`
+      };
+      return { ok: true };
+    }
 
-      this.disabled = true;
-      this.innerHTML = '<span class="spinner"></span> Please wait...';
+    function openOrderModal(overkillWarning) {
+      const modal = document.getElementById('orderModal');
+      const overkillEl = document.getElementById('orderOverkillWarning');
+      const overkillText = document.getElementById('orderOverkillText');
+      if (overkillWarning) {
+        overkillText.innerHTML = overkillWarning;
+        overkillEl.style.display = '';
+      } else {
+        overkillEl.style.display = 'none';
+      }
+      // Önceki hata varsa temizle
+      const oldErr = document.getElementById('orderModalError');
+      if (oldErr) oldErr.remove();
+      // Müşterinin girdiği SCCM bilgilerini modalda göster — son kontrol fırsatı
+      document.getElementById('modalSiteCode').textContent  = form.sccmSiteCode.value.trim().toUpperCase();
+      document.getElementById('modalSupportId').textContent = form.sccmSupportId.value.trim();
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeOrderModal() {
+      const modal = document.getElementById('orderModal');
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
 
+    function buildPaymentPayload() {
       const f = form;
-      const payload = {
+      return {
         plan:         selectedPlan,
         firstName:    f.firstName.value.trim(),
         lastName:     f.lastName.value.trim(),
@@ -979,15 +1183,26 @@
         windowsVersion: f.windowsVersion.value,
         _hp:            f.website.value
       };
+    }
+
+    // Pay Now (modal confirm) — direct payment-init + redirect
+    document.getElementById('orderConfirmBtn').addEventListener('click', async function () {
+      const cancelBtn = document.getElementById('orderCancelBtn');
+      this.disabled = true;
+      cancelBtn.disabled = true;
+      const originalText = this.textContent;
+      this.innerHTML = '<span class="spinner"></span> Please wait...';
+
+      const oldErr = document.getElementById('orderModalError');
+      if (oldErr) oldErr.remove();
 
       try {
         const res  = await fetch(PAYMENT_INIT_URL, {
           method:  'POST',
           headers: { 'Content-Type': 'application/json' },
-          body:    JSON.stringify(payload)
+          body:    JSON.stringify(buildPaymentPayload())
         });
         const data = await res.json();
-
         if (!res.ok || !data.checkoutFormContent) throw new Error('init failed');
 
         sessionStorage.setItem('iyzico_form',    data.checkoutFormContent);
@@ -999,17 +1214,39 @@
           rate:    exchangeRate
         }));
         window.location.href = '../payment/';
-
       } catch {
         this.disabled = false;
-        this.textContent = 'Proceed to Payment';
-        const statusMsg = document.createElement('div');
-        statusMsg.className = 'status-msg error';
-        statusMsg.style.cssText = 'display:block;margin-top:12px';
-        statusMsg.textContent = 'Payment initialization failed. Please try again.';
-        this.parentNode.appendChild(statusMsg);
-        setTimeout(() => statusMsg.remove(), 5000);
+        cancelBtn.disabled = false;
+        this.textContent = originalText;
+        const errorEl = document.createElement('div');
+        errorEl.id = 'orderModalError';
+        errorEl.className = 'order-modal-error';
+        errorEl.textContent = 'Payment initialization failed. Please try again.';
+        document.querySelector('.order-modal-footer').insertAdjacentElement('beforebegin', errorEl);
       }
+    });
+    document.getElementById('orderCancelBtn').addEventListener('click', closeOrderModal);
+    document.getElementById('orderBackdrop').addEventListener('click', closeOrderModal);
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && document.getElementById('orderModal').classList.contains('open')) closeOrderModal();
+    });
+
+    // Place Order — validate + plan check + open modal
+    document.getElementById('payBtn').addEventListener('click', function () {
+      if (!validateForm()) return;
+
+      const coverage = checkPlanCoverage(selectedPlan, form.computerCount.value.trim());
+      if (coverage.error) {
+        form.computerCount.classList.add('invalid');
+        const div = document.createElement('div');
+        div.className = 'field-error';
+        div.textContent = coverage.error;
+        form.computerCount.parentNode.appendChild(div);
+        form.computerCount.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+
+      openOrderModal(coverage.warning);
     });
 
     // ── Init ─────────────────────────────────────────────────────
