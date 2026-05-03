@@ -190,15 +190,16 @@
       top: 50%; left: 50%;
       transform: translate(-50%, -50%);
       width: 84px; height: 84px;
-      background: rgba(255,255,255,.95);
-      color: var(--accent);
+      background: rgba(255,255,255,.08);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      color: #fff;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 8px 32px rgba(0,0,0,.45);
       pointer-events: none;
-      transition: transform .25s, box-shadow .25s, background .25s;
+      transition: transform .25s, background .25s;
     }
     .hero-play-button svg {
       width: 36px; height: 36px;
@@ -206,8 +207,7 @@
     }
     .hero-visual-wrap:hover .hero-play-button {
       transform: translate(-50%, -50%) scale(1.1);
-      background: #fff;
-      box-shadow: 0 12px 40px rgba(5,120,212,.5);
+      background: rgba(255,255,255,.18);
     }
 
     /* ─── VIDEO MODAL ──────────────────────────────────────────── */
