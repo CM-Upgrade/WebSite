@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thank You – UpgradeMate</title>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../Assets/Ico_Web_32.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../Assets/site.css" />
+  <style>
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ─── MAIN ──────────────────────────────────────────────────── */
+    .main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 140px 24px 96px;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 56px 48px;
+      max-width: 560px;
+      width: 100%;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: -80px; left: 50%;
+      transform: translateX(-50%);
+      width: 320px; height: 320px;
+      background: radial-gradient(circle, rgba(146,195,83,.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .icon-wrap {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: rgba(146,195,83,.12);
+      border: 1px solid rgba(146,195,83,.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 28px;
+    }
+
+    .icon-wrap svg { width: 36px; height: 36px; color: var(--green); }
+
+    .card-title {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--text-head);
+      letter-spacing: -.02em;
+      margin-bottom: 12px;
+    }
+
+    .card-sub {
+      font-size: 16px;
+      color: var(--text-body);
+      line-height: 1.7;
+      margin-bottom: 32px;
+    }
+
+    .card-sub strong { color: var(--text-head); }
+
+    /* ─── ERROR STATE ───────────────────────────────────────────── */
+    .card.error .icon-wrap {
+      background: rgba(248,113,113,.12);
+      border-color: rgba(248,113,113,.25);
+    }
+    .card.error .icon-wrap svg { color: #f87171; }
+    .card.error::before {
+      background: radial-gradient(circle, rgba(248,113,113,.06) 0%, transparent 70%);
+    }
+
+    /* ─── RESPONSIVE ───────────────────────────────────────────── */
+    @media (max-width: 600px) {
+      .card { padding: 36px 24px; }
+      .card-title { font-size: 22px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══ NAVIGATION ═══════════════════════════════════════════ -->
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a href="../" class="nav-logo">
+        <img src="../Assets/LogoBig_Dark.png" alt="UpgradeMate" />
+      </a>
+      <ul class="nav-links">
+        <li><a href="../#features">Features</a></li>
+        <li><a href="../#for-users">For Users</a></li>
+        <li><a href="../#for-admins">For IT Admins</a></li>
+        <li><a href="../#pricing">Pricing</a></li>
+        <li><a href="https://docs.upgrademate.io">Documents</a></li>
+        <li><a href="../contact">Contact Us</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="../trynow" class="btn btn-primary">Try Now</a>
+      </div>
+      <button class="burger" id="burger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ═══ MOBILE MENU ══════════════════════════════════════════ -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="../#features" onclick="closeMobileMenu()">Features</a>
+    <a href="../#for-users" onclick="closeMobileMenu()">For Users</a>
+    <a href="../#for-admins" onclick="closeMobileMenu()">For IT Admins</a>
+    <a href="../#pricing" onclick="closeMobileMenu()">Pricing</a>
+    <a href="https://docs.upgrademate.io" onclick="closeMobileMenu()">Documents</a>
+    <a href="../contact" onclick="closeMobileMenu()">Contact Us</a>
+  </div>
+
+  <!-- ═══ MAIN ══════════════════════════════════════════════════ -->
+  <main class="main">
+    <div class="card" id="card">
+
+      <!-- Success state (default) -->
+      <div id="successState">
+        <div class="icon-wrap">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+          </svg>
+        </div>
+        <h1 class="card-title" id="successTitle">Your request has been received!</h1>
+        <p class="card-sub" id="successSub">
+          Thank you for reaching out. <strong>We'll get back to you by email as soon as possible.</strong>
+        </p>
+        <a href="../" class="btn btn-primary">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+          </svg>
+          Back
+        </a>
+      </div>
+
+      <!-- Error state -->
+      <div id="errorState" style="display:none">
+        <div class="icon-wrap">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+          </svg>
+        </div>
+        <h1 class="card-title" id="errorTitle">Submission failed</h1>
+        <p class="card-sub" id="errorSub">We couldn't process your request. Please try again or contact us directly.</p>
+        <a href="javascript:history.back()" class="btn btn-primary">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+          </svg>
+          Back
+        </a>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ═══ FOOTER ════════════════════════════════════════════════ -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <a href="../" class="footer-logo">
+          <img src="../Assets/LogoBig_Dark.png" alt="UpgradeMate" />
+        </a>
+        <p class="footer-copy">© 2026 UpgradeMate. All rights reserved.</p>
+      </div>
+      <div class="footer-meta">
+        <div class="footer-legal">
+          <a href="../privacy/">Privacy Policy</a>
+          <a href="../delivery-returns/">Delivery &amp; Returns</a>
+          <a href="../terms/">Terms of Use</a>
+        </div>
+        <ul class="footer-links">
+          <li><a href="https://x.com/upgrademate" target="_blank" rel="noopener" aria-label="X (Twitter)"><img src="../Assets/Ico_X.png" alt="X" /></a></li>
+          <li><a href="https://www.youtube.com/@UpgradeMate" target="_blank" rel="noopener" aria-label="YouTube"><img src="../Assets/Ico_Youtube.png" alt="YouTube" /></a></li>
+          <li><a href="https://www.linkedin.com/company/upgrademate/" target="_blank" rel="noopener" aria-label="LinkedIn"><img src="../Assets/Ico_Linkedin.png" alt="LinkedIn" /></a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const burger = document.getElementById('burger');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    burger.addEventListener('click', () => {
+      burger.classList.toggle('open');
+      mobileMenu.classList.toggle('open');
+    });
+
+    function closeMobileMenu() {
+      burger.classList.remove('open');
+      mobileMenu.classList.remove('open');
+    }
+  </script>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const status = params.get('status');
+    const type   = params.get('type');
+
+    const successState = document.getElementById('successState');
+    const errorState   = document.getElementById('errorState');
+    const card         = document.getElementById('card');
+
+    if (status === 'error') {
+      successState.style.display = 'none';
+      errorState.style.display   = 'block';
+      card.classList.add('error');
+
+      if (type === 'trial-exists') {
+        document.getElementById('errorTitle').textContent = 'Trial already requested';
+        document.getElementById('errorSub').textContent =
+          'A trial license has already been requested for this SCCM Support ID. Please contact us if you need further assistance.';
+      }
+    } else {
+      if (type === 'trynow') {
+        document.getElementById('successTitle').textContent = 'Trial request received!';
+        document.getElementById('successSub').innerHTML =
+          'Thank you for your free trial request.<br>We\'ll send your trial licence to your e-mail address soon.';
+      } else if (type === 'contact') {
+        document.getElementById('successTitle').textContent = 'Contact request received!';
+        document.getElementById('successSub').innerHTML =
+          'Thank you for reaching out. We\'ll get back to you via email soon.';
+      }
+    }
+  </script>
+
+</body>
+</html>

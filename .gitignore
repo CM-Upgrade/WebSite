@@ -1,0 +1,19 @@
+# Azurite local storage emulator
+__azurite_db_*.json
+__blobstorage__/
+AzuriteConfig
+
+# macOS
+.DS_Store
+
+# Claude (local-only project context, not synced to GitHub)
+.claude/
+CLAUDE.md
+CLAUDE.local.md
+AGENTS.md
+
+# Local-only wiki (not synced to GitHub)
+wiki/
+
+# IDE
+.vscode/

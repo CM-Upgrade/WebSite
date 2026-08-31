@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Checkout — UpgradeMate Pricing & Plans</title>
+  <meta name="description" content="Purchase UpgradeMate license. Plans starting at $990/year per Site for SCCM-based Windows OS upgrades." />
+  <link rel="canonical" href="https://upgrademate.io/checkout/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="UpgradeMate" />
+  <meta property="og:title" content="Checkout — UpgradeMate Pricing & Plans" />
+  <meta property="og:description" content="UpgradeMate plans for ConfigMgr (SCCM) environments. Up to 3,000 / 10,000 / 10,000+ devices per Site." />
+  <meta property="og:url" content="https://upgrademate.io/checkout/" />
+  <meta property="og:image" content="https://upgrademate.io/Assets/Dashboard.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://upgrademate.io/Assets/Dashboard.jpg" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../Assets/Ico_Web_32.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../Assets/site.css" />
+  <style>
+    /* ─── PLAN SELECTOR ─────────────────────────────────────────── */
+    .checkout-section { padding: 0 0 96px; }
+
+    .plan-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      max-width: 860px;
+      margin: 0 auto 28px;
+    }
+
+    .plan-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(5,120,212,.4);
+      border-radius: var(--radius-lg);
+      padding: 36px 28px;
+      text-align: center;
+      position: relative;
+      cursor: pointer;
+      transition: transform .2s, border-color .2s, box-shadow .2s;
+    }
+    .plan-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(0,0,0,.3);
+    }
+    .plan-card.selected {
+      border-color: var(--accent);
+      background: linear-gradient(160deg, rgba(5,120,212,.12) 0%, var(--bg-card) 60%);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(0,0,0,.3);
+    }
+    .plan-card-badge {
+      position: absolute;
+      top: -13px; left: 50%;
+      transform: translateX(-50%);
+      background: var(--accent);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      padding: 3px 14px;
+      border-radius: 100px;
+      white-space: nowrap;
+    }
+    .plan-card-range {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      margin-bottom: 16px;
+    }
+    .plan-card-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-head);
+      margin-bottom: 8px;
+    }
+    .plan-card-price {
+      font-size: 48px;
+      font-weight: 600;
+      line-height: 1;
+      background: linear-gradient(135deg, #0578D4, #4db8ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .plan-card-price sup {
+      font-size: 22px;
+      font-weight: 600;
+      vertical-align: super;
+      line-height: 0;
+    }
+    .plan-card-period {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 8px;
+      margin-bottom: 24px;
+    }
+    .plan-card-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 0 0 16px;
+    }
+    .plan-card-note { font-size: 13px; color: var(--text-muted); }
+
+    /* ─── CHECKOUT LAYOUT ───────────────────────────────────────── */
+    .checkout-layout {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 24px;
+      align-items: start;
+    }
+
+    /* ─── FORM CARD ─────────────────────────────────────────────── */
+    .form-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      margin-bottom: 16px;
+    }
+    .form-card:last-child { margin-bottom: 0; }
+    .form-card-title {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 0;
+    }
+    .form-row .form-group { margin-bottom: 16px; }
+
+    .form-group textarea { min-height: 90px; resize: vertical; }
+
+    /* ─── SELECT ────────────────────────────────────────────────── */
+    .form-card select {
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b83a0' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 36px;
+    }
+    .form-card select option {
+      background: #162D46;
+      color: var(--text-head);
+    }
+
+    /* ─── HELP BUTTON & POPUP ───────────────────────────────────── */
+    .form-group label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .help-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 15px; height: 15px;
+      border-radius: 50%;
+      background: rgba(5,120,212,.2);
+      border: 1px solid rgba(5,120,212,.4);
+      color: var(--accent);
+      font-size: 10px;
+      font-weight: 700;
+      cursor: default;
+      line-height: 1;
+      flex-shrink: 0;
+      position: relative;
+    }
+    .help-popup {
+      display: none;
+      position: absolute;
+      bottom: calc(100% + 6px);
+      left: 0;
+      width: 280px;
+      background: #0d1f33;
+      border: 1px solid rgba(5,120,212,.3);
+      border-radius: var(--radius);
+      padding: 14px;
+      box-shadow: 0 8px 32px rgba(0,0,0,.5);
+      z-index: 999;
+      color: var(--text-body);
+      font-size: 12px;
+      font-weight: 400;
+      text-align: left;
+      pointer-events: none;
+    }
+    .help-popup.visible { display: block; }
+    .help-popup::after {
+      content: '';
+      position: absolute;
+      top: 100%; left: 12px;
+      border: 6px solid transparent;
+      border-top-color: rgba(5,120,212,.3);
+    }
+    .help-popup p { margin: 0; line-height: 1.7; }
+
+    /* ─── RADIO GROUP ───────────────────────────────────────────── */
+    .radio-group {
+      display: flex;
+      gap: 20px;
+      margin-top: 6px;
+    }
+    .radio-option {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 14px;
+      color: var(--text-body);
+      cursor: pointer;
+      user-select: none;
+    }
+    .radio-option input[type="radio"] {
+      width: 15px; height: 15px;
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+
+    /* ─── ORDER SUMMARY ─────────────────────────────────────────── */
+    .order-summary {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      position: sticky;
+      top: 96px;
+    }
+    .summary-header {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+    .summary-plan-name {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-head);
+      margin-bottom: 3px;
+    }
+    .summary-plan-range {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+    .summary-line {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      color: var(--text-body);
+      padding: 9px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .summary-total {
+      display: flex;
+      justify-content: space-between;
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text-head);
+      padding-top: 14px;
+      margin-top: 4px;
+    }
+    .summary-rate-note {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-align: right;
+      margin-top: 6px;
+    }
+    .summary-vat-exempt {
+      font-size: 12px;
+      color: var(--green);
+      margin-top: 8px;
+    }
+    .summary-loading {
+      font-size: 13px;
+      color: var(--text-muted);
+      text-align: center;
+      padding: 20px 0;
+    }
+    .summary-error {
+      font-size: 13px;
+      color: #e05c5c;
+      text-align: center;
+      padding: 12px 0 4px;
+    }
+    .btn-retry {
+      display: block;
+      margin: 6px auto 0;
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 12px;
+      padding: 5px 14px;
+      border-radius: var(--radius);
+      cursor: pointer;
+    }
+    .btn-retry:hover { border-color: var(--accent); color: var(--accent); }
+
+    .btn-pay {
+      display: block;
+      width: 100%;
+      margin-top: 20px;
+      padding: 14px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius);
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .2s, opacity .2s;
+    }
+    .btn-pay:hover:not(:disabled) { background: var(--accent-hover); }
+    .btn-pay:disabled { opacity: .45; cursor: not-allowed; }
+
+    .security-note {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 12px;
+    }
+    .security-note svg {
+      width: 13px; height: 13px;
+      color: var(--green);
+      flex-shrink: 0;
+    }
+
+    /* ─── ORDER CONFIRMATION MODAL ─────────────────────────────── */
+    .order-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .order-modal.open { display: flex; animation: omFadeIn .2s ease-out; }
+    @keyframes omFadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    .order-modal-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,.7);
+      cursor: pointer;
+    }
+    .order-modal-card {
+      position: relative;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 40px 32px 28px;
+      max-width: 520px;
+      width: 100%;
+      z-index: 1;
+      box-shadow: 0 24px 64px rgba(0,0,0,.6);
+    }
+
+    .order-warning {
+      position: relative;
+      background: rgba(5,120,212,.07);
+      border: 1px solid rgba(5,120,212,.2);
+      border-radius: var(--radius);
+      padding: 22px 16px 14px;
+      margin-bottom: 36px;
+    }
+    .order-warning:last-of-type { margin-bottom: 0; }
+    .order-warning.warning-overkill {
+      border-color: rgba(235,139,35,.55);
+    }
+    .suggested-plan { color: var(--accent); font-weight: 600; }
+    .sccm-values {
+      margin-top: 10px;
+      padding: 10px 12px;
+      background: rgba(0,0,0,.22);
+      border-radius: 6px;
+      font-size: 12px;
+    }
+    .sccm-values div { padding: 2px 0; }
+    .sccm-values .label {
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    .sccm-values .value {
+      color: var(--text-head);
+      font-family: ui-monospace, Menlo, Consolas, monospace;
+      word-break: break-all;
+    }
+    .order-warning > strong {
+      position: absolute;
+      top: -12px;
+      left: 16px;
+      background: var(--accent);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .04em;
+      padding: 4px 14px;
+      border-radius: 100px;
+      white-space: nowrap;
+    }
+    .order-warning.warning-overkill > strong {
+      background: rgb(235,139,35);
+    }
+    .order-warning p {
+      margin: 0;
+      font-size: 13px;
+      color: var(--text-body);
+      line-height: 1.6;
+    }
+
+    .order-modal-error {
+      background: rgba(224,92,92,.1);
+      border: 1px solid rgba(224,92,92,.4);
+      border-radius: 6px;
+      padding: 10px 14px;
+      color: #e05c5c;
+      font-size: 13px;
+      margin-top: 14px;
+      text-align: center;
+    }
+    .order-modal-footer {
+      display: flex;
+      gap: 12px;
+      margin-top: 22px;
+      justify-content: flex-end;
+    }
+    .btn-modal-cancel,
+    .btn-modal-confirm {
+      padding: 10px 22px;
+      border-radius: var(--radius);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: background .15s, border-color .15s, color .15s;
+    }
+    .btn-modal-cancel {
+      background: transparent;
+      color: var(--text-body);
+      border-color: var(--border);
+    }
+    .btn-modal-cancel:hover {
+      border-color: var(--text-muted);
+      color: var(--text-head);
+    }
+    .btn-modal-confirm {
+      background: var(--accent);
+      color: #fff;
+    }
+    .btn-modal-confirm:hover { background: var(--accent-hover); }
+
+    /* ─── PAYMENT BAND ──────────────────────────────────────────── */
+    .payment-band {
+      display: flex;
+      justify-content: center;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+    .payment-band img {
+      width: 60%;
+      height: auto;
+      display: block;
+    }
+
+    /* ─── RESPONSIVE ────────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .checkout-layout { grid-template-columns: 1fr; }
+      .order-summary { position: static; }
+    }
+    @media (max-width: 680px) {
+      .plan-cards { grid-template-columns: 1fr; max-width: 100%; }
+      .plan-card { padding: 28px 20px; }
+    }
+    @media (max-width: 560px) {
+      .form-row { grid-template-columns: 1fr; }
+      .form-row .form-group { margin-bottom: 0; }
+      .form-card { padding: 20px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══ NAVIGATION ═══════════════════════════════════════════ -->
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a href="../" class="nav-logo">
+        <img src="../Assets/LogoBig_Dark.png" alt="UpgradeMate" />
+      </a>
+      <ul class="nav-links">
+        <li><a href="../#features">Features</a></li>
+        <li><a href="../#for-users">For Users</a></li>
+        <li><a href="../#for-admins">For IT Admins</a></li>
+        <li><a href="../#pricing">Pricing</a></li>
+        <li><a href="https://docs.upgrademate.io">Documents</a></li>
+        <li><a href="../contact">Contact Us</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="../trynow" class="btn btn-primary">Try Now</a>
+      </div>
+      <button class="burger" id="burger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ═══ MOBILE MENU ══════════════════════════════════════════ -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="../#features" onclick="closeMobileMenu()">Features</a>
+    <a href="../#for-users" onclick="closeMobileMenu()">For Users</a>
+    <a href="../#for-admins" onclick="closeMobileMenu()">For IT Admins</a>
+    <a href="../#pricing" onclick="closeMobileMenu()">Pricing</a>
+    <a href="https://docs.upgrademate.io" onclick="closeMobileMenu()">Documents</a>
+    <a href="../contact" onclick="closeMobileMenu()">Contact Us</a>
+  </div>
+
+  <!-- ═══ PAGE HERO ═════════════════════════════════════════════ -->
+  <section class="page-hero">
+    <div class="container">
+      <div class="tag fade-up fade-up-delay-1">Purchase</div>
+      <h1 class="page-hero-title fade-up fade-up-delay-2">
+        Complete Your <span class="highlight">Purchase</span>
+      </h1>
+      <p class="page-hero-sub fade-up fade-up-delay-3">
+        Select a plan, fill in your billing details, and activate your UpgradeMate license instantly.
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══ CHECKOUT ═════════════════════════════════════════════ -->
+  <section class="checkout-section">
+    <div class="container">
+
+      <!-- Plan Selector -->
+      <div style="text-align:center" class="fade-up">
+        <div class="tag">Choose Your Plan</div>
+      </div>
+      <div class="plan-cards fade-up" id="planCards"></div>
+
+      <div class="checkout-layout">
+
+        <!-- ── Left: Form ── -->
+        <div>
+          <form id="checkoutForm" novalidate>
+
+            <!-- Personal Information -->
+            <div class="form-card">
+              <div class="form-card-title">Personal Information</div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label>First Name</label>
+                  <input type="text" name="firstName">
+                </div>
+                <div class="form-group">
+                  <label>Last Name</label>
+                  <input type="text" name="lastName">
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Email</label>
+                  <input type="email" name="email">
+                </div>
+                <div class="form-group">
+                  <label>Company <span style="font-weight:400;color:var(--text-muted)">(optional)</span></label>
+                  <input type="text" name="company">
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Site Information -->
+            <div class="form-card">
+              <div class="form-card-title">Site Information</div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label>SCCM Site Code <span class="help-btn" data-popup="siteCodePopup">?</span></label>
+                  <div class="help-popup" id="siteCodePopup">
+                    <p>Refer to the three-character Site Code found under <strong>Administration &gt; Site Configuration &gt; Sites</strong>.</p>
+                  </div>
+                  <input type="text" name="sccmSiteCode" maxlength="3">
+                </div>
+                <div class="form-group">
+                  <label>SCCM Support ID <span class="help-btn" data-popup="supportIdPopup">?</span></label>
+                  <div class="help-popup" id="supportIdPopup">
+                    <p>Refer to the Support ID found in the <strong>'About Configuration Manager'</strong> window, accessible via the blue menu arrow in the top-left corner.</p>
+                  </div>
+                  <input type="text" name="sccmSupportId">
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Client Count <span class="help-btn" data-popup="clientCountPopup">?</span></label>
+                  <div class="help-popup" id="clientCountPopup">
+                    <p>Refer to the Member Count of the <strong>'All Desktop and Server Clients'</strong> collection under Assets and Compliance &gt; Device Collections.</p>
+                  </div>
+                  <input type="number" name="computerCount" min="1">
+                </div>
+                <div class="form-group">
+                  <label>Windows Version to Upgrade <span class="help-btn" data-popup="windowsVersionPopup">?</span></label>
+                  <div class="help-popup" id="windowsVersionPopup">
+                    <p>During your one-year license period, you can request additional licenses for other Windows versions on the same SCCM site (Support ID) at no extra cost. When you need one, just reply to your activation email to request it.</p>
+                  </div>
+                  <select name="windowsVersion">
+                    <option value="" disabled selected>Please Select</option>
+                    <option value="26200">Windows 11 25H2</option>
+                    <option value="26100">Windows 11 24H2</option>
+                  </select>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Billing Information -->
+            <div class="form-card">
+              <div class="form-card-title">Billing Information</div>
+
+              <!-- Country -->
+              <div class="form-group">
+                <label>Country</label>
+                <select name="country" id="countrySelect">
+                  <option value="" disabled selected>Select a country...</option>
+                </select>
+              </div>
+
+              <!-- Address fields (shown after country selected) -->
+              <div id="addressGroup" style="display:none">
+
+                <!-- City + Postal Code -->
+                <div class="form-row">
+                  <div class="form-group">
+                    <label>City</label>
+                    <input type="text" name="city">
+                  </div>
+                  <div class="form-group">
+                    <label>Postal Code</label>
+                    <input type="text" name="postalCode">
+                  </div>
+                </div>
+
+                <!-- District (TR only, optional) -->
+                <div class="form-group" id="districtField" style="display:none">
+                  <label>District <span style="font-weight:400;color:var(--text-muted)">(optional)</span></label>
+                  <input type="text" name="district">
+                </div>
+
+                <!-- State / Region (non-TR only, optional) -->
+                <div class="form-group" id="stateField" style="display:none">
+                  <label>State / Region <span style="font-weight:400;color:var(--text-muted)">(optional)</span></label>
+                  <input type="text" name="state">
+                </div>
+
+                <!-- Full Address -->
+                <div class="form-group">
+                  <label>Full Address</label>
+                  <textarea name="address"></textarea>
+                </div>
+
+                <!-- Invoice Type -->
+                <div class="form-group">
+                  <label>Invoice Type</label>
+                  <div class="radio-group">
+                    <label class="radio-option">
+                      <input type="radio" name="invoiceType" value="individual" checked>
+                      Individual
+                    </label>
+                    <label class="radio-option">
+                      <input type="radio" name="invoiceType" value="corporate">
+                      Corporate
+                    </label>
+                  </div>
+                </div>
+
+                <!-- TR Individual: TC Kimlik No (required) -->
+                <div class="form-group" id="trIndividualRow" style="display:none">
+                  <label>TC Kimlik No</label>
+                  <input type="text" name="tcKimlik" maxlength="11" inputmode="numeric">
+                </div>
+
+                <!-- Corporate fields (shown only when Corporate selected) -->
+                <div id="corporateFields" style="display:none">
+
+                  <div class="form-group">
+                    <label>Company Title <span style="font-weight:400;color:var(--text-muted)">(Legal Name)</span></label>
+                    <input type="text" name="companyTitle">
+                  </div>
+
+                  <!-- TR Corporate sub-fields (both required) -->
+                  <div class="form-row" id="trCorporateRow" style="display:none">
+                    <div class="form-group">
+                      <label>Tax Office</label>
+                      <input type="text" name="taxOffice">
+                    </div>
+                    <div class="form-group">
+                      <label>Tax Number (VKN)</label>
+                      <input type="text" name="taxNumber">
+                    </div>
+                  </div>
+
+                  <!-- Non-TR Corporate sub-fields (both optional) -->
+                  <div class="form-row" id="foreignCorporateRow" style="display:none">
+                    <div class="form-group">
+                      <label>Tax / Registration Number <span style="font-weight:400;color:var(--text-muted)">(optional)</span></label>
+                      <input type="text" name="corporateTaxNumber">
+                    </div>
+                    <div class="form-group">
+                      <label>VAT ID <span style="font-weight:400;color:var(--text-muted)">(optional)</span></label>
+                      <input type="text" name="vatId">
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Honeypot -->
+            <div class="hp-field" aria-hidden="true">
+              <input type="text" name="website" tabindex="-1" autocomplete="off">
+            </div>
+
+          </form>
+        </div>
+
+        <!-- ── Right: Order Summary ── -->
+        <div class="order-summary">
+          <div class="summary-header">Order Summary</div>
+          <div id="summaryContent">
+            <div class="summary-loading">Loading today's rate...</div>
+          </div>
+          <button type="button" id="payBtn" class="btn-pay" disabled>
+            Place Order
+          </button>
+          <p class="security-note">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />
+            </svg>
+            Secured by iyzico · PCI DSS Level 1
+          </p>
+          <div class="payment-band">
+            <img src="../Assets/Ico_PaymentBand.png" alt="iyzico ile Öde, Mastercard, Visa" />
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ ORDER CONFIRMATION MODAL ═════════════════════════════ -->
+  <div class="order-modal" id="orderModal" role="dialog" aria-label="Confirm your order" aria-hidden="true">
+    <div class="order-modal-backdrop" id="orderBackdrop"></div>
+    <div class="order-modal-card">
+      <div class="order-modal-body">
+
+        <div class="order-warning warning-overkill" id="orderOverkillWarning" style="display:none">
+          <strong>Verify Your Plan Choice</strong>
+          <p id="orderOverkillText"></p>
+        </div>
+
+        <div class="order-warning">
+          <strong>Verify Your SCCM Details</strong>
+          <p>Your license will be valid only for this Site Code and Support ID. Please double-check before paying.</p>
+          <div class="sccm-values">
+            <div><span class="label">SCCM Site Code:</span> <span class="value" id="modalSiteCode"></span></div>
+            <div><span class="label">SCCM Support ID:</span> <span class="value" id="modalSupportId"></span></div>
+          </div>
+        </div>
+
+      </div>
+      <div class="order-modal-footer">
+        <button type="button" id="orderCancelBtn" class="btn-modal-cancel">Back</button>
+        <button type="button" id="orderConfirmBtn" class="btn-modal-confirm">Pay Now</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ FOOTER ════════════════════════════════════════════════ -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <a href="../" class="footer-logo">
+          <img src="../Assets/LogoBig_Dark.png" alt="UpgradeMate" />
+        </a>
+        <p class="footer-copy">© 2026 UpgradeMate. All rights reserved.</p>
+      </div>
+      <div class="footer-meta">
+        <div class="footer-legal">
+          <a href="../privacy/">Privacy Policy</a>
+          <a href="../delivery-returns/">Delivery &amp; Returns</a>
+          <a href="../terms/">Terms of Use</a>
+        </div>
+        <ul class="footer-links">
+          <li><a href="https://x.com/upgrademate" target="_blank" rel="noopener" aria-label="X (Twitter)"><img src="../Assets/Ico_X.png" alt="X" /></a></li>
+          <li><a href="https://www.youtube.com/@UpgradeMate" target="_blank" rel="noopener" aria-label="YouTube"><img src="../Assets/Ico_Youtube.png" alt="YouTube" /></a></li>
+          <li><a href="https://www.linkedin.com/company/upgrademate/" target="_blank" rel="noopener" aria-label="LinkedIn"><img src="../Assets/Ico_Linkedin.png" alt="LinkedIn" /></a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ═══ SCRIPTS ═══════════════════════════════════════════════ -->
+  <script>
+    // ── Help Popups ───────────────────────────────────────────────
+    document.querySelectorAll('.help-btn').forEach(btn => {
+      const popup = document.getElementById(btn.dataset.popup);
+      btn.addEventListener('mouseenter', () => popup.classList.add('visible'));
+      btn.addEventListener('mouseleave', () => popup.classList.remove('visible'));
+      btn.addEventListener('click', e => { e.stopPropagation(); popup.classList.toggle('visible'); });
+    });
+    document.addEventListener('click', () => {
+      document.querySelectorAll('.help-popup.visible').forEach(p => p.classList.remove('visible'));
+    });
+  </script>
+  <script>
+    // ── Nav ───────────────────────────────────────────────────────
+    const burger = document.getElementById('burger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    burger.addEventListener('click', () => {
+      burger.classList.toggle('open');
+      mobileMenu.classList.toggle('open');
+    });
+    function closeMobileMenu() {
+      burger.classList.remove('open');
+      mobileMenu.classList.remove('open');
+    }
+  </script>
+
+  <script>
+    // ── Config ────────────────────────────────────────────────────
+    const EXCHANGE_RATE_URL = 'https://api.upgrademate.io/api/exchange-rate';
+    const PAYMENT_INIT_URL  = 'https://api.upgrademate.io/api/payment-init';
+    const VAT_RATE = 0.20;
+
+    const PLANS = {
+      p3k: {
+        name: 'Up to 3,000 Devices',
+        usd: 990,
+        note: 'Fixed rate — ideal for small & mid-size orgs',
+        featured: false
+      },
+      p10k: {
+        name: 'Up to 10,000 Devices',
+        usd: 1990,
+        note: 'Fixed rate — perfect for large enterprises',
+        featured: true
+      },
+      p10kplus: {
+        name: '10,000+ Devices',
+        usd: 2990,
+        note: 'Fixed rate — unlimited scale, one price',
+        featured: false
+      }
+    };
+
+    // ── State ─────────────────────────────────────────────────────
+    let selectedPlan = 'p10k';
+    let exchangeRate = null;
+    let rateDate     = null;
+    let isTurkey     = false;
+    let isCorporate  = false;
+
+    const urlPlan = new URLSearchParams(window.location.search).get('plan');
+    if (urlPlan && PLANS[urlPlan]) selectedPlan = urlPlan;
+
+    // ── Country List (Intl.DisplayNames ile browser üretir) ───────
+    (function populateCountries() {
+      const disp = new Intl.DisplayNames(['en'], { type: 'region' });
+      const codes = [
+        'AF','AL','DZ','AD','AO','AG','AR','AM','AU','AT','AZ','BS','BH','BD','BB',
+        'BY','BE','BZ','BJ','BT','BO','BA','BW','BR','BN','BG','BF','BI','CV','KH',
+        'CM','CA','CF','TD','CL','CN','CO','KM','CG','CD','CR','HR','CU','CY','CZ',
+        'DK','DJ','DM','DO','EC','EG','SV','GQ','ER','EE','SZ','ET','FJ','FI','FR',
+        'GA','GM','GE','DE','GH','GR','GD','GT','GN','GW','GY','HT','HN','HU','IS',
+        'IN','ID','IR','IQ','IE','IL','IT','JM','JP','JO','KZ','KE','KI','KW','KG',
+        'LA','LV','LB','LS','LR','LY','LI','LT','LU','MG','MW','MY','MV','ML','MT',
+        'MH','MR','MU','MX','FM','MD','MC','MN','ME','MA','MZ','MM','NA','NR','NP',
+        'NL','NZ','NI','NE','NG','KP','MK','NO','OM','PK','PW','PS','PA','PG','PY',
+        'PE','PH','PL','PT','QA','RO','RU','RW','KN','LC','VC','WS','SM','ST','SA',
+        'SN','RS','SC','SL','SG','SK','SI','SB','SO','ZA','KR','SS','ES','LK','SD',
+        'SR','SE','CH','SY','TJ','TZ','TH','TL','TG','TO','TT','TN','TR','TM','TV',
+        'UG','UA','AE','GB','US','UY','UZ','VU','VE','VN','YE','ZM','ZW'
+      ];
+      const sel = document.getElementById('countrySelect');
+      codes
+        .map(c => ({ c, n: disp.of(c) }))
+        .sort((a, b) => a.n.localeCompare(b.n))
+        .forEach(({ c, n }) => {
+          const o = document.createElement('option');
+          o.value = c; o.textContent = n;
+          sel.appendChild(o);
+        });
+    })();
+
+    // ── Plan Cards ────────────────────────────────────────────────
+    function renderPlanCards() {
+      document.getElementById('planCards').innerHTML = Object.entries(PLANS).map(([id, p]) => `
+        <div class="plan-card ${id === selectedPlan ? 'selected' : ''} ${p.featured ? 'featured' : ''}"
+             onclick="selectPlan('${id}')">
+          <div class="plan-card-range">${p.name}</div>
+          <div class="plan-card-price"><sup>$</sup>${p.usd.toLocaleString()}</div>
+          <div class="plan-card-period">per Site / year</div>
+          <div class="plan-card-divider"></div>
+          <div class="plan-card-note">${p.note}</div>
+        </div>
+      `).join('');
+    }
+
+    function selectPlan(id) {
+      selectedPlan = id;
+      renderPlanCards();
+      renderSummary();
+    }
+
+    // ── Exchange Rate ─────────────────────────────────────────────
+    async function fetchRate() {
+      try {
+        const res = await fetch(EXCHANGE_RATE_URL);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const data = await res.json();
+        exchangeRate = data.usd_try;
+        rateDate     = data.date;
+        return true;
+      } catch {
+        return false;
+      }
+    }
+
+    // ── Order Summary ─────────────────────────────────────────────
+    function formatTRY(n) {
+      return n.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' TL';
+    }
+
+    function renderSummary() {
+      const plan   = PLANS[selectedPlan];
+      const el     = document.getElementById('summaryContent');
+      const payBtn = document.getElementById('payBtn');
+
+      if (!isTurkey && document.getElementById('countrySelect').value === '') {
+        el.innerHTML = '<div class="summary-loading">Select a country to see pricing.</div>';
+        return;
+      }
+      if (isTurkey && !exchangeRate) return;
+
+      let html = `
+        <div class="summary-plan-name">UpgradeMate ${plan.name}</div>
+        <div class="summary-plan-range">per Site / year</div>
+      `;
+
+      if (isTurkey) {
+        const base  = plan.usd * exchangeRate;
+        const vat   = base * VAT_RATE;
+        const total = base + vat;
+        html += `
+          <div class="summary-line"><span>Fiyat</span><span>${formatTRY(base)}</span></div>
+          <div class="summary-line"><span>KDV (%20)</span><span>${formatTRY(vat)}</span></div>
+          <div class="summary-total"><span>Toplam (KDV dahil)</span><span>${formatTRY(total)}</span></div>
+          <div class="summary-rate-note">TCMB kur: 1 USD = ${exchangeRate.toFixed(4)} TL${rateDate ? ' · ' + rateDate : ''}</div>
+        `;
+      } else {
+        html += `
+          <div class="summary-line"><span>Price</span><span>$${plan.usd.toLocaleString()}</span></div>
+          <div class="summary-total"><span>Total</span><span>$${plan.usd.toLocaleString()}</span></div>
+          <div class="summary-vat-exempt">VAT exempt</div>
+        `;
+      }
+
+      el.innerHTML = html;
+      payBtn.disabled = false;
+    }
+
+    // ── Country / Invoice Type ────────────────────────────────────
+    function applyCorporateFieldVisibility() {
+      document.getElementById('corporateFields').style.display      = isCorporate ? '' : 'none';
+      document.getElementById('trCorporateRow').style.display       = (isCorporate && isTurkey)  ? '' : 'none';
+      document.getElementById('foreignCorporateRow').style.display  = (isCorporate && !isTurkey) ? '' : 'none';
+      document.getElementById('trIndividualRow').style.display      = (!isCorporate && isTurkey) ? '' : 'none';
+    }
+
+    document.getElementById('countrySelect').addEventListener('change', async function () {
+      isTurkey = this.value === 'TR';
+      document.getElementById('addressGroup').style.display  = '';
+      document.getElementById('districtField').style.display = isTurkey ? '' : 'none';
+      document.getElementById('stateField').style.display    = isTurkey ? 'none' : '';
+      applyCorporateFieldVisibility();
+
+      if (isTurkey && !exchangeRate) {
+        document.getElementById('summaryContent').innerHTML =
+          '<div class="summary-loading">Loading today\'s rate...</div>';
+        document.getElementById('payBtn').disabled = true;
+        const ok = await fetchRate();
+        if (!ok) {
+          document.getElementById('summaryContent').innerHTML = `
+            <div class="summary-error">Exchange rate temporarily unavailable.</div>
+            <button class="btn-retry" onclick="retryRate()">Retry</button>
+          `;
+          return;
+        }
+      }
+      renderSummary();
+    });
+
+    document.querySelectorAll('[name="invoiceType"]').forEach(r => {
+      r.addEventListener('change', function () {
+        isCorporate = this.value === 'corporate';
+        applyCorporateFieldVisibility();
+      });
+    });
+
+    // ── Validation ────────────────────────────────────────────────
+    const form = document.getElementById('checkoutForm');
+
+    form.querySelectorAll('input, textarea, select').forEach(el => {
+      el.addEventListener('input', function () {
+        this.classList.remove('invalid');
+        const err = this.parentNode.querySelector('.field-error');
+        if (err) err.remove();
+      });
+      el.addEventListener('change', function () {
+        this.classList.remove('invalid');
+        const err = this.parentNode.querySelector('.field-error');
+        if (err) err.remove();
+      });
+    });
+
+    function validateForm() {
+      let valid = true;
+      form.querySelectorAll('.invalid').forEach(el => el.classList.remove('invalid'));
+      form.querySelectorAll('.field-error').forEach(el => el.remove());
+
+      function err(input, msg) {
+        input.classList.add('invalid');
+        const div = document.createElement('div');
+        div.className = 'field-error';
+        div.textContent = msg;
+        input.parentNode.appendChild(div);
+        valid = false;
+      }
+
+      const f = form;
+      if (!f.firstName.value.trim()) err(f.firstName, 'First name is required.');
+      if (!f.lastName.value.trim())  err(f.lastName,  'Last name is required.');
+
+      if (!f.email.value.trim()) {
+        err(f.email, 'Email is required.');
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.email.value.trim())) {
+        err(f.email, 'Please enter a valid email address.');
+      }
+
+      const siteCode = f.sccmSiteCode;
+      if (!siteCode.value.trim()) {
+        err(siteCode, 'SCCM Site Code is required.');
+      } else if (!/^[A-Za-z0-9]{3}$/.test(siteCode.value.trim())) {
+        err(siteCode, 'Site Code must be exactly 3 characters.');
+      }
+      if (!f.sccmSupportId.value.trim()) err(f.sccmSupportId, 'SCCM Support ID is required.');
+      if (!f.computerCount.value || parseInt(f.computerCount.value) < 1)
+        err(f.computerCount, 'Client count is required.');
+      if (!f.windowsVersion.value) err(f.windowsVersion, 'Please select a Windows version.');
+
+      if (!f.country.value)             err(f.country,    'Please select a country.');
+      if (!f.city.value.trim())         err(f.city,       'City is required.');
+      if (!f.postalCode.value.trim())   err(f.postalCode, 'Postal code is required.');
+      if (!f.address.value.trim())      err(f.address,    'Address is required.');
+
+      if (isCorporate) {
+        if (!f.companyTitle.value.trim()) err(f.companyTitle, 'Company title is required.');
+        if (isTurkey) {
+          if (!f.taxOffice.value.trim()) err(f.taxOffice, 'Tax office is required.');
+          if (!f.taxNumber.value.trim()) err(f.taxNumber, 'Tax number is required.');
+        }
+      } else if (isTurkey) {
+        const tc = f.tcKimlik.value.trim();
+        if (!tc) {
+          err(f.tcKimlik, 'TC Kimlik No is required.');
+        } else if (!/^\d{11}$/.test(tc)) {
+          err(f.tcKimlik, 'TC Kimlik No must be exactly 11 digits.');
+        }
+      }
+
+      return valid;
+    }
+
+    // ── Place Order → Pay Modal ──────────────────────────────────
+    const TIER = { p3k: 0, p10k: 1, p10kplus: 2 };
+    function getMinimumPlan(deviceCount) {
+      const n = parseInt(deviceCount, 10) || 0;
+      if (n <= 3000)  return 'p3k';
+      if (n <= 10000) return 'p10k';
+      return 'p10kplus';
+    }
+    function escapeHtml(s) {
+      return String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' })[c]);
+    }
+    function checkPlanCoverage(plan, deviceCount) {
+      const min = getMinimumPlan(deviceCount);
+      const cmp = TIER[plan] - TIER[min];
+      if (cmp < 0) return { error: `Selected plan (${PLANS[plan].name}) doesn't cover ${deviceCount} devices. Please choose ${PLANS[min].name} or higher.` };
+      if (cmp > 0) return {
+        warning: `You selected ${escapeHtml(PLANS[plan].name)} for ${escapeHtml(deviceCount)} devices. The <span class="suggested-plan">${escapeHtml(PLANS[min].name)}</span> plan would cover your needs at lower cost. Continue anyway?`
+      };
+      return { ok: true };
+    }
+
+    function openOrderModal(overkillWarning) {
+      const modal = document.getElementById('orderModal');
+      const overkillEl = document.getElementById('orderOverkillWarning');
+      const overkillText = document.getElementById('orderOverkillText');
+      if (overkillWarning) {
+        overkillText.innerHTML = overkillWarning;
+        overkillEl.style.display = '';
+      } else {
+        overkillEl.style.display = 'none';
+      }
+      // Önceki hata varsa temizle
+      const oldErr = document.getElementById('orderModalError');
+      if (oldErr) oldErr.remove();
+      // Müşterinin girdiği SCCM bilgilerini modalda göster — son kontrol fırsatı
+      document.getElementById('modalSiteCode').textContent  = form.sccmSiteCode.value.trim().toUpperCase();
+      document.getElementById('modalSupportId').textContent = form.sccmSupportId.value.trim();
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeOrderModal() {
+      const modal = document.getElementById('orderModal');
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    function buildPaymentPayload() {
+      const f = form;
+      return {
+        plan:         selectedPlan,
+        firstName:    f.firstName.value.trim(),
+        lastName:     f.lastName.value.trim(),
+        email:        f.email.value.trim(),
+        company:      f.company.value.trim(),
+        country:      f.country.value,
+        city:         f.city.value.trim(),
+        district:     isTurkey  ? f.district.value.trim() : '',
+        state:        !isTurkey ? f.state.value.trim()    : '',
+        postalCode:   f.postalCode.value.trim(),
+        address:      f.address.value.trim(),
+        invoiceType:  f.querySelector('[name="invoiceType"]:checked').value,
+        tcKimlik:           (!isCorporate && isTurkey) ? f.tcKimlik.value.trim()    : '',
+        companyTitle:       isCorporate ? f.companyTitle.value.trim() : '',
+        taxOffice:          (isCorporate && isTurkey)  ? f.taxOffice.value.trim()          : '',
+        taxNumber:          (isCorporate && isTurkey)  ? f.taxNumber.value.trim()          : '',
+        corporateTaxNumber: (isCorporate && !isTurkey) ? f.corporateTaxNumber.value.trim() : '',
+        vatId:              (isCorporate && !isTurkey) ? f.vatId.value.trim()              : '',
+        sccmSiteCode:   f.sccmSiteCode.value.trim().toUpperCase(),
+        sccmSupportId:  f.sccmSupportId.value.trim(),
+        computerCount:  f.computerCount.value.trim(),
+        windowsVersion: f.windowsVersion.value,
+        _hp:            f.website.value
+      };
+    }
+
+    // Pay Now (modal confirm) — direct payment-init + redirect
+    document.getElementById('orderConfirmBtn').addEventListener('click', async function () {
+      const cancelBtn = document.getElementById('orderCancelBtn');
+      this.disabled = true;
+      cancelBtn.disabled = true;
+      const originalText = this.textContent;
+      this.innerHTML = '<span class="spinner"></span> Please wait...';
+
+      const oldErr = document.getElementById('orderModalError');
+      if (oldErr) oldErr.remove();
+
+      try {
+        const res  = await fetch(PAYMENT_INIT_URL, {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify(buildPaymentPayload())
+        });
+        const data = await res.json();
+        if (!res.ok || !data.checkoutFormContent) throw new Error('init failed');
+
+        sessionStorage.setItem('iyzico_form',    data.checkoutFormContent);
+        sessionStorage.setItem('iyzico_plan',    selectedPlan);
+        sessionStorage.setItem('iyzico_summary', JSON.stringify({
+          planName: PLANS[selectedPlan].name,
+          isTurkey,
+          usd:     PLANS[selectedPlan].usd,
+          rate:    exchangeRate
+        }));
+        window.location.href = '../payment/';
+      } catch {
+        this.disabled = false;
+        cancelBtn.disabled = false;
+        this.textContent = originalText;
+        const errorEl = document.createElement('div');
+        errorEl.id = 'orderModalError';
+        errorEl.className = 'order-modal-error';
+        errorEl.textContent = 'Payment initialization failed. Please try again.';
+        document.querySelector('.order-modal-footer').insertAdjacentElement('beforebegin', errorEl);
+      }
+    });
+    document.getElementById('orderCancelBtn').addEventListener('click', closeOrderModal);
+    document.getElementById('orderBackdrop').addEventListener('click', closeOrderModal);
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && document.getElementById('orderModal').classList.contains('open')) closeOrderModal();
+    });
+
+    // Place Order — validate + plan check + open modal
+    document.getElementById('payBtn').addEventListener('click', function () {
+      if (!validateForm()) return;
+
+      const coverage = checkPlanCoverage(selectedPlan, form.computerCount.value.trim());
+      if (coverage.error) {
+        form.computerCount.classList.add('invalid');
+        const div = document.createElement('div');
+        div.className = 'field-error';
+        div.textContent = coverage.error;
+        form.computerCount.parentNode.appendChild(div);
+        form.computerCount.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+
+      openOrderModal(coverage.warning);
+    });
+
+    // ── Init ─────────────────────────────────────────────────────
+    renderPlanCards();
+    document.getElementById('summaryContent').innerHTML =
+      '<div class="summary-loading">Select a country to see pricing.</div>';
+
+    async function retryRate() {
+      document.getElementById('summaryContent').innerHTML =
+        '<div class="summary-loading">Loading today\'s rate...</div>';
+      const ok = await fetchRate();
+      if (!ok) {
+        document.getElementById('summaryContent').innerHTML = `
+          <div class="summary-error">Exchange rate temporarily unavailable.</div>
+          <button class="btn-retry" onclick="retryRate()">Retry</button>
+        `;
+        return;
+      }
+      renderSummary();
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Try UpgradeMate Free — 10-Day Trial</title>
+  <meta name="description" content="Try UpgradeMate free for 10 days on your SCCM environment. Get an instant trial license — no credit card required." />
+  <link rel="canonical" href="https://upgrademate.io/trynow/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="UpgradeMate" />
+  <meta property="og:title" content="Try UpgradeMate Free — 10-Day Trial" />
+  <meta property="og:description" content="Get an instant 10-day trial license for the smart ConfigMgr (SCCM) Windows upgrade add-on." />
+  <meta property="og:url" content="https://upgrademate.io/trynow/" />
+  <meta property="og:image" content="https://upgrademate.io/Assets/Dashboard.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://upgrademate.io/Assets/Dashboard.jpg" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../Assets/Ico_Web_32.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../Assets/site.css" />
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  <style>
+    /* ─── FORM SECTION ──────────────────────────────────────────── */
+    .form-section { padding: 0 0 96px; }
+    .form-section .container { max-width: 760px; }
+
+    /* ─── FORM LAYOUT ───────────────────────────────────────────── */
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .form-row .form-group { margin-bottom: 0; }
+
+    .form-group label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* ─── HELP POPUP ────────────────────────────────────────────── */
+    .help-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: rgba(5,120,212,.2);
+      border: 1px solid rgba(5,120,212,.4);
+      color: var(--accent);
+      font-size: 10px;
+      font-weight: 700;
+      cursor: default;
+      line-height: 1;
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .help-popup {
+      display: none;
+      position: absolute;
+      bottom: calc(100% + 6px);
+      left: 0;
+      width: 300px;
+      background: #0d1f33;
+      border: 1px solid rgba(5,120,212,.3);
+      border-radius: var(--radius);
+      padding: 14px;
+      box-shadow: 0 8px 32px rgba(0,0,0,.5);
+      z-index: 999;
+      color: var(--text-body);
+      font-size: 12px;
+      font-weight: 400;
+      text-align: left;
+      pointer-events: none;
+    }
+
+    .help-popup.visible { display: block; }
+
+    .help-popup::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 12px;
+      border: 6px solid transparent;
+      border-top-color: rgba(5,120,212,.3);
+    }
+
+    .help-popup ol { margin: 0; padding-left: 16px; line-height: 1.8; }
+    .help-popup p  { margin: 0; line-height: 1.7; }
+
+    /* ─── SELECT ────────────────────────────────────────────────── */
+    .form-group select {
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b83a0' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 36px;
+    }
+
+    .form-group select option {
+      background: #162D46;
+      color: var(--text-head);
+    }
+
+    /* ─── NUMBER INPUT ──────────────────────────────────────────── */
+    .form-group input[type="number"]::-webkit-inner-spin-button,
+    .form-group input[type="number"]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    .form-group input[type="number"] { -moz-appearance: textfield; appearance: textfield; }
+
+    /* ─── SUBMIT BUTTON ─────────────────────────────────────────── */
+    .btn-submit { margin-top: 8px; }
+
+    /* ─── RESPONSIVE ───────────────────────────────────────────── */
+    @media (max-width: 600px) {
+      .form-row { grid-template-columns: 1fr; }
+      .form-wrapper { padding: 24px 18px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══ NAVIGATION ═══════════════════════════════════════════ -->
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a href="../" class="nav-logo">
+        <img src="../Assets/LogoBig_Dark.png" alt="UpgradeMate" />
+      </a>
+      <ul class="nav-links">
+        <li><a href="../#features">Features</a></li>
+        <li><a href="../#for-users">For Users</a></li>
+        <li><a href="../#for-admins">For IT Admins</a></li>
+        <li><a href="../#pricing">Pricing</a></li>
+        <li><a href="https://docs.upgrademate.io">Documents</a></li>
+        <li><a href="../contact">Contact Us</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="../trynow" class="btn btn-primary active">Try Now</a>
+      </div>
+      <button class="burger" id="burger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ═══ MOBILE MENU ══════════════════════════════════════════ -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="../#features" onclick="closeMobileMenu()">Features</a>
+    <a href="../#for-users" onclick="closeMobileMenu()">For Users</a>
+    <a href="../#for-admins" onclick="closeMobileMenu()">For IT Admins</a>
+    <a href="../#pricing" onclick="closeMobileMenu()">Pricing</a>
+    <a href="https://docs.upgrademate.io" onclick="closeMobileMenu()">Documents</a>
+    <a href="../contact" onclick="closeMobileMenu()">Contact Us</a>
+  </div>
+
+  <!-- ═══ PAGE HERO ═════════════════════════════════════════════ -->
+  <section class="page-hero">
+    <div class="container">
+      <div class="tag fade-up fade-up-delay-1">Free Trial</div>
+      <h1 class="page-hero-title fade-up fade-up-delay-2">
+        Try UpgradeMate <span class="highlight">For Free</span>
+      </h1>
+      <p class="page-hero-sub fade-up fade-up-delay-3">
+        Get started with your 10-day free trial. No credit card required. Complete the form below to begin.
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══ FORM SECTION ══════════════════════════════════════════ -->
+  <section class="form-section">
+    <div class="container">
+      <div class="form-wrapper fade-up fade-up-delay-2">
+
+        <form id="trynowForm" novalidate>
+
+          <!-- Row 1: First Name + Last Name -->
+          <div class="form-row">
+            <div class="form-group">
+              <label>First Name</label>
+              <input type="text" name="firstName" required>
+            </div>
+            <div class="form-group">
+              <label>Last Name</label>
+              <input type="text" name="lastName" required>
+            </div>
+          </div>
+
+          <!-- Row 2: Email + Company Name -->
+          <div class="form-row">
+            <div class="form-group">
+              <label>Email</label>
+              <input type="email" name="email" placeholder="example@company.com" required>
+            </div>
+            <div class="form-group">
+              <label>Company Name <span style="color:var(--text-muted);font-weight:400;">(optional)</span></label>
+              <input type="text" name="companyName">
+            </div>
+          </div>
+
+          <!-- Row 3: SCCM Site Code + SCCM Support ID -->
+          <div class="form-row">
+            <div class="form-group">
+              <label>SCCM Site Code <span class="help-btn" data-popup="siteCodePopup">?</span></label>
+              <div class="help-popup" id="siteCodePopup">
+                <p>Refer to the three-character Site Code found under <strong>Administration &gt; Site Configuration &gt; Sites</strong>.</p>
+              </div>
+              <input type="text" name="sccmSiteCode" placeholder="XYZ" maxlength="3" required>
+            </div>
+            <div class="form-group">
+              <label>SCCM Support ID <span class="help-btn" data-popup="supportIdPopup">?</span></label>
+              <div class="help-popup" id="supportIdPopup">
+                <p>Refer to the Support ID found in the <strong>'About Configuration Manager'</strong> window, accessible via the blue menu arrow in the top-left corner.</p>
+              </div>
+              <input type="text" name="sccmSupportId" required>
+            </div>
+          </div>
+
+          <!-- Row 4: Number of Computers + Windows Version -->
+          <div class="form-row">
+            <div class="form-group">
+              <label>Client Count <span class="help-btn" data-popup="clientCountPopup">?</span></label>
+              <div class="help-popup" id="clientCountPopup">
+                <p>Refer to the Member Count of the <strong>'All Desktop and Server Clients'</strong> collection under Assets and Compliance &gt; Device Collections.</p>
+              </div>
+              <input type="number" name="computerCount" placeholder="e.g. 5000" min="1" required>
+            </div>
+            <div class="form-group">
+              <label>Windows Version to Upgrade</label>
+              <select name="windowsVersion" required>
+                <option value="">Please Select</option>
+                <option value="26200">Windows 11 25H2</option>
+                <option value="26100">Windows 11 24H2</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Honeypot: bot tuzağı -->
+          <div class="hp-field" aria-hidden="true">
+            <input type="text" name="website" tabindex="-1" autocomplete="off">
+          </div>
+
+          <div class="cf-turnstile" data-sitekey="0x4AAAAAAC0prEEJSRvXpHZo" data-theme="dark" style="display:flex; justify-content:center; margin-bottom:8px;"></div>
+
+          <button type="submit" class="btn-submit">Start Free Trial</button>
+          <div id="statusMsg" class="status-msg"></div>
+        </form>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FOOTER ════════════════════════════════════════════════ -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <a href="../" class="footer-logo">
+          <img src="../Assets/LogoBig_Dark.png" alt="UpgradeMate" />
+        </a>
+        <p class="footer-copy">© 2026 UpgradeMate. All rights reserved.</p>
+      </div>
+      <div class="footer-meta">
+        <div class="footer-legal">
+          <a href="../privacy/">Privacy Policy</a>
+          <a href="../delivery-returns/">Delivery &amp; Returns</a>
+          <a href="../terms/">Terms of Use</a>
+        </div>
+        <ul class="footer-links">
+          <li><a href="https://x.com/upgrademate" target="_blank" rel="noopener" aria-label="X (Twitter)"><img src="../Assets/Ico_X.png" alt="X" /></a></li>
+          <li><a href="https://www.youtube.com/@UpgradeMate" target="_blank" rel="noopener" aria-label="YouTube"><img src="../Assets/Ico_Youtube.png" alt="YouTube" /></a></li>
+          <li><a href="https://www.linkedin.com/company/upgrademate/" target="_blank" rel="noopener" aria-label="LinkedIn"><img src="../Assets/Ico_Linkedin.png" alt="LinkedIn" /></a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Help popups
+    document.querySelectorAll('.help-btn').forEach(btn => {
+      const popup = document.getElementById(btn.dataset.popup);
+
+      btn.addEventListener('mouseenter', () => popup.classList.add('visible'));
+      btn.addEventListener('mouseleave', () => popup.classList.remove('visible'));
+      btn.addEventListener('click', e => {
+        e.stopPropagation();
+        popup.classList.toggle('visible');
+      });
+    });
+    document.addEventListener('click', () => {
+      document.querySelectorAll('.help-popup.visible').forEach(p => p.classList.remove('visible'));
+    });
+  </script>
+
+  <script>
+    // Burger menu
+    const burger = document.getElementById('burger');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    burger.addEventListener('click', () => {
+      burger.classList.toggle('open');
+      mobileMenu.classList.toggle('open');
+    });
+
+    function closeMobileMenu() {
+      burger.classList.remove('open');
+      mobileMenu.classList.remove('open');
+    }
+  </script>
+
+  <script>
+    // ── Azure Functions URL ───────────────────────────────────────
+    const API_URL = 'https://api.upgrademate.io/api/trynow';
+    // ─────────────────────────────────────────────────────────────
+
+    const form      = document.getElementById('trynowForm');
+    const statusMsg = document.getElementById('statusMsg');
+    const submitBtn = form.querySelector('button[type="submit"]');
+
+    function validateForm() {
+      let valid = true;
+
+      form.querySelectorAll('.invalid').forEach(el => el.classList.remove('invalid'));
+      form.querySelectorAll('.field-error').forEach(el => el.remove());
+
+      function showError(input, msg) {
+        input.classList.add('invalid');
+        const err = document.createElement('div');
+        err.className = 'field-error';
+        err.textContent = msg;
+        input.parentNode.appendChild(err);
+        valid = false;
+      }
+
+      const firstName = form.firstName;
+      if (!firstName.value.trim()) showError(firstName, 'First name is required.');
+
+      const lastName = form.lastName;
+      if (!lastName.value.trim()) showError(lastName, 'Last name is required.');
+
+      const email = form.email;
+      if (!email.value.trim()) {
+        showError(email, 'Email is required.');
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())) {
+        showError(email, 'Please enter a valid email address.');
+      }
+
+      const siteCode = form.sccmSiteCode;
+      if (!siteCode.value.trim()) {
+        showError(siteCode, 'SCCM Site Code is required.');
+      } else if (!/^[A-Za-z0-9]{3}$/.test(siteCode.value.trim())) {
+        showError(siteCode, 'Site Code must be exactly 3 characters.');
+      }
+
+      const supportId = form.sccmSupportId;
+      if (!supportId.value.trim()) showError(supportId, 'SCCM Support ID is required.');
+
+      const count = form.computerCount;
+      if (!count.value.trim()) {
+        showError(count, 'Number of computers is required.');
+      } else if (parseInt(count.value) < 1) {
+        showError(count, 'Must be at least 1.');
+      }
+
+      const winVersion = form.windowsVersion;
+      if (!winVersion.value) showError(winVersion, 'Please select a Windows version.');
+
+      return valid;
+    }
+
+    form.querySelectorAll('input, select').forEach(el => {
+      el.addEventListener('input', function() {
+        this.classList.remove('invalid');
+        const err = this.parentNode.querySelector('.field-error');
+        if (err) err.remove();
+      });
+      el.addEventListener('change', function() {
+        this.classList.remove('invalid');
+        const err = this.parentNode.querySelector('.field-error');
+        if (err) err.remove();
+      });
+    });
+
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      if (!validateForm()) return;
+
+      const turnstileToken = turnstile.getResponse();
+      if (!turnstileToken) {
+        statusMsg.className = 'status-msg error';
+        statusMsg.textContent = 'Please complete the security check.';
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span class="spinner"></span> Submitting...';
+      statusMsg.className = 'status-msg';
+      statusMsg.style.display = 'none';
+
+      const payload = {
+        firstName:      form.firstName.value.trim(),
+        lastName:       form.lastName.value.trim(),
+        email:          form.email.value.trim(),
+        companyName:    form.companyName.value.trim(),
+        sccmSiteCode:   form.sccmSiteCode.value.trim().toUpperCase(),
+        sccmSupportId:  form.sccmSupportId.value.trim(),
+        computerCount:  form.computerCount.value.trim(),
+        windowsVersion: form.windowsVersion.value,
+        _hp:                    form.querySelector('input[name="website"]').value,
+        'cf-turnstile-response': turnstileToken
+      };
+
+      try {
+        const res = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (res.ok) {
+          window.location.href = '../thank-you/?status=success&type=trynow';
+          return;
+        } else if (res.status === 409) {
+          window.location.href = '../thank-you/?status=error&type=trial-exists';
+          return;
+        } else {
+          throw new Error('Server error');
+        }
+      } catch (err) {
+        window.location.href = '../thank-you/?status=error&type=trynow';
+        return;
+      }
+
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = 'Start Free Trial';
+    });
+  </script>
+
+</body>
+</html>
